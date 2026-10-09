@@ -1,8 +1,8 @@
 tmp/
-github/
+/github/
 .DS_Store
 __pycache__/
 *.pyc
-databricks-academy/
-examtopics/
-udemy/
+/databricks-academy/
+/examtopics/
+/udemy/

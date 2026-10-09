@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Udemy Extra Practice 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f6f9; --surface: #ffffff; --surface-2: #f7f9fb; --ink: #1c2430; --muted: #5d6b7c;
+  --line: #dde3ea; --accent: #1d5fb4; --accent-soft: #e6effa; --accent-ink: #ffffff;
+  --ok: #17803d; --ok-soft: #e3f6e9; --bad: #c42b2b; --bad-soft: #fde8e8;
+  --warn: #b7791f; --warn-soft: #fff6e0; --code-bg: #f1f3f6; --rn-bg: #ffe866; --rn-ink: #3b2f00; --shadow: 0 1px 2px rgba(16,24,40,.06), 0 4px 16px rgba(16,24,40,.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f141b; --surface: #171e27; --surface-2: #1c2530; --ink: #e5eaf0; --muted: #98a5b5;
+    --line: #2b3643; --accent: #5b9cf0; --accent-soft: #1b2a3d; --accent-ink: #0f141b;
+    --ok: #4cc27a; --ok-soft: #15301f; --bad: #f07070; --bad-soft: #3a1c1c;
+    --warn: #e0ac4f; --warn-soft: #33290f; --code-bg: #111821; --rn-bg: #6b5500; --rn-ink: #ffe680; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f141b; --surface: #171e27; --surface-2: #1c2530; --ink: #e5eaf0; --muted: #98a5b5;
+  --line: #2b3643; --accent: #5b9cf0; --accent-soft: #1b2a3d; --accent-ink: #0f141b;
+  --ok: #4cc27a; --ok-soft: #15301f; --bad: #f07070; --bad-soft: #3a1c1c;
+  --warn: #e0ac4f; --warn-soft: #33290f; --code-bg: #111821; --rn-bg: #6b5500; --rn-ink: #ffe680; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: "Inter", "Hind Siliguri", "Kohinoor Bangla", "Noto Sans Bengali", system-ui, sans-serif;
+  font-size: 16px; line-height: 1.6;
+}
+.bn, .explain { font-family: "Hind Siliguri", "Kohinoor Bangla", "Noto Sans Bengali", "Inter", system-ui, sans-serif; }
+code, pre { font-family: "JetBrains Mono", Menlo, Consolas, "Hind Siliguri", monospace; }
+
+/* Top bar */
+.topbar { position: sticky; top: 0; z-index: 10; background: var(--surface); border-bottom: 1px solid var(--line); }
+.topbar-inner { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.brand { font-weight: 700; font-size: 15px; letter-spacing: -.01em; flex: 1 1 auto; min-width: 0; }
+.home-link { font-weight: 600; font-size: 14px; color: var(--accent); text-decoration: none; border: 1px solid var(--line);
+             border-radius: 8px; padding: 6px 10px; white-space: nowrap; }
+.home-link:hover { background: var(--accent-soft); }
+.brand small { display: block; font-weight: 500; color: var(--muted); font-size: 12px; }
+.stats { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { font-size: 13px; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); white-space: nowrap; }
+.chip b { font-variant-numeric: tabular-nums; }
+.chip.ok b { color: var(--ok); } .chip.bad b { color: var(--bad); }
+.icon-btn { background: transparent; border: 1px solid var(--line); color: var(--ink); border-radius: 8px; padding: 6px 10px; font: inherit; font-size: 13px; cursor: pointer; }
+.icon-btn:hover { background: var(--surface-2); }
+.progress { height: 3px; background: var(--line); }
+.progress > div { height: 100%; width: 0; background: var(--accent); transition: width .25s ease; }
+
+/* Layout */
+.wrap { max-width: 1180px; margin: 0 auto; padding: 20px 16px 48px; display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 20px; align-items: start; }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); } .side { order: 2; } }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+.qcard { padding: 22px 24px 24px; }
+@media (max-width: 600px) { .qcard { padding: 16px; } }
+.qhead { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.qnum { font-weight: 700; font-size: 18px; }
+.qnum span { color: var(--muted); font-weight: 500; font-size: 14px; }
+.qnum .src-num { font-size: 12px; margin-left: 4px; }
+.status-tag { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+.status-tag.ok { background: var(--ok-soft); color: var(--ok); }
+.status-tag.bad { background: var(--bad-soft); color: var(--bad); }
+.status-tag.pending { background: var(--accent-soft); color: var(--accent); }
+
+.stem { font-size: 16px; }
+.stem p { margin: 0 0 10px; }
+.stem pre, .opt pre, .explain pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; font-size: 13px; line-height: 1.5; margin: 8px 0; }
+.stem code, .opt code, .explain code { font-size: .88em; }
+:not(pre) > code { background: var(--code-bg); border: 1px solid var(--line); padding: 1px 5px; border-radius: 5px; overflow-wrap: anywhere; }
+pre code { background: none; border: 0; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 14px; display: block; overflow-x: auto; }
+th, td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+th { background: var(--surface-2); }
+
+/* Options */
+.opts { display: grid; gap: 10px; margin: 18px 0 0; }
+.opt { display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left; background: var(--surface); color: var(--ink);
+       border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 14px; font: inherit; font-size: 15px; cursor: pointer;
+       transition: border-color .15s, background .15s; }
+.opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.opt .key { flex: 0 0 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px;
+            border: 1.5px solid var(--line); background: var(--surface-2); }
+.opt .txt { flex: 1 1 auto; min-width: 0; padding-top: 2px; }
+.opt .txt p { margin: 0 0 8px; }
+.opt .txt > :first-child { margin-top: 0; }
+.opt .txt > :last-child { margin-bottom: 0; }
+.opt .txt p:last-child { margin-bottom: 0; }
+.opt .txt pre { margin: 2px 0 0; }
+.opt .txt { overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .opt { flex-wrap: wrap; }
+  .opt .txt { flex-basis: calc(100% - 40px); }
+  .opt .mark { margin-left: 40px; padding-top: 0; }
+}
+.opt .mark { flex: 0 0 auto; font-weight: 700; font-size: 13px; padding-top: 3px; }
+.opts.multi .opt .key { border-radius: 6px; }
+.multi-note { margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--warn); background: var(--warn-soft);
+              border-radius: 8px; padding: 6px 12px; display: inline-block; }
+.multi-note[hidden] { display: none; }
+/* syllabus annotations */
+.oos { margin: 0 0 14px; padding: 10px 14px; border: 2px solid var(--bad); background: var(--bad-soft); color: var(--bad);
+       border-radius: 10px; font-size: 15px; line-height: 1.5; }
+.oos strong { color: var(--bad); font-weight: 800; }
+.oos .oos-why { display: block; font-size: 13px; font-weight: 500; margin-top: 2px; }
+.rn-new { background: var(--rn-bg); color: var(--rn-ink); font-weight: 700; padding: 0 4px; border-radius: 4px; }
+.rn-old { color: var(--bad); font-size: .92em; }
+.rn-old s { text-decoration-color: var(--bad); text-decoration-thickness: 2px; }
+.rn-x { font-weight: 800; }
+.pbtn { position: relative; }
+.pbtn.oos-q::after { content: ""; position: absolute; top: 3px; right: 3px; width: 7px; height: 7px; border-radius: 50%;
+                     background: var(--bad); box-shadow: 0 0 0 1.5px var(--surface); }
+.legend .sw.l-oos { border-radius: 50%; background: var(--bad); border-color: var(--bad); width: 9px; height: 9px; }
+.opt.missed { border-color: var(--ok); border-style: dashed; background: var(--ok-soft); }
+.opt.missed .key { background: var(--surface); border-color: var(--ok); color: var(--ok); }
+.opt.missed .mark { color: var(--ok); }
+.opt.selected { border-color: var(--accent); background: var(--accent-soft); }
+.opt.selected .key { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.opt:disabled { cursor: default; }
+.opt.correct { border-color: var(--ok); background: var(--ok-soft); }
+.opt.correct .key { background: var(--ok); border-color: var(--ok); color: #fff; }
+.opt.correct .mark { color: var(--ok); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opt.wrong .key { background: var(--bad); border-color: var(--bad); color: #fff; }
+.opt.wrong .mark { color: var(--bad); }
+.opt.dim { opacity: .55; }
+
+.actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 18px; }
+.btn { font: inherit; font-weight: 600; font-size: 15px; border-radius: 10px; padding: 10px 18px; cursor: pointer; border: 1.5px solid transparent; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-primary:disabled { opacity: .45; cursor: not-allowed; }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover:not(:disabled) { background: var(--surface-2); }
+.btn-ghost:disabled { opacity: .4; cursor: not-allowed; }
+.hint { font-size: 13px; color: var(--muted); }
+.spacer { flex: 1; }
+
+/* Result + explanation */
+.result { margin-top: 18px; border-radius: 10px; padding: 12px 14px; font-weight: 600; display: none; }
+.result.ok { display: block; background: var(--ok-soft); color: var(--ok); border: 1px solid var(--ok); }
+.result.bad { display: block; background: var(--bad-soft); color: var(--bad); border: 1px solid var(--bad); }
+.explain { display: none; margin-top: 16px; padding-top: 6px; border-top: 1px dashed var(--line); font-size: 15.5px; }
+.explain.show { display: block; }
+.explain .ans { display: none; }
+.explain h3 { font-size: 17px; color: var(--accent); margin: 20px 0 8px; }
+.explain h4 { font-size: 15.5px; margin: 16px 0 6px; }
+.explain p { margin: 8px 0; }
+.explain ul, .explain ol { padding-left: 22px; margin: 8px 0; }
+.explain blockquote { margin: 10px 0; padding: 8px 14px; border-left: 4px solid var(--warn); background: var(--warn-soft); border-radius: 0 8px 8px 0; }
+.explain blockquote p { margin: 4px 0; }
+.planes { margin: 10px 0; }
+.plane { border: 1.5px solid var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 8px 14px; }
+.plane.data { border-color: var(--ok); background: var(--ok-soft); }
+.plane p { text-align: center; margin: 2px 0; }
+.plane .sub { color: var(--muted); font-size: 14px; }
+.arrow { text-align: center; color: var(--muted); margin: 6px 0; font-size: 14px; }
+
+/* Sidebar */
+.side { padding: 16px; position: sticky; top: 76px; }
+@media (max-width: 900px) { .side { position: static; } }
+.side h2 { font-size: 14px; margin: 0 0 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); gap: 6px; }
+.pbtn { font: inherit; font-size: 13px; font-weight: 600; height: 36px; border-radius: 8px; border: 1.5px solid var(--line);
+        background: var(--surface-2); color: var(--ink); cursor: pointer; font-variant-numeric: tabular-nums; }
+.pbtn:hover { border-color: var(--accent); }
+.pbtn.sel { border-color: var(--accent); color: var(--accent); }
+.pbtn.ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.pbtn.bad { background: var(--bad); border-color: var(--bad); color: #fff; }
+.pbtn.current { outline: 2px solid var(--ink); outline-offset: 1px; }
+.legend > div { display: flex; align-items: center; flex-wrap: wrap; gap: 0 4px; }
+.legend { display: grid; gap: 6px; margin-top: 14px; font-size: 13px; color: var(--muted); }
+.legend .sw { display: inline-block; flex: none; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; border: 1.5px solid var(--line); }
+.legend .l-ok { background: var(--ok); border-color: var(--ok); }
+.legend .l-bad { background: var(--bad); border-color: var(--bad); }
+.legend .l-sel { border-color: var(--accent); }
+.side .btn { width: 100%; margin-top: 14px; font-size: 14px; padding: 8px 12px; }
+.kbd-help { font-size: 12px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+kbd { font-family: "JetBrains Mono", monospace; font-size: 11px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; background: var(--surface-2); }
+
+/* Summary */
+.summary { padding: 28px 24px; text-align: center; display: none; margin-top: 20px; }
+.summary.show { display: block; }
+.summary .big { font-size: 42px; font-weight: 700; margin: 6px 0; font-variant-numeric: tabular-nums; }
+.qhead { flex-wrap: wrap; }
+.qhead .qnum { flex: 1 1 240px; }
+.qhead-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+#markReviewBtn { white-space: nowrap; }
+.pbtn.review-marked { position: relative; }
+.pbtn.review-marked::after { content: "★"; position: absolute; top: -7px; right: -4px; color: var(--warn); font-size: 12px; }
+#reviewPanel { margin-top: 14px; }
+#reviewList { display: grid; gap: 6px; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="home-link" href="../../Databricks_Home.html" title="Home">← Home</a>
+    <div class="brand">Udemy Extra Practice 3<small class="bn">Section মিশিয়ে সাজানো · Platform 8 · Ingestion 1 · Transformation 10 · Lakeflow Jobs 7 · CI/CD 2 · Optimization 6 · Governance 6 · ৪০টি প্রশ্ন</small></div>
+    <div class="stats">
+      <span class="chip" id="timerChip"><span id="timerLabel">Time left</span> <b id="sTimer" role="timer" aria-label="Remaining time">00:00</b></span>
+      <button class="icon-btn" id="pauseTimerBtn" type="button">Pause</button>
+      <button class="icon-btn" id="resetTimerBtn" type="button" title="Restart the timer without clearing answers">Reset Timer</button>
+      <span class="chip">Answered <b id="sAnswered">0</b>/<b id="sTotal">0</b></span>
+      <span class="chip ok">Correct <b id="sCorrect">0</b></span>
+      <span class="chip bad">Wrong <b id="sWrong">0</b></span>
+      <span class="chip">Score <b id="sPct">0%</b></span>
+    </div>
+    <button class="icon-btn" id="themeBtn" title="Toggle theme">◐ Theme</button>
+  </div>
+  <div class="progress"><div id="progressBar"></div></div>
+</header>
+
+<div class="wrap">
+  <main>
+    <article class="card qcard" id="qcard">
+      <div class="qhead">
+        <div class="qnum" id="qnum"></div>
+        <div class="qhead-actions">
+          <div class="status-tag" id="statusTag"></div>
+          <button class="btn btn-ghost" id="markReviewBtn" type="button" aria-pressed="false">☆ Mark for Review</button>
+        </div>
+      </div>
+      <div class="stem" id="stem"></div>
+      <div class="multi-note bn" id="multiNote" hidden></div>
+      <div class="opts" id="opts" role="radiogroup" aria-label="Options"></div>
+      <div class="actions">
+        <button class="btn btn-primary" id="revealBtn" disabled>উত্তর দেখুন (Reveal Answer)</button>
+        <span class="hint bn" id="hint">আগে একটি option বেছে নিন</span>
+      </div>
+      <div class="result bn" id="result"></div>
+      <div class="explain" id="explain"></div>
+      <div class="actions" style="margin-top:22px">
+        <button class="btn btn-ghost" id="prevBtn">← Previous</button>
+        <span class="spacer"></span>
+        <button class="btn btn-ghost" id="nextBtn">Next →</button>
+      </div>
+    </article>
+    <section class="card summary" id="summary">
+      <div class="bn" style="color:var(--muted)">সব প্রশ্নের উত্তর দেওয়া হয়েছে 🎉</div>
+      <div class="big" id="sumScore"></div>
+      <div class="bn" id="sumText"></div>
+      <button class="btn btn-ghost" id="summaryReviewBtn" type="button">Review Marked Questions</button>
+      <p style="margin-top:16px"><a class="home-link" href="../../Databricks_Home.html">← Home-এ ফিরে যান</a></p>
+    </section>
+  </main>
+
+  <aside class="card side">
+    <h2>Questions</h2>
+    <div class="palette" id="palette"></div>
+    <div class="legend bn">
+      <div><span class="sw l-ok"></span>সঠিক</div>
+      <div><span class="sw l-bad"></span>ভুল</div>
+      <div><span class="sw l-sel"></span>বেছে নেওয়া, এখনো জমা হয়নি</div>
+      <div><span class="sw"></span>উত্তর দেওয়া হয়নি</div>
+      <div>★ Marked for review</div>
+      <div><span class="sw l-oos"></span>বর্তমান syllabus-এর বাইরে</div>
+      <div><span class="rn-new">হলুদ নাম</span><span>= May 2026 syllabus-এর নতুন নাম</span></div>
+    </div>
+    <button class="btn btn-ghost" id="reviewMarkedBtn" type="button">Review Marked Questions</button>
+    <section id="reviewPanel" hidden aria-label="Marked questions">
+      <h2>Marked for Review</h2>
+      <p id="reviewEmpty">No marked questions yet. Use ☆ Mark for Review on a question.</p>
+      <div id="reviewList"></div>
+    </section>
+    <button class="btn btn-ghost" id="nextUnBtn">পরের বাকি প্রশ্ন →</button>
+    <button class="btn btn-ghost" id="retryWrongBtn">ভুলগুলো আবার দিন</button>
+    <button class="btn btn-ghost" id="resetBtn">এই পেজ রিসেট করুন</button>
+    <div class="kbd-help">Keyboard: <kbd>A</kbd>–<kbd>E</kbd> select · <kbd>Enter</kbd> reveal · <kbd>←</kbd> <kbd>→</kbd> navigate</div>
+  </aside>
+</div>
+
+<script>
+const QUESTIONS = [{"uid": "udemy-exam7-q49", "n": 49, "label": "Udemy Exam 7 · Q49 · Transformation", "src": ["dbx-udemy-exam7-v2", 48], "stem": "<p><strong>In a deliveries DataFrame, fee is NULL for free deliveries, which must count as 0. A report needs exactly one row with the total and the average fee across all deliveries. Assume F is imported.<\/strong><br><br><strong>Which approach produces this result?<\/strong><\/p>", "options": [{"k": "A", "html": "Fill the NULL fees with 0 using fillna, then group by fee and aggregate F.sum and F.avg, which then returns the total and average as one row"}, {"k": "B", "html": "Aggregate F.sum and F.avg on fee without grouping the rows, because avg already treats each NULL fee as zero when it computes the mean"}, {"k": "C", "html": "Aggregate F.sum on F.coalesce of fee and 0 and F.avg on F.coalesce of fee and 0 without grouping the rows, which returns one row where free deliveries count as zero in both calculations"}, {"k": "D", "html": "Aggregate F.sum on fee and divide it by F.count on fee without grouping the rows, which averages over every delivery including free ones"}], "oos": false, "answer": ["C"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: C<\/p><h3>ব্যাখ্যা<\/h3><p>coalesce(fee, 0) NULL free-delivery fee-কে zero করে; grouping ছাড়া sum/avg একটি aggregate row দেয়। AVG-এর denominator-এ সব delivery অন্তর্ভুক্ত হয়।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>fee groupBy করলে একাধিক row হয়।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>avg NULL ignore করে; zero ধরে না।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>count(fee) NULL delivery গোনে না।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 সব delivery-র average → NULL fee আগে zero।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/gcp/en/sql/language-manual/functions/avg\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><li><a href=\"https://docs.databricks.com/aws/en/sql/language-manual/functions/sum\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "T"}, {"uid": "udemy-exam2-q40", "n": 40, "label": "Udemy Exam 2 · Q40 · Lakeflow Jobs", "src": ["dbx-udemy-exam2-v2", 39], "stem": "<p>A data engineering team has a multi-tasks Job in production. The team members need to be notified in the case of job failure.<\/p><p><br><\/p><p>Which of the following approaches can be used to send emails to the team members in the case of job failure ?<\/p>", "options": [{"k": "A", "html": "<p>They can use Job API to programmatically send emails according to each task status<\/p>"}, {"k": "B", "html": "<p>They can configure email notifications settings in the job page<\/p>"}, {"k": "C", "html": "<p>There is no way to notify users in the case of job failure<\/p>"}, {"k": "D", "html": "<p>Only Job owner can be configured to be notified in the case of job failure<\/p>"}, {"k": "E", "html": "<p>They can configure email notifications settings per notebook in the task page<\/p>"}], "oos": false, "answer": ["B"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: B<\/p>\n<h3>ব্যাখ্যা<\/h3>\n<p>Job-এর details panel-এ <strong>Edit email notifications<\/strong> থেকে এক বা একাধিক email address যোগ করা যায়। Job start, success বা failure-এর মতো event-এর notification configure করা সম্ভব। Team-কে failure জানাতে job page-এর এই email notification setting-ই সরাসরি পদ্ধতি।<\/p><p>মূল ব্যাখ্যার চিত্র:<\/p><div><img src=\"udemy/Practice%20Exam%202/Course_%20Practice%20Exams_%20Databricks%20Certified%20Data%20Engineer%20Associate%20_%20Udemy%20Business_files/unnamed%284%29.png\" alt=\"ব্যাখ্যার সহায়ক চিত্র\" style=\"max-width:100%;height:auto\" loading=\"lazy\"><\/div>\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>নিজস্ব status polling ও email system বানানো সম্ভব হলেও Jobs API নিজে mail-sending service নয়; built-in notification setting-ই এখানে সঠিক পদ্ধতি।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Databricks Jobs-এর email notification support আছে।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>শুধু owner-এ সীমাবদ্ধ নয়; একাধিক recipient email address যোগ করা যায়।<\/td><\/tr><tr><td><strong>E<\/strong><\/td><td>Question-এর job failure notification notebook code-এর setting নয়; job-level notification setting থেকে দেওয়া হয়েছে।<\/td><\/tr><\/tbody><\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<blockquote><p>💡 <strong>Job failure-এর email পেতে job page → Email notifications।<\/strong><\/p><\/blockquote><h3>তথ্যসূত্র<\/h3><ul><li><a href=\"https://docs.databricks.com/workflows/jobs/jobs.html#alerts-job\" target=\"_blank\" rel=\"noopener noreferrer\">https://docs.databricks.com/workflows/jobs/jobs.html#alerts-job<\/a><\/li><\/ul><p>মূল কোর্সের সহায়ক পাঠ:<\/p><ul><li><a href=\"https://www.udemy.com/course/databricks-certified-data-engineer-associate/learn/lecture/34680270/?referralCode=F0FA48E9A0546C975F14\" target=\"_blank\" rel=\"noopener noreferrer\">হাতে-কলমে অনুশীলন<\/a><\/li><\/ul>", "sec": "J"}, {"uid": "udemy-exam10-q15", "n": 15, "label": "Udemy Exam 10 · Q15 · Transformation", "src": ["dbx-udemy-exam10-v2", 14], "stem": "<p><strong>A daily job appends rows to a Delta table. Today's source adds a new column, region, that the table schema does not include. No table property or session setting enables automatic schema changes.<\/strong><br><br><strong>What happens to the append, and how can it keep the new column?<\/strong><\/p>", "options": [{"k": "A", "html": "The write succeeds and adds region on its own, because Delta evolves a table's schema whenever an append brings in a column it has not seen"}, {"k": "B", "html": "The write succeeds and quietly drops region, with Delta keeping the columns already defined in the table schema and ignoring extra ones"}, {"k": "C", "html": "The write fails on the schema mismatch; setting the mergeSchema option on this write lets Delta add region to the table schema as part of the append"}, {"k": "D", "html": "The write fails on the schema mismatch; setting overwriteSchema on this append lets Delta add region while keeping the table's existing rows"}], "oos": false, "answer": ["C"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: C<\/p><h3>ব্যাখ্যা<\/h3><p>Delta schema enforcement নতুন region column থাকলে default append reject করতে পারে। Write option mergeSchema=true schema widen করে existing row রেখে append করতে দেয়।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Evolution enabled নেই; automatic success নয়।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>Extra column চুপচাপ drop হয় না।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>overwriteSchema append evolution-এর সঠিক control নয়।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 নতুন Delta append column → mergeSchema।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/tables/schema-enforcement\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "T"}, {"uid": "udemy-exam5-q2", "n": 2, "label": "Udemy Exam 5 · Q2 · Platform", "src": ["dbx-udemy-exam5-v2", 1], "stem": "<p>A data engineering team runs several workloads in Databricks with usage patterns that change throughout the day. Some workloads need compute resources quickly during peak periods, but there are also long idle periods when no processing is running.<\/p><p>The team wants to reduce operational overhead by avoiding manual cluster sizing, startup management, and idle compute management.<\/p><p>Which compute option is most appropriate?<\/p>", "options": [{"k": "A", "html": "<p>Serverless compute<\/p>"}, {"k": "B", "html": "<p>All-purpose compute<\/p>"}, {"k": "C", "html": "<p>Job compute<\/p>"}, {"k": "D", "html": "<p>Single-node compute<\/p>"}], "oos": false, "answer": ["A"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: A<\/p><h3>ব্যাখ্যা<\/h3><p>Serverless compute infrastructure provision ও scaling পরিচালনা করে। ব্যবহার অনিয়মিত হলে manually cluster sizing এবং idle infrastructure পরিচালনার কাজ কমে; তবে প্রকৃত খরচ workload ও ব্যবহারের ওপর নির্ভর করে।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>B<\/strong><\/td><td>All-purpose compute-এ classic cluster configuration ও idle সময় পরিচালনা করতে হয়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Job compute automated run-এর জন্য উপযোগী, কিন্তু infrastructure sizing-এর দায় পুরোপুরি সরায় না।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Single-node compute ছোট workload-এর জন্য; workload অনুযায়ী managed distributed scaling দেয় না।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Infrastructure পরিচালনার কাজ কমাতে → Serverless।<\/p><\/blockquote>", "sec": "P"}, {"uid": "udemy-exam9-q44", "n": 44, "label": "Udemy Exam 9 · Q44 · Transformation", "src": ["dbx-udemy-exam9-v2", 43], "stem": "<p><strong>The left table has keys 1, 2, and 3; the right table has keys 2, 2, and 4, with no nulls. An engineer inner joins them on key equality, with no DISTINCT or aggregation.<\/strong><br><br><strong>How many rows does the join return?<\/strong><\/p>", "options": [{"k": "A", "html": "Three rows, because an inner join keeps every row from the left table and fills the columns of unmatched rows with null values"}, {"k": "B", "html": "Four rows, because the output keeps all three right-side rows and then adds one unmatched key from the left side of the join"}, {"k": "C", "html": "One row, because an inner join returns each matching key a single time even when the right table repeats that key in several rows"}, {"k": "D", "html": "Two rows, because left key 2 pairs with each of the two right rows holding key 2 and no other key has a match on both sides"}], "oos": false, "answer": ["D"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: D<\/p><h3>ব্যাখ্যা<\/h3><p>Inner join প্রতিটি matching pair-এর জন্য row তৈরি করে। Left-এর key 2 একবার এবং right-এর key 2 দুবার থাকলে মোট দুই matching row হয়; unmatched key বাদ পড়ে।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>সব left row রাখা left join-এর আচরণ।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>Unmatched উভয় side রাখা outer join-এর আচরণ।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Inner join নিজে duplicate matching row DISTINCT করে না।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Join row সংখ্যা = matching pair সংখ্যা।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-join.html\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "T"}, {"uid": "udemy-exam11-q7", "n": 7, "label": "Udemy Exam 11 · Q7 · Lakeflow Jobs", "src": ["dbx-udemy-exam11-v2", 6], "stem": "<p><strong>A job designer makes extract depend on publish, while publish already depends on transform and transform depends on extract. The designer expects Lakeflow Jobs to work out a valid running order on its own.<\/strong><br><br><strong>What happens when the job is saved, and what must change?<\/strong><\/p>", "options": [{"k": "A", "html": "Saving succeeds, and at run time Lakeflow Jobs ignores the most recently added dependency so that the loop is broken before extract"}, {"k": "B", "html": "Saving succeeds, and each run starts the three tasks in parallel, then reruns any task whose upstream task finished after it started"}, {"k": "C", "html": "Saving is rejected, as the three dependencies form a cycle, so one of them must be removed to leave an acyclic graph of the job's tasks"}, {"k": "D", "html": "Saving succeeds, but each run stops at the first task with Upstream failed, so extract needs Run if set to All done to break the loop"}], "oos": false, "answer": ["C"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: C<\/p><h3>ব্যাখ্যা<\/h3><p>Extract→Transform→Publish→Extract cycle DAG হতে পারে না। Dependency edge সরিয়ে acyclic graph না করা পর্যন্ত valid task order নেই।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Jobs নিজে arbitrary dependency বাদ দেয় না।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>Parallel run cycle semantics মেটায় না।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Run if graph cycle ভাঙে না।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 DAG-এর A = Acyclic।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/jobs\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "J"}, {"uid": "udemy-exam10-q22", "n": 22, "label": "Udemy Exam 10 · Q22 · Platform", "src": ["dbx-udemy-exam10-v2", 21], "stem": "<p><strong>A nightly classic batch job retries interrupted tasks and has a flexible deadline. The team wants lower compute cost and accepts reclaimed workers, but reclamation should not end the run, and the cluster must still start when spot capacity is short.<\/strong><\/p><p><strong>Which instance purchasing setup fits?<\/strong><\/p>", "options": [{"k": "A", "html": "<p>Spot instances for every worker with no on-demand fallback, while the driver stays on-demand, so a reclaimed worker is replaced and its tasks are retried<\/p>"}, {"k": "B", "html": "<p>Spot instances for the workers with fallback to on-demand, while the driver stays on-demand, so a reclaimed worker is replaced and its tasks are retried<\/p>"}, {"k": "C", "html": "On-demand instances for every worker and a spot driver with fallback to on-demand, so the driver gets the discount while the workers stay protected"}, {"k": "D", "html": "Spot instances for the driver and every worker with fallback to on-demand, so a shortage of spot capacity at start uses on-demand machines"}], "oos": false, "answer": ["B"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: B<\/p><h3>ব্যাখ্যা<\/h3><p>On-demand driver run stability রাখে; spot worker discount দেয় এবং fallback capacity shortage সামলায়। Reclaimed worker task retry হতে পারে; flexible deadline গুরুত্বপূর্ণ।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Fallback নেই, shortage-এ startup/capacity সমস্যা হতে পারে।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Spot driver reclaim পুরো run ক্ষতিগ্রস্ত করতে পারে।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Driver spot রাখলে worker-only interruption tolerance মেলে না।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Stable driver + spot worker + fallback।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/compute/configure\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "P"}, {"uid": "udemy-exam11-q46", "n": 46, "label": "Udemy Exam 11 · Q46 · Governance", "src": ["dbx-udemy-exam11-v2", 45], "stem": "<p><strong>A column mask on corp.crm.accounts correctly redacts account_number for the support group. Support members hold USE CATALOG and USE SCHEMA, yet their table queries fail with a permission error.<\/strong><br><br><strong>Which change lets them query it with the mask still applied?<\/strong><\/p>", "options": [{"k": "A", "html": "Grant BROWSE on the catalog to the support group, which lets the group read the masked rows without holding a privilege on the table"}, {"k": "B", "html": "Change the mask function to return the redacted value for support, as a mask that returns a value also grants read access to the table"}, {"k": "C", "html": "Grant EXECUTE on the mask function to the support group, since running the mask function grants access to the table it protects"}, {"k": "D", "html": "Grant SELECT on the table to the support group, since the mask only changes values that the group is already allowed to read there"}], "oos": false, "answer": ["D"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: D<\/p><h3>ব্যাখ্যা<\/h3><p>Mask data access permission দেয় না; parent USE-এর সঙ্গে SELECT লাগে। SELECT grant দিলে authorized table query-তে mask এখনও applies।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>BROWSE metadata discover, row read নয়।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>Mask return value SELECT grant নয়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Function EXECUTE protected table read permission নয়।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Read permission আগে; mask পরে result সীমিত করে।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/data-governance/unity-catalog/access-control/privileges-reference\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><li><a href=\"https://docs.databricks.com/aws/en/data-governance/unity-catalog/filters-and-masks\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "G"}, {"uid": "udemy-exam9-q33", "n": 33, "label": "Udemy Exam 9 · Q33 · Transformation", "src": ["dbx-udemy-exam9-v2", 32], "stem": "<p><strong>Every route value in DataFrame df holds two airport codes joined by a hyphen, such as YYZ-YVR. The engineer needs a new origin column containing the first code while keeping route. Assume pyspark.sql.functions is imported as F.<\/strong><br><br><strong>Which approach meets the requirement?<\/strong><\/p>", "options": [{"k": "A", "html": "Select F.explode over F.split(route, '-') aliased as origin, which produces a separate output row for each code in every route value"}, {"k": "B", "html": "Add origin with withColumn, taking the element at index 0 of F.split(route, '-'), and keep the route column in the DataFrame exactly as it is today"}, {"k": "C", "html": "Rename route to origin with withColumnRenamed, which keeps the full two-code value under the new column name and drops the old name"}, {"k": "D", "html": "Add origin with withColumn, taking the element at index 1 of F.split(route, '-'), and keep the route column in the DataFrame as it is"}], "oos": false, "answer": ["B"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: B<\/p><h3>ব্যাখ্যা<\/h3><p>withColumn দিয়ে split(route, '-')[0] থেকে origin যোগ করলে এক row-এর জন্য এক origin value পাওয়া যায়। route column-ও অক্ষত থাকে।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>explode দুই অংশ থেকে একাধিক row তৈরি করে।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Rename করলে পুরো route value-ই থাকবে এবং original route নাম হারাবে।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Index 1 destination অংশ; origin নয়।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 split-এর index 0 → origin; withColumn → original route রাখা।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.withColumn.html\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "T"}, {"uid": "udemy-exam2-q42", "n": 42, "label": "Udemy Exam 2 · Q42 · Lakeflow Jobs", "src": ["dbx-udemy-exam2-v2", 41], "stem": "<p>In Databricks Jobs, which of the following approaches can a data engineer use to configure a linear dependency between <strong>Task A<\/strong> and <strong>Task B<\/strong> ?<\/p>", "options": [{"k": "A", "html": "<p>They can select the Task A in the Depends On field of the Task B configuration<\/p>"}, {"k": "B", "html": "<p>They can assign Task A an Order number of 1, and assign Task B an Order number of 2<\/p>"}, {"k": "C", "html": "<p>They can visually drag and drop an arrow from Task A to Task B in the Job canvas<\/p>"}, {"k": "D", "html": "<p>They can configure the dependency at the notebook level using the dbutils.jobs utility <\/p>"}, {"k": "E", "html": "<p>Databricks Jobs do not support linear dependency between tasks. This can only be achieved in Delta Live Tables pipelines<\/p>"}], "oos": false, "answer": ["A"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: A<\/p>\n<h3>ব্যাখ্যা<\/h3>\n<p><strong>Task B<\/strong>-কে <strong>Task A<\/strong>-এর পরে চালাতে B-এর configuration-এ <strong>Depends on<\/strong> field-এ A নির্বাচন করতে হয়। অর্থাৎ downstream task নিজেই জানায় কোন upstream task-এর ওপর নির্ভর করছে। এই field-এ এক বা একাধিক dependency সেট করা যায়।<\/p><p>মূল ব্যাখ্যার চিত্র:<\/p><div><img src=\"udemy/Practice%20Exam%202/Course_%20Practice%20Exams_%20Databricks%20Certified%20Data%20Engineer%20Associate%20_%20Udemy%20Business_files/unnamed%285%29.png\" alt=\"ব্যাখ্যার সহায়ক চিত্র\" style=\"max-width:100%;height:auto\" loading=\"lazy\"><\/div>\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>B<\/strong><\/td><td>এই dependency configuration task-এর serial Order number দিয়ে নির্ধারণ করা হয় না।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Source-এ দেখানো পদ্ধতি হলো Depends on field; শুধু arrow আঁকার কথা বলা সেই configuration নয়।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Notebook-এর dbutils.jobs utility দিয়ে job graph-এর এই dependency field set করার পদ্ধতি এখানে দেখানো হয়নি।<\/td><\/tr><tr><td><strong>E<\/strong><\/td><td>Databricks Jobs linear ও অন্যান্য DAG dependency সমর্থন করে; শুধু DLT-এ সীমাবদ্ধ নয়।<\/td><\/tr><\/tbody><\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<blockquote><p>💡 <strong>A-এর পরে B চাইলে B-এর Depends on = A।<\/strong><\/p><\/blockquote><h3>তথ্যসূত্র<\/h3><ul><li><a href=\"https://docs.databricks.com/workflows/jobs/jobs.html#task-dependencies\" target=\"_blank\" rel=\"noopener noreferrer\">https://docs.databricks.com/workflows/jobs/jobs.html#task-dependencies<\/a><\/li><\/ul><p>মূল কোর্সের সহায়ক পাঠ:<\/p><ul><li><a href=\"https://www.udemy.com/course/databricks-certified-data-engineer-associate/learn/lecture/34680270/?referralCode=F0FA48E9A0546C975F14\" target=\"_blank\" rel=\"noopener noreferrer\">হাতে-কলমে অনুশীলন<\/a><\/li><\/ul>", "sec": "J"}, {"uid": "udemy-exam4-q1", "n": 1, "label": "Udemy Exam 4 · Q1 · Optimization", "src": ["dbx-udemy-exam4-v2", 0], "stem": "<p>A data engineer is asked to investigate why a Lakeflow Job experienced a gradual increase in execution duration over several production runs. The engineer needs a feature that visualizes execution trends and compares metrics from prior job executions. Which option should be selected?<\/p>", "options": [{"k": "A", "html": "<p>Dashboards<\/p>"}, {"k": "B", "html": "<p>Run History<\/p>"}, {"k": "C", "html": "<p>Catalog Explorer<\/p>"}, {"k": "D", "html": "<p>Query History<\/p>"}], "oos": false, "answer": ["B"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: B<\/p>\n<h3>ব্যাখ্যা<\/h3>\n<p><strong>Run History<\/strong> বা Jobs-এর <strong>Runs<\/strong> tab-এ আগের run-এর অবস্থা ও duration দেখা যায়। একাধিক production run-এ সময় ধীরে ধীরে বাড়ছে কি না, duration graph ও run/task-এর বিস্তারিত পাশাপাশি দেখলে বোঝা যায়। এরপর দীর্ঘ সময় নেওয়া task-এর data volume, shuffle বা অন্য metric পরীক্ষা করে কারণ খোঁজা যায়।<\/p>\n\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Dashboard দিয়ে নিজস্ব monitoring report বানানো যায়, কিন্তু প্রশ্নে চাওয়া Jobs-এর সরাসরি run-trend feature হলো Run History।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Catalog Explorer মূলত data object, schema, permission ও lineage দেখায়; job run-এর duration trend নয়।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Query History নির্দিষ্ট SQL query-এর execution বিশ্লেষণ করে; পুরো multi-task job-এর আগের run তুলনার প্রধান জায়গা নয়।<\/td><\/tr><\/tbody><\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<blockquote><p>💡 <strong>Job কতক্ষণ চলেছে এবং আগের run থেকে কী বদলেছে → Run History।<\/strong><\/p><\/blockquote>\n", "sec": "O"}, {"uid": "udemy-exam1-q34", "n": 34, "label": "Udemy Exam 1 · Q34 · Transformation", "src": ["dbx-udemy-exam1-v2", 33], "stem": "<p>A data engineer has the following query in a Delta Live Tables pipeline:<\/p><p><br><\/p><div><div><pre><code>CREATE LIVE TABLE aggregated_sales\nAS\n  SELECT store_id, sum(total)\n  FROM cleaned_sales\n  GROUP BY store_id<\/code><\/pre><\/div><\/div><p><br><\/p><p>The pipeline is failing to start due to an error in this query<\/p><p><br><\/p><p>Which of the following changes should be made to this query to successfully start the DLT pipeline ?<\/p>", "options": [{"k": "A", "html": "<div><div><pre><code>CREATE STREAMING TABLE aggregated_sales\nAS\n  SELECT store_id, sum(total)\n  FROM LIVE.cleaned_sales\n  GROUP BY store_id<\/code><\/pre><\/div><\/div>"}, {"k": "B", "html": "<div><div><pre><code>CREATE TABLE aggregated_sales\nAS\n  SELECT store_id, sum(total)\n  FROM LIVE.cleaned_sales\n  GROUP BY store_id<\/code><\/pre><\/div><\/div>"}, {"k": "C", "html": "<div><div><pre><code>CREATE LIVE TABLE aggregated_sales\nAS\n  SELECT store_id, sum(total)\n  FROM LIVE.cleaned_sales\n  GROUP BY store_id<\/code><\/pre><\/div><\/div>"}, {"k": "D", "html": "<div><div><pre><code>CREATE STREAMING LIVE TABLE aggregated_sales\nAS\n  SELECT store_id, sum(total)\n  FROM cleaned_sales\n  GROUP BY store_id<\/code><\/pre><\/div><\/div>"}, {"k": "E", "html": "<div><div><pre><code>CREATE STREAMING LIVE TABLE aggregated_sales\nAS\n  SELECT store_id, sum(total)\n  FROM STREAM(cleaned_sales)\n  GROUP BY store_id<\/code><\/pre><\/div><\/div>"}], "oos": false, "answer": ["C"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: C<\/p>\n<h3>ব্যাখ্যা<\/h3>\n<p>এই প্রশ্নের <strong>legacy DLT syntax<\/strong>-এ একই pipeline-এর অন্য live table পড়তে <code>LIVE.cleaned_sales<\/code> লিখতে হয়। তাই মূল aggregation অক্ষুণ্ণ রেখে FROM অংশে LIVE namespace যোগ করা option C সঠিক। এই নিয়মকে সব নতুন pipeline publishing mode-এর জন্য সাধারণ নিয়ম ধরে নেওয়া উচিত নয়।<\/p>\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>প্রদত্ত legacy pattern-এ CREATE LIVE TABLE-এর বদলে অন্য declaration দেওয়া হয়েছে।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>সাধারণ CREATE TABLE ব্যবহার করে প্রশ্নের live table definition বজায় রাখা হয়নি।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Streaming declaration-এ বদলালেও source reference-এ LIVE namespace নেই।<\/td><\/tr><tr><td><strong>E<\/strong><\/td><td>Query-কে streaming aggregation-এ বদলানো হয়েছে; প্রশ্নের intended live-table reference fix এটি নয়।<\/td><\/tr><\/tbody><\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<blockquote><p>💡 এই legacy প্রশ্নে pipeline-এর table পড়ার reference = LIVE.table_name।<\/p><\/blockquote>\n<h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/workflows/delta-live-tables/delta-live-tables-sql-ref.html\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><li><a href=\"https://www.udemy.com/course/databricks-certified-data-engineer-associate/learn/lecture/34671142/?referralCode=F0FA48E9A0546C975F14\" target=\"_blank\" rel=\"noopener noreferrer\">হাতে-কলমে অনুশীলন<\/a><\/li><\/ul>", "sec": "T"}, {"uid": "udemy-exam2-q41", "n": 41, "label": "Udemy Exam 2 · Q41 · Platform", "src": ["dbx-udemy-exam2-v2", 40], "stem": "<p>For production jobs, which of the following cluster types is recommended to use?<\/p>", "options": [{"k": "A", "html": "<p>All-purpose clusters<\/p>"}, {"k": "B", "html": "<p>Production clusters<\/p>"}, {"k": "C", "html": "<p>Job clusters<\/p>"}, {"k": "D", "html": "<p>On-premises clusters<\/p>"}, {"k": "E", "html": "<p>Serverless clusters<\/p>"}], "oos": false, "answer": ["C"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: C<\/p>\n<h3>ব্যাখ্যা<\/h3>\n<p>মূল প্রশ্নের <strong>classic cluster<\/strong> ব্যবস্থায় production task-এর জন্য <strong>Job cluster<\/strong> বেছে নেওয়া হয়েছে। এটি job/task run-এর জন্য তৈরি dedicated compute; কাজ শেষ হলে auto-terminate হওয়ায় খরচ নিয়ন্ত্রণে থাকে এবং interactive কাজ থেকে execution আলাদা থাকে।<\/p><p>Source-এর এই উত্তরকে সব সময়ের সব compute option-এর ওপর সর্বজনীন নিয়ম হিসেবে পড়া উচিত নয়; প্রশ্নটি job cluster ও all-purpose cluster-এর প্রচলিত তুলনার ভিত্তিতে লেখা।<\/p>\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>All-purpose cluster interactive ও shared কাজের জন্য ব্যবহার করা হয়; source-এর isolated production run-এর পছন্দ Job cluster।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>Production clusters এখানে নির্দিষ্ট Databricks cluster type-এর নাম নয়।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>On-premises cluster এই Databricks job-compute বিকল্পের অংশ নয়।<\/td><\/tr><tr><td><strong>E<\/strong><\/td><td>Serverless compute আলাদা execution option; source-এর classic cluster-ভিত্তিক তুলনায় প্রত্যাশিত উত্তর Job cluster।<\/td><\/tr><\/tbody><\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<blockquote><p>💡 <strong>Classic production job-এর dedicated, কাজ শেষে বন্ধ হওয়া compute = Job cluster।<\/strong><\/p><\/blockquote><h3>তথ্যসূত্র<\/h3><ul><li><a href=\"https://docs.databricks.com/workflows/jobs/jobs.html#choose-the-correct-cluster-type-for-your-job\" target=\"_blank\" rel=\"noopener noreferrer\">https://docs.databricks.com/workflows/jobs/jobs.html#choose-the-correct-cluster-type-for-your-job<\/a><\/li><\/ul><p>মূল কোর্সের সহায়ক পাঠ:<\/p><ul><li><a href=\"https://www.udemy.com/course/databricks-certified-data-engineer-associate/learn/lecture/34680270/?referralCode=F0FA48E9A0546C975F14\" target=\"_blank\" rel=\"noopener noreferrer\">হাতে-কলমে অনুশীলন<\/a><\/li><\/ul>", "sec": "P"}, {"uid": "udemy-exam12-q40", "n": 40, "label": "Udemy Exam 12 · Q40 · Transformation", "src": ["dbx-udemy-exam12-v2", 39], "stem": "<p><strong>Joins between silver customers and a region lookup miss many matches, although the values look identical. Profiling shows some state codes in silver carry leading or trailing spaces, such as ' NY' and 'CA '.<\/strong><br><br><strong>Which cleaning step fits?<\/strong><\/p>", "options": [{"k": "A", "html": "Apply upper to the state code when building silver, so the stored values all share one letter case and match the lookup table's codes exactly"}, {"k": "B", "html": "Apply coalesce to the state code when building silver, so the stored values replace their blank spaces with an empty string before the lookup join"}, {"k": "C", "html": "Apply trim to the state code when building silver, so the stored values drop the extra blank characters at either end and match the lookup's codes"}, {"k": "D", "html": "Cast the state code to VARCHAR(2) when building silver, so the stored values are cut down to two characters and match the lookup table's codes"}], "oos": false, "answer": ["C"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: C<\/p><h3>ব্যাখ্যা<\/h3><p>trim leading/trailing whitespace সরিয়ে Silver join key normalize করে। Case/null normalization দরকার হলে আলাদা step; এখানে actual সমস্যা edge spaces।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Upper case ঠিক করে, space রাখে।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>Coalesce NULL বদলায়, whitespace নয়।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Truncate code corrupt করতে পারে; trim নয়।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Padded key mismatch → trim।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/sql/language-manual/functions/trim\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "T"}, {"uid": "udemy-exam11-q38", "n": 38, "label": "Udemy Exam 11 · Q38 · Governance", "src": ["dbx-udemy-exam11-v2", 37], "stem": "<p><strong>The experimenters group was granted ALL PRIVILEGES on the schema corp.sandbox. That grant must be removed, while a separate SELECT grant the group holds on one table in corp.finance must stay in place.<\/strong><br><br><strong>Which statement fits?<\/strong><\/p>", "options": [{"k": "A", "html": "REVOKE SELECT ON SCHEMA corp.sandbox FROM experimenters, which removes the whole grant, as SELECT is the one data privilege it carries"}, {"k": "B", "html": "REVOKE USE SCHEMA ON SCHEMA corp.sandbox FROM experimenters, which removes the grant along with each of the privileges it includes"}, {"k": "C", "html": "REVOKE ALL PRIVILEGES ON SCHEMA corp.sandbox FROM experimenters, which removes that grant and each privilege it had implied on the schema"}, {"k": "D", "html": "REVOKE ALL PRIVILEGES ON CATALOG corp FROM experimenters, which removes the schema grant along with each grant made on the catalog"}], "oos": false, "answer": ["C"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: C<\/p><h3>ব্যাখ্যা<\/h3><p>Schema-তে REVOKE ALL PRIVILEGES ওই schema grant সরায়। Finance table-এর separate SELECT অন্য grant path, সেটি থাকে।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>শুধু SELECT পুরো ALL grant সরায় না।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>শুধু USE SCHEMA full grant revoke নয়।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Catalog revoke child explicit schema grant নিজে মুছে দেয় না।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Grant যে level-এ, revoke সেই level-এ।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/data-governance/unity-catalog/manage-privileges/?language=SQL\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "G"}, {"uid": "udemy-exam11-q5", "n": 5, "label": "Udemy Exam 11 · Q5 · Optimization", "src": ["dbx-udemy-exam11-v2", 4], "stem": "<p><strong>A daily job's load task has doubled in duration over three weeks. Run history shows its rows read also doubled, while its time per row and cluster size stayed flat.<\/strong><br><br><strong>What does this comparison to the baseline suggest?<\/strong><\/p>", "options": [{"k": "A", "html": "The slowdown points to data skew in the task, as a doubled row count tends to concentrate the new rows in a few of its partitions"}, {"k": "B", "html": "The slowdown needs a fresh baseline run first, as run history over three weeks does not separate volume effects from code changes"}, {"k": "C", "html": "The slowdown points to a code regression in the task, as input growth alone would not double a duration within three weeks"}, {"k": "D", "html": "The slowdown tracks input growth, which means capacity or incremental processing matters more here than a code regression"}], "oos": false, "answer": ["D"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: D<\/p><h3>ব্যাখ্যা<\/h3><p>Rows ও duration দুটো দ্বিগুণ, time/row স্থির: volume growth প্রধান ব্যাখ্যা। Capacity বা incremental strategy বিবেচনা করুন; code regression-এর প্রমাণ নেই।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Row growth নিজে skew প্রমাণ নয়।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>Existing normalized baseline informative।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Constant per-row speed code slowdown দাবি সমর্থন করে না।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Duration normalize করুন input volume দিয়ে।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/gcp/en/jobs/diagnose-job-performance\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "O"}, {"uid": "udemy-exam10-q52", "n": 52, "label": "Udemy Exam 10 · Q52 · Lakeflow Jobs", "src": ["dbx-udemy-exam10-v2", 51], "stem": "<p><strong>A task named count_new sets a task value named row_count. The publish task must run only when row_count is greater than zero; otherwise the job should skip publishing and still finish successfully.<\/strong><br><br><strong>How should the job decide whether publish runs?<\/strong><\/p>", "options": [{"k": "A", "html": "Add a For each task over {{tasks.count_new.values.row_count}}, whose nested publish task runs once per row and never when it is 0"}, {"k": "B", "html": "Add an If/else task comparing {{tasks.count_new.values.row_count}} with 0 using >, and make publish depend on its true outcome"}, {"k": "C", "html": "Make publish depend on count_new with run_if set to {{tasks.count_new.values.row_count}} > 0, so publish runs only for a positive count"}, {"k": "D", "html": "Have count_new raise an error when row_count is 0, and make publish depend on it with run_if: ALL_SUCCESS so that publishing is skipped"}], "oos": false, "answer": ["B"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: B<\/p><h3>ব্যাখ্যা<\/h3><p>If/else task upstream row_count>0 পরীক্ষা করে True outcome-এ publish চালায়। Zero result workflow failure নয়, publishing branch excluded হতে পারে।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Integer count list নয়; For each row execution নয়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>run_if supported status enum, arbitrary expression নয়।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Zero-তে error successful no-op requirement ভাঙে।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Task output value branching → If/else।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/gcp/en/jobs/tasks/if-else\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "J"}, {"uid": "udemy-exam3-q35", "n": 35, "label": "Udemy Exam 3 · Q35 · Governance", "src": ["dbx-udemy-exam3-v2", 34], "stem": "<p>A data engineer has been tasked with granting the service principal with Application ID ‘fe7bcf95-ab87-4dce-a2fd-8c55f8158a02’ a read-only access to the enterprise.reporting.transactions table.<\/p><p><br><\/p><p>Which SQL commands will correctly grant access with the least privileges?<\/p>", "options": [{"k": "A", "html": "<div><div><pre><code>GRANT SELECT ON TABLE enterprise.reporting.transactions TO `fe7bcf95-ab87-4dce-a2fd-8c55f8158a02`;\nGRANT USE SCHEMA ON SCHEMA enterprise.reporting TO `fe7bcf95-ab87-4dce-a2fd-8c55f8158a02`;<\/code><\/pre><\/div><\/div>"}, {"k": "B", "html": "<div><div><pre><code>GRANT SELECT ON TABLE enterprise.reporting.transactions TO `fe7bcf95-ab87-4dce-a2fd-8c55f8158a02`;\nGRANT USE CATALOG ON CATALOG enterprise TO `fe7bcf95-ab87-4dce-a2fd-8c55f8158a02`;<\/code><\/pre><\/div><\/div>"}, {"k": "C", "html": "<div><div><pre><code>GRANT SELECT ON TABLE enterprise.reporting.transactions TO `fe7bcf95-ab87-4dce-a2fd-8c55f8158a02`;\nGRANT USE SCHEMA ON SCHEMA enterprise.reporting TO `fe7bcf95-ab87-4dce-a2fd-8c55f8158a02`;\nGRANT USE CATALOG ON CATALOG enterprise TO `fe7bcf95-ab87-4dce-a2fd-8c55f8158a02`;<\/code><\/pre><\/div><\/div>"}, {"k": "D", "html": "<div><div><pre><code>GRANT SELECT ON TABLE enterprise.reporting.transactions TO `fe7bcf95-ab87-4dce-a2fd-8c55f8158a02`;\n <\/code><\/pre><\/div><\/div>"}], "oos": false, "answer": ["C"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: C<\/p>\n<h3>ব্যাখ্যা<\/h3>\n<p>Unity Catalog-এ table পড়ার জন্য table-level permission-এর পাশাপাশি parent container ব্যবহার করার অনুমতিও লাগে। এই service principal-এর জন্য দরকার <strong>catalog-এ USE CATALOG, schema-তে USE SCHEMA এবং নির্দিষ্ট table-এ SELECT<\/strong>। C-তে তিনটিই আছে; table-এর অন্য write/admin privilege দেওয়া হয়নি, তাই read-only প্রয়োজনের সঙ্গে মেলে।<\/p>\n\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>USE CATALOG নেই; parent catalog ব্যবহারের permission অসম্পূর্ণ।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>USE SCHEMA নেই; table-এর parent schema ব্যবহারের permission অসম্পূর্ণ।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>শুধু SELECT আছে; USE CATALOG ও USE SCHEMA দুটিই অনুপস্থিত।<\/td><\/tr><\/tbody><\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<blockquote><p>💡 <strong>পড়ার তিন ধাপ: catalog USE → schema USE → table SELECT।<\/strong><\/p><\/blockquote>", "sec": "G"}, {"uid": "udemy-exam10-q28", "n": 28, "label": "Udemy Exam 10 · Q28 · Transformation", "src": ["dbx-udemy-exam10-v2", 27], "stem": "<p><strong>A bronze STRING column ship_date holds day-first values such as 31/01/2026. Silver needs a DATE column, and values that do not match the pattern should become NULL instead of failing the query. ANSI mode is on.<\/strong><br><br><strong>Which expression meets this requirement?<\/strong><\/p>", "options": [{"k": "A", "html": "to_date(ship_date, 'MM/dd/yyyy'), which parses each value with the given month-first pattern and returns NULL whenever a value does not fit it"}, {"k": "B", "html": "to_date(ship_date) with no pattern, which detects the day-first layout from the values themselves and converts them without further input"}, {"k": "C", "html": "CAST(ship_date AS DATE), which reads the day-first text directly under ANSI mode and returns NULL for any value that it cannot interpret"}, {"k": "D", "html": "try_to_date(ship_date, 'dd/MM/yyyy'), which parses each value with the given pattern and returns NULL whenever a value does not fit it"}], "oos": false, "answer": ["D"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: D<\/p><h3>ব্যাখ্যা<\/h3><p>try_to_date(ship_date,'dd/MM/yyyy') day-first string parse করে invalid value-তে NULL দেয়। ANSI failure এড়িয়ে সঠিক DATE পাওয়া যায়।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Pattern month-first এবং error behavior দাবি ঠিক নয়।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>Default reader arbitrary day-first pattern auto-detect করে না।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>ANSI CAST bad date-তে fail করতে পারে।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Explicit date pattern + safe failure → try_to_date।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/pyspark/reference/functions/\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "T"}, {"uid": "udemy-exam11-q25", "n": 25, "label": "Udemy Exam 11 · Q25 · Optimization", "src": ["dbx-udemy-exam11-v2", 24], "stem": "<p><strong>A team wants to adopt liquid clustering on a Delta table that is partitioned by event_date and maintained with a nightly OPTIMIZE ZORDER BY (customer_id). Queries filter on both of these columns.<\/strong><br><br><strong>Which plan fits?<\/strong><\/p>", "options": [{"k": "A", "html": "Replace the partitioning with CLUSTER BY (event_date, customer_id) and drop the ZORDER step, since clustering takes over from them"}, {"k": "B", "html": "Keep the event_date partitioning and switch the ZORDER step to CLUSTER BY AUTO, so keys are picked within each partition"}, {"k": "C", "html": "Keep the event_date partitioning and add CLUSTER BY (customer_id), so clustering organizes the data files inside each existing partition"}, {"k": "D", "html": "Keep the nightly OPTIMIZE ZORDER BY (customer_id) and add CLUSTER BY (event_date), so each of the two techniques covers one column"}], "oos": false, "answer": ["A"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: A<\/p><h3>ব্যাখ্যা<\/h3><p>Liquid Clustering static partitioning/ZORDER-এর বিকল্প, একসঙ্গে একই table-এ ব্যবহার নয়। Partitioned table migration supported path দিয়ে unpartitioned clustered layout করুন; শুধু property যোগ করলেই conversion ধরে নেবেন না।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>B<\/strong><\/td><td>Fixed partition-এর ভেতর AUTO clustering এই model নয়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Partition+liquid combination incompatible।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>ZORDER+liquid combination incompatible।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Liquid adoption → replace partitioning/ZORDER layout।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/delta/clustering\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "O"}, {"uid": "udemy-exam1-q6", "n": 6, "label": "Udemy Exam 1 · Q6 · Platform", "src": ["dbx-udemy-exam1-v2", 5], "stem": "<p>According to the Databricks Lakehouse architecture, which of the following is located in the customer's cloud account?<\/p>", "options": [{"k": "A", "html": "<p>Databricks web application<\/p>"}, {"k": "B", "html": "<p>Notebooks<\/p>"}, {"k": "C", "html": "<p>Repos<\/p>"}, {"k": "D", "html": "<p>Cluster virtual machines<\/p>"}, {"k": "E", "html": "<p>Workflows<\/p>"}], "oos": false, "answer": ["D"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: D<\/p>\n<h3>ব্যাখ্যা<\/h3>\n<p>এই প্রশ্নের <strong>classic compute architecture<\/strong>-এ Spark cluster-এর virtual machine customer-এর cloud account-এর data plane-এ তৈরি হয়। Workspace UI ও ব্যবস্থাপনার পরিষেবাগুলো control plane-এর অংশ।<\/p>\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Web application control plane-এর পরিষেবা।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>এখানে notebook workspace-এর ব্যবস্থাপনার অংশ; প্রশ্নে customer account-এর compute resource চাওয়া হয়েছে।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Git folder বা Repos workspace-এর feature, cluster virtual machine নয়।<\/td><\/tr><tr><td><strong>E<\/strong><\/td><td>Workflow orchestration control plane থেকে পরিচালিত হয়।<\/td><\/tr><\/tbody><\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<blockquote><p>💡 এই architecture-এ customer account-এর compute = cluster VM।<\/p><\/blockquote>\n<h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/getting-started/overview.html\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><li><a href=\"https://www.udemy.com/course/databricks-certified-data-engineer-associate/learn/lecture/34664668/?referralCode=F0FA48E9A0546C975F14\" target=\"_blank\" rel=\"noopener noreferrer\">কোর্সের লেকচার<\/a><\/li><\/ul>", "sec": "P"}, {"uid": "udemy-exam10-q33", "n": 33, "label": "Udemy Exam 10 · Q33 · Lakeflow Jobs", "src": ["dbx-udemy-exam10-v2", 32], "stem": "<p><strong>In a bundle job, publish reads output from the refresh_pipeline task and must start only after that task succeeds. The fragment below is indented under publish.<\/strong><br><\/p><div><div><pre><code>task_key: publish\n__________\nnotebook_task:\n  notebook_path: ./src/publish.py<\/code><\/pre><\/div><\/div><p><br><strong>Which block completes the dependency?<\/strong><\/p>", "options": [{"k": "A", "html": "depends_on listing task_key refresh_pipeline, with run_if set to ALL_DONE, so publish starts once that task finishes and then reads its output"}, {"k": "B", "html": "run_if set to ALL_SUCCESS with no depends_on list, so publish waits until every other task in the job has succeeded before it starts"}, {"k": "C", "html": "depends_on listing task_key refresh_pipeline, with run_if left at its default of ALL_SUCCESS, so publish starts only after that task succeeds"}, {"k": "D", "html": "depends_on listing pipeline_id refresh_pipeline, with run_if left unset, so publish waits for that pipeline's latest update to succeed first"}], "oos": false, "answer": ["C"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: C<\/p><h3>ব্যাখ্যা<\/h3><p>depends_on task_key refresh_pipeline upstream edge তৈরি করে। Default ALL_SUCCESS publish কেবল dependency successful হলে চালায়।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>ALL_DONE failed output-এও publish চালাতে পারে।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>run_if dependency list ছাড়া অন্য সব task-এর implicit অপেক্ষা নয়।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>depends_on pipeline_id নয়, task_key লাগে।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Dependency edge + default success condition।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/gcp/en/jobs/run-if\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "J"}, {"uid": "udemy-14", "n": 14, "label": "Udemy · Q14 · Transformation", "src": ["dbx-de-assoc-practice-udemy-v1", 13], "stem": "<p>A data engineer has a DataFrame, df, with a date_str column formatted as year-month, such as \"2026-01\", and wants to create a new column, month, that contains only the month value.<\/p>\n<p>Which PySpark code snippet should the data engineer use?<\/p>", "options": [{"k": "A", "html": "<pre><code class=\"language-python\">import pyspark.sql.functions as F\n\nresultDf = df.withColumn(&quot;month&quot;, F.split(F.col(&quot;date_str&quot;), &quot;-&quot;).getItem(1) )\n<\/code><\/pre>"}, {"k": "B", "html": "<pre><code class=\"language-python\">import pyspark.sql.functions as F\n\nresultDf = df.withColumn(&quot;month&quot;, F.split(F.col(&quot;date_str&quot;), &quot;-&quot;).getItem(2) )\n<\/code><\/pre>"}, {"k": "C", "html": "<pre><code class=\"language-python\">import pyspark.sql.functions as F\n\nresultDf = df.withColumn(&quot;month&quot;, F.split(F.col(&quot;date_str&quot;), &quot;-0&quot;).getItem(2) )\n<\/code><\/pre>"}, {"k": "D", "html": "<pre><code class=\"language-python\">import pyspark.sql.functions as F\n\nresultDf = df.withColumn(&quot;month&quot;, F.split(F.col(&quot;date_str&quot;), &quot;-0&quot;).getItem(1) )\n<\/code><\/pre>"}], "oos": false, "answer": ["A"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: A<\/p>\n\n<h3>ব্যাখ্যা<\/h3>\n<p><code>F.split(col, \"-\")<\/code> string-কে <code>-<\/code> চিহ্নে ভেঙে একটা <strong>array<\/strong> বানায়। <code>getItem(n)<\/code> সেই array থেকে <strong>n নম্বর index<\/strong>-এর মান নেয়। Index শুরু হয় <strong>0<\/strong> থেকে।<\/p>\n<pre><code>&quot;2026-01&quot;  →  split by &quot;-&quot;  →  [&quot;2026&quot;, &quot;01&quot;]\n                                  [0]     [1]\ngetItem(1)  →  &quot;01&quot;  ✅ (month)\n<\/code><\/pre>\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table>\n<thead>\n<tr>\n<th>Option<\/th>\n<th>ফলাফল<\/th>\n<th>কেন ভুল<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr>\n<td><strong>B<\/strong><\/td>\n<td><code>null<\/code><\/td>\n<td>Array-তে মাত্র ২টা element (index 0 আর 1)। <strong>Index 2 নেই<\/strong>, তাই <code>null<\/code>।<\/td>\n<\/tr>\n<tr>\n<td><strong>C<\/strong><\/td>\n<td><code>null<\/code><\/td>\n<td><code>\"-0\"<\/code> দিয়ে ভাঙলে <code>[\"2026\", \"1\"]<\/code> হয়, আর index 2 নেই।<\/td>\n<\/tr>\n<tr>\n<td><strong>D<\/strong><\/td>\n<td>কখনো <code>\"1\"<\/code>, কখনো <code>null<\/code><\/td>\n<td><code>\"-0\"<\/code> দিয়ে ভাঙা ভুল delimiter। <code>\"2026-01\"<\/code> থেকে <code>\"1\"<\/code> আসে (leading zero হারায়), আর <code>\"2026-10\"<\/code>, <code>\"2026-11\"<\/code>, <code>\"2026-12\"<\/code>-তে <code>\"-0\"<\/code> নেই, তাই ভাঙবেই না → <code>null<\/code>।<\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<blockquote>\n<p>💡 <code>split()<\/code> → array, <code>getItem(i)<\/code> → <strong>0-based index<\/strong>\n💡 Delimiter হবে আসল বিভাজক চিহ্ন (<code>-<\/code>), অন্য অক্ষর মিশিয়ে নয়<\/p>\n<p>💡 বিকল্প: <code>F.month(F.to_date(\"date_str\", \"yyyy-MM\"))<\/code> দিয়েও month সংখ্যা হিসেবে পাওয়া যায়।<\/p>\n<\/blockquote>\n<p>সংক্ষেপে: <code>\"-\"<\/code> দিয়ে ভেঙে <strong>index 1<\/strong> নিলে month পাওয়া যায়। তাই উত্তর <strong>A<\/strong>।<\/p>", "sec": "T"}, {"uid": "udemy-exam2-q1", "n": 1, "label": "Udemy Exam 2 · Q1 · Platform", "src": ["dbx-udemy-exam2-v2", 0], "stem": "<p>One of the foundational technologies provided by the Databricks Lakehouse Platform is an open-source, file-based storage format that brings reliability to data lakes.<\/p><p><br><\/p><p>Which of the following technologies is being described in the above statement? <\/p>", "options": [{"k": "A", "html": "<p>Delta Lives Tables (DLT)<\/p>"}, {"k": "B", "html": "<p>Delta Lake<\/p>"}, {"k": "C", "html": "<p>Apache Spark<\/p>"}, {"k": "D", "html": "<p>Unity Catalog<\/p>"}, {"k": "E", "html": "<p>Photon<\/p>"}], "oos": false, "answer": ["B"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: B<\/p>\n<h3>ব্যাখ্যা<\/h3>\n<p><strong>Delta Lake<\/strong> একটি open-source storage technology, যা Parquet data file-এর সঙ্গে file-based transaction log যোগ করে। এই log-এর সাহায্যে <strong>ACID transaction<\/strong> সমর্থন করা যায় এবং data lake-এর data পরিবর্তন আরও নির্ভরযোগ্যভাবে পরিচালনা করা যায়। তাই প্রশ্নের storage format ও reliability—দুটি সূত্রই Delta Lake-কে নির্দেশ করে।<\/p>\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Delta Live Tables হলো data pipeline তৈরির framework; এটি প্রশ্নে বর্ণিত storage technology নয়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Apache Spark হলো data processing engine; Delta Lake তার থেকে আলাদা storage technology।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Unity Catalog data governance ও access control পরিচালনা করে।<\/td><\/tr><tr><td><strong>E<\/strong><\/td><td>Photon query execution দ্রুত করার engine; transaction-log ভিত্তিক storage format নয়।<\/td><\/tr><\/tbody><\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<blockquote><p>💡 <strong>Parquet-এর সঙ্গে transaction log ও ACID reliability যোগ হলে মনে করুন Delta Lake।<\/strong><\/p><\/blockquote><h3>তথ্যসূত্র<\/h3><ul><li><a href=\"https://docs.databricks.com/delta/index.html\" target=\"_blank\" rel=\"noopener noreferrer\">https://docs.databricks.com/delta/index.html<\/a><\/li><\/ul><p>মূল কোর্সের সহায়ক পাঠ:<\/p><ul><li><a href=\"https://www.udemy.com/course/databricks-certified-data-engineer-associate/learn/lecture/34664674/?referralCode=F0FA48E9A0546C975F14\" target=\"_blank\" rel=\"noopener noreferrer\">পাঠের আলোচনা<\/a><\/li><li><a href=\"https://www.udemy.com/course/databricks-certified-data-engineer-associate/learn/lecture/34665592/?referralCode=F0FA48E9A0546C975F14\" target=\"_blank\" rel=\"noopener noreferrer\">হাতে-কলমে অনুশীলন<\/a><\/li><\/ul>", "sec": "P"}, {"uid": "udemy-exam6-q49", "n": 49, "label": "Udemy Exam 6 · Q49 · Optimization", "src": ["dbx-udemy-exam6-v2", 48], "stem": "<p>A data engineering team is troubleshooting a slow Lakeflow Job that processes a large fact table join.<\/p><p>While reviewing the Spark UI, the engineering team notices:<\/p><ul><li><p>high spill-to-disk metrics during shuffle stages<\/p><\/li><li><p>increased disk I/O<\/p><\/li><li><p>failed tasks during shuffle processing<\/p><\/li><\/ul><p>Which issue is the most likely cause of this behavior?<\/p>", "options": [{"k": "A", "html": "<p>Excessive task dependency in the Lakeflow Job.<\/p>"}, {"k": "B", "html": "<p>Cluster node failures.<\/p>"}, {"k": "C", "html": "<p>Large number of shuffle partitions.<\/p>"}, {"k": "D", "html": "<p>Out-of-memory issues caused by insufficient executor memory.<\/p>"}], "oos": false, "answer": ["D"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: D<\/p><h3>ব্যাখ্যা<\/h3><p>Insufficient executor memory shuffle intermediate data ধরে রাখতে না পারলে disk spill হয় এবং গুরুতর pressure-এ task OOM fail করতে পারে। Spill metric, executor log ও failed task detail একসঙ্গে দেখে নিশ্চিত করতে হবে; spill নিজে সব সময় OOM নয়।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Task dependency orchestration delay বোঝায়; shuffle memory spill নয়।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>Node failure হতে পারে, তবে high spill ও disk I/O এখানে memory pressure-এর বেশি সরাসরি সূত্র।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>অনেক partition সাধারণত per-partition data কমায়; high spill-এর মূল explanation insufficient memory।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Spill + disk I/O + failed shuffle task → memory pressure তদন্ত।<\/p><\/blockquote>", "sec": "O"}, {"uid": "udemy-exam10-q7", "n": 7, "label": "Udemy Exam 10 · Q7 · CI/CD", "src": ["dbx-udemy-exam10-v2", 6], "stem": "<p><strong>A bundle keeps each job definition in its own YAML file under resources/, and databricks.yml does not list them yet. Deployments currently create none of those jobs.<\/strong><br><br><strong>What should databricks.yml add?<\/strong><\/p>", "options": [{"k": "A", "html": "A targets mapping that lists the resources/ path under each target, so every environment deploys the jobs defined in those files"}, {"k": "B", "html": "An artifacts mapping for resources/, so the bundle builds those YAML files into job definitions before the deploy step begins"}, {"k": "C", "html": "A sync mapping with resources/ under its include list, so those files upload to the workspace and each one becomes a deployed job"}, {"k": "D", "html": "An include mapping with a pattern such as resources/*.yml, so those files are merged into the bundle configuration on each deploy"}], "oos": false, "answer": ["D"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: D<\/p><h3>ব্যাখ্যা<\/h3><p>Top-level include resources/*.yml matching YAML bundle configuration-এ merge করে। শুধু workspace-এ file upload resource deploy definition হয় না।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Target path list configuration import syntax নয়।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>artifacts build output; YAML import নয়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>sync file upload করে, resource definition merge নয়।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 External bundle YAML → include।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/dev-tools/bundles/reference\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "C"}, {"uid": "udemy-exam5-q33", "n": 33, "label": "Udemy Exam 5 · Q33 · Optimization", "src": ["dbx-udemy-exam5-v2", 32], "stem": "<p>A data engineering team is investigating a slow Spark workload in Databricks.<\/p><p>While reviewing the Spark UI, the engineering team notices:<\/p><ul><li><p>high spill-to-disk metrics across multiple tasks<\/p><\/li><li><p>heavy disk I/O during shuffle operations<\/p><\/li><li><p>significantly slower stage execution compared to previous runs<\/p><\/li><\/ul><p>Which issue is the most likely cause of this behavior?<\/p>", "options": [{"k": "A", "html": "<p>Data skew causing uneven partition distribution across executors.<\/p>"}, {"k": "B", "html": "<p>Excessive shuffle partition creation causing Spark to spend more time coordinating shuffle tasks.<\/p>"}, {"k": "C", "html": "<p>Liquid Clustering reorganizing Delta files during query execution.<\/p>"}, {"k": "D", "html": "<p>Disk spilling caused by insufficient executor memory during shuffle-heavy processing.<\/p>"}], "oos": false, "answer": ["D"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: D<\/p><h3>ব্যাখ্যা<\/h3><p>Executor memory-তে shuffle-এর intermediate data না ধরলে Spark কিছু data disk-এ spill করে। High spill metrics ও heavy disk I/O তাই memory pressure-এর শক্তিশালী লক্ষণ; spill execution ধীর করে, তবে spill মানেই সব সময় task OOM failure নয়।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Data skew-তে কিছু task-এ অসম data ও straggler দেখা যায়; এখানে বহু task-এর spill সরাসরি memory pressure দেখাচ্ছে।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>অনেক partition coordination overhead বাড়াতে পারে, কিন্তু high disk spill-এর সরাসরি কারণ হিসেবে memory shortage বেশি উপযুক্ত।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Liquid Clustering query চলার সময় এমন shuffle memory pressure-এর কারণ নয়।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 High disk spill → shuffle data memory-তে ধরছে না।<\/p><\/blockquote>", "sec": "O"}, {"uid": "udemy-exam10-q51", "n": 51, "label": "Udemy Exam 10 · Q51 · Governance", "src": ["dbx-udemy-exam10-v2", 50], "stem": "<p><strong>A governed table has a row filter and a column mask applied. A user who is subject to both runs SELECT * on the table.<\/strong><br><br><strong>Which TWO statements describe the result?<\/strong><\/p>", "options": [{"k": "A", "html": "The column mask rewrites the values stored in the table's data files, so earlier versions read through time travel also return masked values"}, {"k": "B", "html": "The column mask is skipped for SELECT *, because a mask applies when the query names the masked column explicitly"}, {"k": "C", "html": "The row filter raises a permission error when the table holds rows that its function rejects for the user running the query"}, {"k": "D", "html": "The row filter leaves out the rows for which its function returns FALSE, and the query then completes without raising any error"}, {"k": "E", "html": "The column mask can replace sensitive values in the result while the masked column itself stays in the query's output schema"}], "oos": false, "answer": ["D", "E"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: D, E<\/p><h3>ব্যাখ্যা<\/h3><p>Row filter FALSE record বাদ দেয়; mask sensitive result value বদলাতে পারে, column schema থাকে। Policies query-time result control; stored file rewrite নয়।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Mask physical data rewrite করে না।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>SELECT *-এও mask applies।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Filtered row-এর জন্য query error বাধ্যতামূলক নয়।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Filter row visibility; mask value visibility।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/data-governance/unity-catalog/filters-and-masks\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "G"}, {"uid": "udemy-33", "n": 33, "label": "Udemy · Q33 · Lakeflow Jobs", "src": ["dbx-de-assoc-practice-udemy-v1", 32], "stem": "<p>A data engineer maintains the following Lakflow Job:<\/p>\n<pre><code>                    ┌──────────────────────────────┐\n                ┌──►│ Task_B                       │\n                │   │ /Workspace/derar/Task B      │\n┌─────────────┐ │   │ Serverless                   │\n│ Task_A      │─┤   └──────────────────────────────┘\n│ /Workspace/ │ │   ┌──────────────────────────────┐\n│ derar/Task A│ └──►│ Task_C                       │\n│ Serverless  │     │ /Workspace/derar/Task C      │\n└─────────────┘     │ Serverless                   │\n                    └──────────────────────────────┘\n<\/code><\/pre>\n<p>Task B is configured with <code>run_if<\/code>: <code>ALL_SUCCESS<\/code>, while Task C is configured with <code>run_if<\/code>: <code>ALL_DONE<\/code>.<\/p>\n<p>Which of the following correctly describe this logic?<\/p>", "options": [{"k": "A", "html": "Task B runs only if Task A succeeds, and Task C runs only if Task A does not succeed."}, {"k": "B", "html": "Task B runs if Task A and C succeed, and Task C runs only if Task A is skipped and retired."}, {"k": "C", "html": "Task B runs if Task A and C succeed, and Task C runs regardless of other tasks' outcomes."}, {"k": "D", "html": "Task B runs only if Task A succeeds, and Task C runs regardless of Task A's outcome."}], "oos": false, "answer": ["D"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: D<\/p>\n\n<h3>ব্যাখ্যা<\/h3>\n<p>Diagram অনুযায়ী Task_B আর Task_C <strong>দুটোই শুধু Task_A-এর উপর নির্ভরশীল<\/strong>। B আর C একে অপরের উপর নির্ভর করে না।<\/p>\n<p><strong>Run if<\/strong> condition ঠিক করে, dependency (এখানে Task_A)-এর ফলাফল কী হলে task চলবে:<\/p>\n<table>\n<thead>\n<tr>\n<th>Task<\/th>\n<th>run_if<\/th>\n<th>অর্থ<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr>\n<td><strong>Task_B<\/strong><\/td>\n<td><code>ALL_SUCCESS<\/code> (default)<\/td>\n<td>Task_A <strong>সফল হলে তবেই<\/strong> চলবে<\/td>\n<\/tr>\n<tr>\n<td><strong>Task_C<\/strong><\/td>\n<td><code>ALL_DONE<\/code><\/td>\n<td>Task_A <strong>শেষ হলেই<\/strong> চলবে, সফল হোক বা fail হোক<\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<p>তাই: <strong>Task B শুধু Task A সফল হলে চলে, আর Task C, Task A-এর ফলাফল যাই হোক চলে।<\/strong> ✅<\/p>\n<p><code>ALL_DONE<\/code> সাধারণত <strong>cleanup বা notification<\/strong> task-এর জন্য ব্যবহার হয়, যেটা সবসময় চলা উচিত।<\/p>\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table>\n<thead>\n<tr>\n<th>Option<\/th>\n<th>কেন ভুল<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr>\n<td><strong>A<\/strong><\/td>\n<td>\"Task A সফল <strong>না হলে<\/strong> তবেই C চলবে\", এটা <strong><code>AT_LEAST_ONE_FAILED<\/code><\/strong> বা <strong><code>ALL_FAILED<\/code><\/strong>-এর আচরণ। <code>ALL_DONE<\/code> সফল হলেও চলে।<\/td>\n<\/tr>\n<tr>\n<td><strong>B<\/strong><\/td>\n<td>Task B, Task C-এর উপর নির্ভরশীল নয়। আর \"skipped and retired\" কোনো <code>run_if<\/code> আচরণ নয়।<\/td>\n<\/tr>\n<tr>\n<td><strong>C<\/strong><\/td>\n<td>Task B শুধু Task A-এর উপর নির্ভরশীল, Task C-এর উপর নয়।<\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<table>\n<thead>\n<tr>\n<th><code>run_if<\/code><\/th>\n<th>কখন চলে<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr>\n<td><code>ALL_SUCCESS<\/code> (default)<\/td>\n<td>সব dependency <strong>সফল<\/strong> হলে<\/td>\n<\/tr>\n<tr>\n<td><code>AT_LEAST_ONE_SUCCESS<\/code><\/td>\n<td>অন্তত একটা dependency সফল হলে<\/td>\n<\/tr>\n<tr>\n<td><code>NONE_FAILED<\/code><\/td>\n<td>কোনোটা fail না করলে (skip হলেও চলবে)<\/td>\n<\/tr>\n<tr>\n<td><code>ALL_DONE<\/code><\/td>\n<td>সব dependency <strong>শেষ হলে<\/strong>, ফলাফল যাই হোক ✅<\/td>\n<\/tr>\n<tr>\n<td><code>AT_LEAST_ONE_FAILED<\/code><\/td>\n<td>অন্তত একটা fail করলে<\/td>\n<\/tr>\n<tr>\n<td><code>ALL_FAILED<\/code><\/td>\n<td>সব dependency fail করলে<\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<p>সংক্ষেপে: <code>ALL_SUCCESS<\/code> মানে A সফল হলে B চলবে, আর <code>ALL_DONE<\/code> মানে A-এর ফলাফল যাই হোক C চলবে। তাই উত্তর <strong>D<\/strong>।<\/p>", "sec": "J"}, {"uid": "udemy-exam1-q3", "n": 3, "label": "Udemy Exam 1 · Q3 · Platform", "src": ["dbx-udemy-exam1-v2", 2], "stem": "<p>In Delta Lake tables, which of the following is the primary format for the data files?<\/p>", "options": [{"k": "A", "html": "<p>Delta<\/p>"}, {"k": "B", "html": "<p>Parquet<\/p>"}, {"k": "C", "html": "<p>JSON<\/p>"}, {"k": "D", "html": "<p>Hive-specific format<\/p>"}, {"k": "E", "html": "<p>Both, Parquet and JSON<\/p>"}], "oos": false, "answer": ["B"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: B<\/p>\n<h3>ব্যাখ্যা<\/h3>\n<p>Delta table-এর মূল <strong>data file থাকে Parquet format-এ<\/strong>। Transaction log-এ JSON ব্যবহার হয়। প্রশ্নটি data file-এর format জানতে চেয়েছে, table-এর সব ধরনের file-এর format নয়।<\/p>\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Delta হলো table/storage ব্যবস্থা; data file-এর নির্দিষ্ট format এখানে Parquet।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>JSON transaction log-এর সঙ্গে সম্পর্কিত, মূল row data-এর উত্তর নয়।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Data file Hive-এর নিজস্ব কোনো বিশেষ format-এ সীমাবদ্ধ নয়।<\/td><\/tr><tr><td><strong>E<\/strong><\/td><td>Parquet ও JSON দুটো table-এর ব্যবস্থায় থাকলেও প্রশ্নটি শুধু data file সম্পর্কে।<\/td><\/tr><\/tbody><\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<blockquote><p>💡 Delta data = Parquet; transaction log-এ JSON।<\/p><\/blockquote>\n<h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/delta/index.html\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><li><a href=\"https://www.udemy.com/course/databricks-certified-data-engineer-associate/learn/lecture/34664674/?referralCode=F0FA48E9A0546C975F14\" target=\"_blank\" rel=\"noopener noreferrer\">কোর্সের লেকচার<\/a><\/li><li><a href=\"https://www.udemy.com/course/databricks-certified-data-engineer-associate/learn/lecture/34665592/?referralCode=F0FA48E9A0546C975F14\" target=\"_blank\" rel=\"noopener noreferrer\">হাতে-কলমে অনুশীলন<\/a><\/li><\/ul>", "sec": "P"}, {"uid": "udemy-exam2-q21", "n": 21, "label": "Udemy Exam 2 · Q21 · Ingestion", "src": ["dbx-udemy-exam2-v2", 20], "stem": "<p>Fill in the below blank to successfully create a table using data from CSV files located at <strong>/path/input<\/strong><\/p><p><br><\/p><div><div><pre><code>CREATE TABLE my_table\n(col1 STRING, col2 STRING)\n____________\nOPTIONS (header = \"true\",\n        delimiter = \";\")\nLOCATION = \"/path/input\"<\/code><\/pre><\/div><\/div>", "options": [{"k": "A", "html": "<p>FROM CSV<\/p>"}, {"k": "B", "html": "<p>USING CSV<\/p>"}, {"k": "C", "html": "<p>USING DELTA<\/p>"}, {"k": "D", "html": "<p>AS<\/p>"}, {"k": "E", "html": "<p>AS CSV<\/p>"}], "oos": false, "answer": ["B"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: B<\/p>\n<h3>ব্যাখ্যা<\/h3>\n<p><code>CREATE TABLE ... USING CSV<\/code>-এ <strong>USING<\/strong> data source format নির্ধারণ করে। এখানে input file CSV, তাই format হবে CSV। <code>OPTIONS<\/code>-এ header ও delimiter পড়ার নিয়ম বলা হয়েছে এবং <code>LOCATION<\/code> table-কে existing file-এর অবস্থানের সঙ্গে যুক্ত করছে।<\/p>\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>CREATE TABLE-এর এই অবস্থানে format দেওয়ার keyword FROM নয়, USING।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Input file CSV; DELTA দিলে অন্য format ঘোষণা করা হবে।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>AS-এর পরে query দরকার; শুধু AS দিয়ে file format নির্ধারণ হয় না।<\/td><\/tr><tr><td><strong>E<\/strong><\/td><td>AS CSV এই CREATE TABLE data source syntax নয়।<\/td><\/tr><\/tbody><\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<blockquote><p>💡 <strong>File format ঘোষণা করতে USING; CSV file হলে USING CSV।<\/strong><\/p><\/blockquote><h3>তথ্যসূত্র<\/h3><ul><li><a href=\"https://docs.databricks.com/sql/language-manual/sql-ref-syntax-ddl-create-table-using.html\" target=\"_blank\" rel=\"noopener noreferrer\">https://docs.databricks.com/sql/language-manual/sql-ref-syntax-ddl-create-table-using.html<\/a><\/li><\/ul><p>মূল কোর্সের সহায়ক পাঠ:<\/p><ul><li><a href=\"https://www.udemy.com/course/databricks-certified-data-engineer-associate/learn/lecture/34673300/?referralCode=F0FA48E9A0546C975F14\" target=\"_blank\" rel=\"noopener noreferrer\">পাঠের আলোচনা<\/a><\/li><li><a href=\"https://www.udemy.com/course/databricks-certified-data-engineer-associate/learn/lecture/34664704/?referralCode=F0FA48E9A0546C975F14\" target=\"_blank\" rel=\"noopener noreferrer\">হাতে-কলমে অনুশীলন<\/a><\/li><\/ul>", "sec": "I"}, {"uid": "udemy-exam6-q22", "n": 22, "label": "Udemy Exam 6 · Q22 · Lakeflow Jobs", "src": ["dbx-udemy-exam6-v2", 21], "stem": "<p>A data engineering team is building a Lakeflow Job to process regional sales data.<\/p><p>The same notebook logic must execute separately for multiple regions:<\/p><ul><li><p>UK<\/p><\/li><li><p>US<\/p><\/li><li><p>Germany<\/p><\/li><li><p>France<\/p><\/li><li><p>Japan<\/p><\/li><\/ul><p>The engineering team wants to:<\/p><ul><li><p>reuse the same notebook task logic<\/p><\/li><li><p>avoid creating separate notebook tasks for each region<\/p><\/li><li><p>dynamically execute the workflow once per region<\/p><\/li><\/ul><p>Which approach best meets these requirements?<\/p>", "options": [{"k": "A", "html": "<p>Create separate notebook tasks manually for each region inside the Lakeflow Job.<\/p>"}, {"k": "B", "html": "<p>Configure a Run Job task for each region and pass the region value as a job parameter.<\/p>"}, {"k": "C", "html": "<p>Configure an If/else task to route execution based on the selected region.<\/p>"}, {"k": "D", "html": "<p>Configure a For each task to iterate through the list of regions and execute the notebook task dynamically with the region value.<\/p>"}], "oos": false, "answer": ["D"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: D<\/p><h3>ব্যাখ্যা<\/h3><p>For each task region list-এর প্রতিটি value দিয়ে একই nested notebook task চালাতে পারে। Region parameter pass করে duplicated task definition ছাড়া workflow নতুন region-এর জন্য বাড়ানো যায়।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>আলাদা task manually তৈরি করলে logic ও configuration duplication বাড়ে।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>প্রতিটি region-এর Run Job আলাদা করে বানানো iteration-এর সরাসরি সমাধান নয়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>If/else branch বেছে নেয়; list-এর সব item iterate করে না।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 এক task, বহু parameter value → For each।<\/p><\/blockquote>", "sec": "J"}, {"uid": "udemy-exam8-q33", "n": 33, "label": "Udemy Exam 8 · Q33 · Platform", "src": ["dbx-udemy-exam8-v2", 32], "stem": "<p><strong>A workspace runs its notebooks on classic compute. The security team asks where the Spark driver and executors process notebook data, and where the web application and the job scheduler run.<\/strong><br><br><strong>Which statement is accurate?<\/strong><\/p>", "options": [{"k": "A", "html": "Everything runs in the Databricks control plane, and classic compute in the customer's cloud account hosts only the storage that the queries read"}, {"k": "B", "html": "The driver and executors run in the Databricks-managed serverless compute plane itself, and the customer's own account holds the storage buckets"}, {"k": "C", "html": "The driver itself runs in the Databricks control plane while classic compute executors run in the customer's own cloud account, so query plans never leave Databricks"}, {"k": "D", "html": "The Spark processing happens inside the customer's own cloud account, while the Databricks control plane hosts the web application and the scheduler"}], "oos": false, "answer": ["D"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: D<\/p><h3>ব্যাখ্যা<\/h3><p>Classic compute-এর Spark driver/executor customer cloud account-এ process করে। Databricks control plane web UI ও job orchestration service রাখে; serverless plane আলাদা deployment model।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Control plane-এ সব Spark processing নয়।<\/td><\/tr><tr><td><strong>B<\/strong><\/td><td>Classic workload serverless plane-এ নয়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Classic driver-ও customer compute plane-এ।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Classic: Spark customer cloud; UI/scheduler Databricks।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/getting-started/high-level-architecture\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "P"}, {"uid": "udemy-exam10-q37", "n": 37, "label": "Udemy Exam 10 · Q37 · Optimization", "src": ["dbx-udemy-exam10-v2", 36], "stem": "<p><strong>In the Spark UI, a query's physical plan shows filter, select, groupBy, and join steps, and the join runs as a sort-merge join. The engineer wants to know which steps start a new stage because they need an Exchange.<\/strong><br><br><strong>Which steps create those boundaries?<\/strong><\/p>", "options": [{"k": "A", "html": "The groupBy and join steps, because rows that share a key must move to the same partition, which needs an Exchange between executors"}, {"k": "B", "html": "The groupBy, join, and select steps, because select reorders the columns, which also requires rows to move between the executors"}, {"k": "C", "html": "Only the groupBy step, because a sort-merge join reads both of its inputs in place and so never needs an Exchange between executors"}, {"k": "D", "html": "Only the join step, because groupBy combines rows inside each partition and so never needs an Exchange between executors afterward"}], "oos": false, "answer": ["A"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: A<\/p><h3>ব্যাখ্যা<\/h3><p>GroupBy aggregation ও sort-merge join key-based redistribution চাইলে Exchange/shuffle stage boundary তৈরি করে। Filter/select সাধারণ narrow transformation; existing partitioning/optimizer shuffle এড়াতে পারলে plan ভিন্ন হতে পারে।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>B<\/strong><\/td><td>Select নিজে network redistribution নয়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Sort-merge join প্রয়োজনীয় key partitioning-এ shuffle করতে পারে।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Global groupBy শুধু local partition sum নয়।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Wide key redistribution → Exchange → stage boundary।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/optimizations/aqe\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "O"}, {"uid": "udemy-exam10-q25", "n": 25, "label": "Udemy Exam 10 · Q25 · Transformation", "src": ["dbx-udemy-exam10-v2", 24], "stem": "<p><strong>A Lakeflow Spark Declarative Pipeline's transformation logic changed, and every table it maintains must be recomputed from scratch once. A job already runs the pipeline through a pipeline task each night.<\/strong><br><br><strong>How should tonight's run achieve this?<\/strong><\/p>", "options": [{"k": "A", "html": "Enable the full refresh option on the pipeline task for this run, so the update clears and recomputes every table in the pipeline"}, {"k": "B", "html": "Set pipelines.reset.allowed to false on each table for tonight's run, so the update resets their state and recomputes them from scratch"}, {"k": "C", "html": "Add a notebook task before the pipeline task that runs DROP TABLE on each pipeline table, so tonight's update rebuilds all of them"}, {"k": "D", "html": "Refresh only the tables whose own logic changed, so the tables downstream of them pick up the new results through incremental updates"}], "oos": false, "answer": ["A"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: A<\/p><h3>ব্যাখ্যা<\/h3><p>Pipeline task full refresh option recomputation চায়। এটি stored state/data rebuild করতে পারে; source history available থাকতে হবে এবং reset-disallowed table থাকলে eligibility যাচাই দরকার।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>B<\/strong><\/td><td>reset.allowed=false reset আটকায়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Manual DROP pipeline ownership/state জটিল করে।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Incremental refresh from-scratch all-table requirement নয়।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 একবার পুরো rebuild → Pipeline task full refresh।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/gcp/en/dev-tools/bundles/job-task-types\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "T"}, {"uid": "udemy-exam7-q46", "n": 46, "label": "Udemy Exam 7 · Q46 · CI/CD", "src": ["dbx-udemy-exam7-v2", 45], "stem": "<p><strong>A pull-request check must catch configuration errors in a Declarative Automation Bundle's dev target and fail on any error, leaving the dev workspace untouched and starting no job.<\/strong><br><br><strong>Which command should the check run?<\/strong><\/p>", "options": [{"k": "A", "html": "databricks bundle run -t dev daily_load, which validates the bundle configuration first and then starts the daily_load job in the dev workspace"}, {"k": "B", "html": "databricks bundle validate -t dev, which loads the configuration, resolves the dev target's settings, and exits with an error if any are found"}, {"k": "C", "html": "databricks bundle summary -t dev, which lists the resources that the bundle has already deployed to the dev target along with their workspace URLs"}, {"k": "D", "html": "databricks bundle deploy -t dev, which stops early on configuration errors and otherwise uploads the bundle files and updates the dev resources"}], "oos": false, "answer": ["B"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: B<\/p><h3>ব্যাখ্যা<\/h3><p>bundle validate -t dev target configuration resolve ও check করে। Resource deploy বা job run না করেই error-তে CI failure করা যায়।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>bundle run job চালায়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>summary existing deployment দেখায়; validation gate নয়।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>deploy সফল configuration হলে workspace mutate করে।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 PR config check → bundle validate -t TARGET।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/aws/en/dev-tools/cli/bundle-commands\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "C"}, {"uid": "udemy-49", "n": 49, "label": "Udemy · Q49 · Transformation", "src": ["dbx-de-assoc-practice-udemy-v1", 48], "stem": "<p>A data analyst at a clothing e-commerce company is building a product catalog generator. They work with two PySpark DataFrames:<\/p>\n<ul>\n<li>colors_df (containing available product colors)<\/li>\n<li>sizes_df (containing available product sizes)<\/li>\n<\/ul>\n<p>They need to generate every possible combination of color and size so that the design team can create all valid variations for inventory planning.<\/p>\n<p>Which PySpark code achieves this?<\/p>", "options": [{"k": "A", "html": "<code>joined_df = colors_df.crossJoin(sizes_df)<\/code>"}, {"k": "B", "html": "<code>joined_df = colors_df.join(sizes_df, \"color_id\", \"full\")<\/code>"}, {"k": "C", "html": "<code>joined_df = colors_df.join(sizes_df, \"color_id\", \"left\")<\/code>"}, {"k": "D", "html": "<code>joined_df = colors_df.join(sizes_df, \"color_id\", \"inner\")<\/code>"}], "oos": false, "answer": ["A"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: A<\/p>\n\n<h3>ব্যাখ্যা<\/h3>\n<p>\"<strong>সব সম্ভাব্য combination<\/strong>\" মানে <strong>Cartesian product<\/strong>: প্রথম DataFrame-এর প্রতিটা row দ্বিতীয় DataFrame-এর প্রতিটা row-এর সাথে জোড়া লাগবে। এটাই <strong>cross join<\/strong>।<\/p>\n<pre><code class=\"language-python\">joined_df = colors_df.crossJoin(sizes_df)\n<\/code><\/pre>\n<table>\n<thead>\n<tr>\n<th>colors_df<\/th>\n<th>sizes_df<\/th>\n<th>ফলাফল (৩ × ৩ = ৯ row)<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr>\n<td>Red, Blue, Black<\/td>\n<td>S, M, L<\/td>\n<td>Red-S, Red-M, Red-L, Blue-S, Blue-M, Blue-L, Black-S, Black-M, Black-L<\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<p>Cross join-এ কোনো <strong>key column লাগে না<\/strong>।<\/p>\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table>\n<thead>\n<tr>\n<th>Option<\/th>\n<th>কেন ভুল<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr>\n<td><strong>B, C, D<\/strong><\/td>\n<td>সবগুলো <strong><code>color_id<\/code> key দিয়ে<\/strong> join করছে। Color আর size-এর মধ্যে কোনো common key নেই (sizes_df-এ <code>color_id<\/code> থাকারও কথা নয়)। Key দিয়ে join করলে শুধু <strong>মিলে যাওয়া<\/strong> row আসে, সব combination নয়।<\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<blockquote>\n<p>💡 <strong>\"every possible combination\" → <code>crossJoin()<\/code><\/strong> (row সংখ্যা = m × n)\n⚠️ বড় DataFrame-এ cross join খুব বড় ফলাফল তৈরি করে, সাবধানে ব্যবহার করতে হয়।<\/p>\n<\/blockquote>\n<p>সংক্ষেপে: color আর size-এর সব combination পেতে লাগে <strong><code>crossJoin<\/code><\/strong>। তাই উত্তর <strong>A<\/strong>।<\/p>", "sec": "T"}, {"uid": "udemy-exam11-q39", "n": 39, "label": "Udemy Exam 11 · Q39 · Governance", "src": ["dbx-udemy-exam11-v2", 38], "stem": "<p><strong>A data steward must attach an ABAC column mask policy to the catalog corp. She holds USE CATALOG and EXECUTE on the mask function, and the compute supports ABAC, but CREATE POLICY fails with a permission error.<\/strong><br><br><strong>What does she additionally need?<\/strong><\/p>", "options": [{"k": "A", "html": "APPLY TAG on the catalog corp, as a policy attaches through the governed tags that she must be able to apply on that catalog"}, {"k": "B", "html": "MANAGE on the catalog corp or ownership of it, since creating a policy on any securable requires one of those two privileges"}, {"k": "C", "html": "SELECT on every table in the catalog, since a policy can mask columns only in the tables that its creator is able to read"}, {"k": "D", "html": "ASSIGN on each governed tag that the policy matches, as a policy can reference only the tags that its creator is able to assign"}], "oos": false, "answer": ["B"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: B<\/p><h3>ব্যাখ্যা<\/h3><p>Catalog policy create করতে ownership বা MANAGE দরকার, পাশাপাশি function access ও compute requirements। APPLY TAG/ASSIGN classification permission, policy administration নয়।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>A<\/strong><\/td><td>Tag apply policy creation authority নয়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>সব table SELECT policy admin prerequisite নয়।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Tag matching policy define করতে শুধু tag ASSIGN যথেষ্ট নয়।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 ABAC policy manage → securable owner/MANAGE।<\/p><\/blockquote><h3>তথ্যসূত্র ও আরও পড়ুন<\/h3><ul><li><a href=\"https://docs.databricks.com/gcp/en/data-governance/unity-catalog/abac/policies\" target=\"_blank\" rel=\"noopener noreferrer\">মূল ডকুমেন্টেশন<\/a><\/li><\/ul>", "sec": "G"}, {"uid": "udemy-exam6-q16", "n": 16, "label": "Udemy Exam 6 · Q16 · Platform", "src": ["dbx-udemy-exam6-v2", 15], "stem": "<p>A data engineering team wants to reduce operational overhead for interactive analytics workloads in Databricks.<\/p><p>The team prefers a compute option that:<\/p><ul><li><p>automatically manages infrastructure provisioning<\/p><\/li><li><p>scales resources based on workload demand<\/p><\/li><li><p>reduces manual compute management<\/p><\/li><\/ul><p>Which compute option best meets these requirements?<\/p>", "options": [{"k": "A", "html": "<p>Serverless compute<\/p>"}, {"k": "B", "html": "<p>All-purpose compute<\/p>"}, {"k": "C", "html": "<p>Compute Pools<\/p>"}, {"k": "D", "html": "<p>Elastic Compute<\/p>"}], "oos": false, "answer": ["A"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: A<\/p><h3>ব্যাখ্যা<\/h3><p>Serverless compute infrastructure provision ও scaling পরিচালনা করে interactive analytics-এর operational কাজ কমায়। Team manual cluster management ছাড়া workload চালাতে পারে; compatibility ও supported configuration আগে দেখতে হয়।<\/p><h3>❌ বাকি option গুলো কেন ভুল<\/h3><table><thead><tr><th>Option<\/th><th>কেন ভুল<\/th><\/tr><\/thead><tbody><tr><td><strong>B<\/strong><\/td><td>All-purpose classic compute-এ cluster configuration পরিচালনা করতে হয়।<\/td><\/tr><tr><td><strong>C<\/strong><\/td><td>Compute pool startup capacity প্রস্তুত রাখে; নিজে পুরো serverless execution model নয়।<\/td><\/tr><tr><td><strong>D<\/strong><\/td><td>Elastic Compute এখানে দেওয়া standard Databricks compute option নয়।<\/td><\/tr><\/tbody><\/table><h3>🔑 মনে রাখার উপায়<\/h3><blockquote><p>💡 Managed provisioning/scaling → Serverless compute।<\/p><\/blockquote>", "sec": "P"}, {"uid": "udemy-34", "n": 34, "label": "Udemy · Q34 · Governance", "src": ["dbx-de-assoc-practice-udemy-v1", 33], "stem": "<p>A data engineer is trying to grant a user access to a table. They run the following command successfully:<\/p>\n<pre><code class=\"language-sql\">GRANT SELECT ON TABLE bank_catalog.fraud_schema.alert_cases TO analyst_group;\n<\/code><\/pre>\n<p>However, members of analyst_group get an \"Insufficient Permissions\" error when attempting to query the table.<\/p>\n<p>Which TWO causes are most likely responsible for this issue?<\/p>\n<p><strong>Choose 2 answers<\/strong><\/p>", "options": [{"k": "A", "html": "The analyst_group does not have the SELECT privilege on fraud_schema"}, {"k": "B", "html": "The data engineer is not the owner of the alert_cases table"}, {"k": "C", "html": "The analyst_group does not have the USE SCHEMA privilege on fraud_schema"}, {"k": "D", "html": "The analyst_group does not have the SELECT privilege on bank_catalog"}, {"k": "E", "html": "The analyst_group does not have the USE CATALOG privilege on bank_catalog"}], "oos": false, "answer": ["C", "E"], "explain": "<p class=\"ans\">✅ সঠিক উত্তর: C, E<\/p>\n\n<h3>ব্যাখ্যা<\/h3>\n<p>Unity Catalog-এ object গুলো তিন স্তরে সাজানো: <strong>catalog → schema → table<\/strong>। কোনো table-এ query চালাতে <strong>তিন স্তরেই<\/strong> permission লাগে:<\/p>\n<table>\n<thead>\n<tr>\n<th>স্তর<\/th>\n<th>লাগবে<\/th>\n<th>অবস্থা<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr>\n<td>Catalog <code>bank_catalog<\/code><\/td>\n<td><strong><code>USE CATALOG<\/code><\/strong><\/td>\n<td>❓ সম্ভবত নেই<\/td>\n<\/tr>\n<tr>\n<td>Schema <code>fraud_schema<\/code><\/td>\n<td><strong><code>USE SCHEMA<\/code><\/strong><\/td>\n<td>❓ সম্ভবত নেই<\/td>\n<\/tr>\n<tr>\n<td>Table <code>alert_cases<\/code><\/td>\n<td><code>SELECT<\/code><\/td>\n<td>✅ দেওয়া হয়েছে<\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<p>শুধু table-এ SELECT দিলে যথেষ্ট নয়। Parent catalog আর schema-তে <strong>ঢোকার অনুমতি<\/strong> (<code>USE CATALOG<\/code>, <code>USE SCHEMA<\/code>) না থাকলে \"Insufficient Permissions\" error আসবে।<\/p>\n<pre><code class=\"language-sql\">GRANT USE CATALOG ON CATALOG bank_catalog TO analyst_group;\nGRANT USE SCHEMA ON SCHEMA bank_catalog.fraud_schema TO analyst_group;\nGRANT SELECT ON TABLE bank_catalog.fraud_schema.alert_cases TO analyst_group;\n<\/code><\/pre>\n<h3>❌ বাকি option গুলো কেন ভুল<\/h3>\n<table>\n<thead>\n<tr>\n<th>Option<\/th>\n<th>কেন ভুল<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr>\n<td><strong>A<\/strong><\/td>\n<td>Schema-তে SELECT দিলে schema-র <strong>সব table<\/strong>-এ SELECT পাওয়া যায় (inheritance)। কিন্তু এটা <strong>বাধ্যতামূলক নয়<\/strong>। Table-এ SELECT আগেই দেওয়া আছে। আসলে লাগে <code>USE SCHEMA<\/code>।<\/td>\n<\/tr>\n<tr>\n<td><strong>B<\/strong><\/td>\n<td>Command <strong>সফলভাবে<\/strong> চলেছে, মানে data engineer-এর grant দেওয়ার অধিকার ছিল। Owner হওয়া না-হওয়া এখানে সমস্যা নয়।<\/td>\n<\/tr>\n<tr>\n<td><strong>D<\/strong><\/td>\n<td>Catalog-এ SELECT-ও বাধ্যতামূলক নয় (এটা inheritance দেয়)। আসলে লাগে <strong><code>USE CATALOG<\/code><\/strong>।<\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<h3>🔑 মনে রাখার উপায়<\/h3>\n<pre><code>Table-এ query চালাতে:\n  USE CATALOG (catalog)  +  USE SCHEMA (schema)  +  SELECT (table)\n<\/code><\/pre>\n<blockquote>\n<p>💡 <strong>USE = দরজা খোলা<\/strong>, <strong>SELECT = data পড়া<\/strong>। দরজা না খুললে ভেতরের table-এ পৌঁছানো যায় না।<\/p>\n<\/blockquote>\n<p>সংক্ষেপে: table-এ SELECT থাকলেও parent-এ <strong>USE SCHEMA<\/strong> আর <strong>USE CATALOG<\/strong> না থাকলে query fail করে। তাই উত্তর <strong>C, E<\/strong>।<\/p>", "sec": "G"}];
+const PAGE_ID = "udx3";
+const GKEY = "dbx-de-progress-v2";          // shared with the home page: { answers: {uid: {sel, revealed}}, current: {page: idx} }
+function loadG() {
+  try { const g = JSON.parse(localStorage.getItem(GKEY)); if (g && g.answers) { g.current = g.current || {}; return g; } } catch (e) {}
+  return { answers: {}, current: {} };
+}
+function writeG(g) { try { localStorage.setItem(GKEY, JSON.stringify(g)); } catch (e) {} }
+// one-time move of answers saved by the older single-set pages (keyed by index) into the shared store
+function migrateOld(g, qs) {
+  const olds = {}; let changed = false;
+  qs.forEach((q) => {
+    if (!q.src) return;
+    const [ok, oi] = q.src;
+    if (!(ok in olds)) { try { olds[ok] = JSON.parse(localStorage.getItem(ok)); } catch (e) { olds[ok] = null; } }
+    const o = olds[ok];
+    if (!o || !o.ans || !o.ans[oi]) return;
+    const e = o.ans[oi];
+    const sel = typeof e.sel === "string" ? [e.sel] : (e.sel || []);
+    if (!g.answers[q.uid] && sel.length) g.answers[q.uid] = { sel, revealed: !!e.revealed };
+    delete o.ans[oi]; o.__dirty = true; changed = true;
+  });
+  for (const k in olds) {
+    const o = olds[k];
+    if (o && o.__dirty) {
+      delete o.__dirty;
+      try { if (Object.keys(o.ans).length) localStorage.setItem(k, JSON.stringify(o)); else localStorage.removeItem(k); } catch (e) {}
+    }
+  }
+  return changed;
+}
+let G0 = loadG();
+if (migrateOld(G0, QUESTIONS)) writeG(G0);
+// ans[i] = { sel: ["B"], revealed: true, hide: true }
+//   revealed = graded (counts in stats, palette green/red); hide = graded by leaving the question, answer not shown yet
+let state = { current: G0.current[PAGE_ID] || 0, ans: {} };
+QUESTIONS.forEach((q, i) => { const e = G0.answers[q.uid]; if (e && e.sel && e.sel.length) state.ans[i] = { sel: [...e.sel], revealed: !!e.revealed, hide: !!e.hide }; });
+function save() {
+  const g = loadG();                         // re-read so other tabs' progress is kept
+  QUESTIONS.forEach((q, i) => {
+    const e = state.ans[i];
+    if (e && e.sel && e.sel.length) g.answers[q.uid] = e.hide ? { sel: e.sel, revealed: !!e.revealed, hide: true } : { sel: e.sel, revealed: !!e.revealed };
+    else delete g.answers[q.uid];
+  });
+  g.current[PAGE_ID] = state.current;
+  g.last = PAGE_ID;
+  writeG(g);
+}
+(() => { const g = loadG(); g.last = PAGE_ID; writeG(g); })();   // home page "continue" button
+
+try { const t = localStorage.getItem("dbx-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+document.getElementById("themeBtn").onclick = () => {
+  const root = document.documentElement;
+  const isDark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme = isDark ? "light" : "dark";
+  try { localStorage.setItem("dbx-theme", root.dataset.theme); } catch (e) {}
+};
+
+const $ = (id) => document.getElementById(id);
+const N = QUESTIONS.length;
+$("sTotal").textContent = N;
+
+// Count only time spent on a visible question page; save remaining time on exit.
+const TIMER_KEY = "dbx-set-timer-v1:" + PAGE_ID;
+const TIMER_DURATION = N * 70;
+let timer;
+let timerDeadline = null;
+function persistTimer() {
+  timer.remainingMs = remainingTimerMs();
+  try { localStorage.setItem(TIMER_KEY, JSON.stringify(timer)); } catch (e) {}
+}
+function remainingTimerMs() {
+  return timerDeadline === null ? timer.remainingMs : Math.max(0, timerDeadline - Date.now());
+}
+function pauseTimer() {
+  timer.remainingMs = remainingTimerMs();
+  timerDeadline = null;
+  persistTimer();
+  renderTimer();
+}
+function resumeTimer() {
+  if (!document.hidden && !timer.completed && !timer.paused && timerDeadline === null) {
+    timerDeadline = Date.now() + timer.remainingMs;
+  }
+  renderTimer();
+}
+function resetTimer() {
+  timerDeadline = null;
+  timer = { remainingMs: TIMER_DURATION * 1000, completed: false, paused: false };
+  resumeTimer();
+  persistTimer();
+}
+function timerSeconds() {
+  return Math.ceil(remainingTimerMs() / 1000);
+}
+function renderTimer() {
+  const seconds = timerSeconds();
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const clock = (hours ? hours + ":" : "") + String(minutes).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
+  $("sTimer").textContent = clock;
+  $("timerLabel").textContent = seconds === 0 ? "Time’s up" : timer.completed ? "Completed" : timerDeadline === null ? "Paused" : "Time left";
+  $("timerChip").classList.toggle("bad", seconds === 0);
+  $("pauseTimerBtn").textContent = timer.paused ? "Resume" : "Pause";
+  $("pauseTimerBtn").disabled = timer.completed || seconds === 0;
+  $("pauseTimerBtn").setAttribute("aria-pressed", String(!!timer.paused));
+  $("timerChip").title = `${N} questions × 70 seconds. Total: ${TIMER_DURATION} seconds. You can continue practicing after time runs out.`;
+}
+function syncTimer(done) {
+  if (done && !timer.completed) {
+    pauseTimer();
+    timer.completed = true;
+    persistTimer();
+  } else if (!done && timer.completed) {
+    resetTimer();
+  }
+  renderTimer();
+}
+try { timer = JSON.parse(localStorage.getItem(TIMER_KEY)); } catch (e) {}
+// Preserve timers saved by the earlier deadline-based version.
+if (timer && Number.isFinite(timer.deadline) && timer.remainingMs === undefined) {
+  timer = {
+    remainingMs: timer.remaining === null ? Math.max(0, timer.deadline - Date.now()) : timer.remaining * 1000,
+    completed: timer.remaining !== null
+  };
+}
+if (!timer || !Number.isFinite(timer.remainingMs) || timer.remainingMs < 0 || timer.remainingMs > TIMER_DURATION * 1000 || typeof timer.completed !== "boolean") resetTimer();
+else {
+  timer.paused = !!timer.paused;
+  resumeTimer();
+}
+$("pauseTimerBtn").onclick = () => {
+  if (timer.completed || timerSeconds() === 0) return;
+  timer.paused = !timer.paused;
+  if (timer.paused) pauseTimer();
+  else { resumeTimer(); persistTimer(); }
+};
+$("resetTimerBtn").onclick = resetTimer;
+setInterval(() => { persistTimer(); renderTimer(); }, 1000);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) pauseTimer();
+  else resumeTimer();
+});
+window.addEventListener("pagehide", pauseTimer);
+window.addEventListener("pageshow", resumeTimer);
+
+
+// Review marks are independent of answers and survive quiz resets.
+const REVIEW_KEY = "dbx-question-review-v1";
+let reviews = loadReviews();
+function loadReviews() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(REVIEW_KEY));
+    if (saved && typeof saved === "object" && !Array.isArray(saved)) return saved;
+  } catch (e) {}
+  return {};
+}
+function reviewEntry(i) {
+  return reviews[QUESTIONS[i].uid] || { marked: false, note: "" };
+}
+function saveReview(marked, note) {
+  const uid = QUESTIONS[state.current].uid;
+  reviews = loadReviews();
+  if (marked || note) reviews[uid] = { marked, note };
+  else delete reviews[uid];
+  try { localStorage.setItem(REVIEW_KEY, JSON.stringify(reviews)); } catch (e) {}
+}
+function renderReview() {
+  const e = reviewEntry(state.current);
+  $("markReviewBtn").textContent = e.marked ? "★ Marked for Review" : "☆ Mark for Review";
+  $("markReviewBtn").setAttribute("aria-pressed", String(!!e.marked));
+  const marked = QUESTIONS.map((q, i) => i).filter(i => reviewEntry(i).marked);
+  $("reviewMarkedBtn").textContent = `Review Marked Questions (${marked.length})`;
+  $("summaryReviewBtn").textContent = `Review Marked Questions (${marked.length})`;
+  $("reviewList").replaceChildren();
+  $("reviewEmpty").hidden = marked.length > 0;
+  marked.forEach(i => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "btn btn-ghost";
+    b.textContent = `★ Question ${i + 1}`;
+    b.title = QUESTIONS[i].label;
+    b.onclick = () => go(i);
+    $("reviewList").appendChild(b);
+  });
+}
+$("markReviewBtn").onclick = () => {
+  const e = reviewEntry(state.current);
+  saveReview(!e.marked, e.note || "");
+  renderReview(); renderPalette();
+};
+function showReviewList() {
+  $("reviewPanel").hidden = false;
+  $("reviewPanel").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  const first = $("reviewList").querySelector("button");
+  if (first) first.focus({ preventScroll: true });
+}
+$("reviewMarkedBtn").onclick = showReviewList;
+$("summaryReviewBtn").onclick = showReviewList;
+
+function entry(i) { return state.ans[i] || null; }
+function sameSet(a, b) { return a.length === b.length && a.every((x) => b.includes(x)); }
+function isCorrect(i) { const e = entry(i); return !!(e && e.revealed && sameSet(e.sel, QUESTIONS[i].answer)); }
+function hasSel(e) { return !!(e && e.sel && e.sel.length); }
+// a complete selection that has not been graded yet: leaving the question grades it silently
+function pending(i) { const e = entry(i); return !!(hasSel(e) && !e.revealed && e.sel.length === QUESTIONS[i].answer.length); }
+const BN_DIGITS = "০১২৩৪৫৬৭৮৯";
+function bn(n) { return String(n).replace(/\d/g, (d) => BN_DIGITS[d]); }
+
+function render() {
+  const i = state.current, q = QUESTIONS[i], e = entry(i);
+  const revealed = !!(e && e.revealed && !e.hide);   // answer + explanation visible
+  const locked = !!(e && e.revealed && e.hide);       // graded on leaving, answer still hidden
+  $("qnum").innerHTML = `Question ${i + 1} <span>/ ${N}</span> <span class="src-num">· ${q.label}</span>`;
+
+  const tag = $("statusTag");
+  const multi = q.answer.length > 1;
+  if (revealed) { const ok = isCorrect(i); tag.className = "status-tag " + (ok ? "ok" : "bad"); tag.textContent = ok ? "Correct" : "Wrong"; }
+  else if (hasSel(e)) { tag.className = "status-tag pending"; tag.textContent = locked ? "Submitted" : "Selected"; }
+  else { tag.className = "status-tag"; tag.textContent = ""; }
+
+  $("stem").innerHTML = q.stem;
+
+  const note = $("multiNote");
+  note.hidden = !multi;
+  note.textContent = multi ? `একাধিক উত্তর: ${bn(q.answer.length)}টি option বেছে নিন (Choose ${q.answer.length})` : "";
+  const opts = $("opts");
+  opts.className = "opts" + (multi ? " multi" : "");
+  opts.setAttribute("role", multi ? "group" : "radiogroup");
+  opts.innerHTML = "";
+  q.options.forEach((o) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.setAttribute("role", multi ? "checkbox" : "radio");
+    b.dataset.k = o.k;
+    let mark = "";
+    if (revealed) {
+      b.disabled = true;
+      const isAns = q.answer.includes(o.k), isSel = e.sel.includes(o.k);
+      if (isAns && isSel) { b.classList.add("correct"); mark = "✓ আপনার উত্তর"; }
+      else if (isAns) { b.classList.add(multi ? "missed" : "correct"); mark = "✓ সঠিক"; }
+      else if (isSel) { b.classList.add("wrong"); mark = "✗ আপনার উত্তর"; }
+      else b.classList.add("dim");
+    } else if (hasSel(e) && e.sel.includes(o.k)) {
+      b.classList.add("selected");
+    }
+    if (locked) b.disabled = true;
+    b.setAttribute("aria-checked", hasSel(e) && e.sel.includes(o.k) ? "true" : "false");
+    b.innerHTML = `<span class="key">${o.k}</span><span class="txt">${o.html}</span>${mark ? `<span class="mark bn">${mark}</span>` : ""}`;
+    b.onclick = () => select(o.k);
+    opts.appendChild(b);
+  });
+
+  const reveal = $("revealBtn");
+  reveal.style.display = revealed ? "none" : "";
+  const need = q.answer.length, have = hasSel(e) ? e.sel.length : 0;
+  reveal.disabled = have !== need;
+  const hint = $("hint");
+  hint.style.display = revealed || (have === need && !locked) ? "none" : "";
+  hint.textContent = locked ? "উত্তর জমা হয়েছে (ডান পাশের তালিকায় সবুজ/লাল)। ব্যাখ্যা দেখতে Reveal চাপুন" : need > 1 ? `আরও ${bn(need - have)}টি option বেছে নিন` : "আগে একটি option বেছে নিন";
+
+  const res = $("result");
+  if (revealed) {
+    const ok = isCorrect(i);
+    const ans = q.answer.join(", "), mine = [...e.sel].sort().join(", ");
+    res.className = "result bn " + (ok ? "ok" : "bad");
+    res.textContent = ok ? `✅ সঠিক! উত্তর: ${ans}` : `❌ ভুল। আপনি দিয়েছেন ${mine}, সঠিক উত্তর: ${ans}`;
+    $("explain").innerHTML = q.explain;
+    $("explain").classList.add("show");
+  } else {
+    res.className = "result bn";
+    $("explain").innerHTML = "";
+    $("explain").classList.remove("show");
+  }
+
+  $("prevBtn").disabled = i === 0;
+  $("nextBtn").disabled = i === N - 1;
+  renderReview();
+  renderPalette();
+  renderStats();
+}
+
+function renderPalette() {
+  const p = $("palette");
+  if (!p.children.length) {
+    QUESTIONS.forEach((q, i) => {
+      const b = document.createElement("button");
+      b.className = "pbtn"; b.textContent = i + 1; b.title = q.label;
+      b.onclick = () => go(i);
+      p.appendChild(b);
+    });
+  }
+  [...p.children].forEach((b, i) => {
+    const e = entry(i);
+    b.className = "pbtn";
+    if (reviewEntry(i).marked) b.classList.add("review-marked");
+    b.setAttribute("aria-label", `Question ${i + 1}${reviewEntry(i).marked ? ", marked for review" : ""}`);
+    if (e && e.revealed) b.classList.add(isCorrect(i) ? "ok" : "bad");
+    else if (hasSel(e)) b.classList.add("sel");
+    if (i === state.current) b.classList.add("current");
+    if (QUESTIONS[i].oos) { b.classList.add("oos-q"); if (!b.title.includes("syllabus")) b.title += " · out of current syllabus"; }
+  });
+}
+
+function renderStats() {
+  let answered = 0, correct = 0;
+  for (let i = 0; i < N; i++) { const e = entry(i); if (e && e.revealed) { answered++; if (isCorrect(i)) correct++; } }
+  const wrong = answered - correct;
+  $("sAnswered").textContent = answered;
+  $("sCorrect").textContent = correct;
+  $("sWrong").textContent = wrong;
+  $("sPct").textContent = answered ? Math.round((correct / answered) * 100) + "%" : "0%";
+  $("progressBar").style.width = (answered / N) * 100 + "%";
+  const done = answered === N;
+  syncTimer(done);
+  $("summary").classList.toggle("show", done);
+  if (done) {
+    const pct = Math.round((correct / N) * 100);
+    $("sumScore").textContent = `${correct} / ${N}  (${pct}%)`;
+    $("sumText").textContent = pct >= 70 ? "দারুণ! পাস করার মতো স্কোর (Databricks-এর পাস মার্ক প্রায় ৭০%)।" : "ভুল প্রশ্নগুলো আবার দেখুন: \"ভুলগুলো আবার দিন\" button চাপুন।";
+  }
+}
+
+function select(k) {
+  const i = state.current, e = entry(i), q = QUESTIONS[i];
+  if (e && e.revealed) return;
+  if (!q.options.some((o) => o.k === k)) return;
+  let sel = hasSel(e) ? [...e.sel] : [];
+  if (q.answer.length === 1) sel = [k];
+  else if (sel.includes(k)) sel = sel.filter((x) => x !== k);
+  else if (sel.length < q.answer.length) sel.push(k);
+  else return;                                   // limit reached: deselect one first
+  state.ans[i] = { sel, revealed: false };
+  save(); render();
+}
+function reveal() {
+  const i = state.current, e = entry(i);
+  if (!hasSel(e) || (e.revealed && !e.hide) || e.sel.length !== QUESTIONS[i].answer.length) return;
+  e.revealed = true; delete e.hide; save(); render();
+  $("result").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+function go(i) {
+  if (i < 0 || i >= N) return;
+  if (i !== state.current && pending(state.current)) Object.assign(entry(state.current), { revealed: true, hide: true });
+  state.current = i; save(); render();
+  $("qcard").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+$("revealBtn").onclick = reveal;
+$("prevBtn").onclick = () => go(state.current - 1);
+$("nextBtn").onclick = () => go(state.current + 1);
+$("nextUnBtn").onclick = () => {
+  for (let k = 1; k <= N; k++) { const i = (state.current + k) % N; const e = entry(i); if (!e || !e.revealed) return go(i); }
+};
+$("retryWrongBtn").onclick = () => {
+  const wrong = [];
+  for (let i = 0; i < N; i++) { const e = entry(i); if (e && e.revealed && !isCorrect(i)) wrong.push(i); }
+  if (!wrong.length) { alert("কোনো ভুল উত্তর নেই।"); return; }
+  wrong.forEach((i) => delete state.ans[i]);
+  save(); go(wrong[0]);
+};
+$("resetBtn").onclick = () => {
+  if (!confirm("এই পেজের সব উত্তর মুছে নতুন করে শুরু করবেন?")) return;
+  state = { current: 0, ans: {} }; resetTimer(); save(); go(0);
+};
+
+document.addEventListener("keydown", (ev) => {
+  if (ev.metaKey || ev.ctrlKey || ev.altKey || (ev.target.closest && ev.target.closest("textarea, input, select, [contenteditable]"))) return;
+  const k = ev.key.toUpperCase();
+  if ("ABCDE".includes(k) && k.length === 1) { select(k); }
+  else if (ev.key === "Enter" && !(ev.target.closest && ev.target.closest("button:not(.opt)"))) { ev.preventDefault(); reveal(); }
+  else if (ev.key === "ArrowRight") { go(state.current + 1); }
+  else if (ev.key === "ArrowLeft") { go(state.current - 1); }
+});
+
+if (state.current >= N) state.current = 0;
+render();
+</script>
+</body>
+</html>
