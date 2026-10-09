@@ -12,24 +12,24 @@ Udemy questions are deduplicated, tagged with their May 2026 exam-guide section,
 
 | Set | Questions |
 | --- | ---: |
-| [Mock Exam 1](Databricks_Udemy_Mock_Exam_1.html) | 45 |
-| [Mock Exam 2](Databricks_Udemy_Mock_Exam_2.html) | 45 |
-| [Mock Exam 3](Databricks_Udemy_Mock_Exam_3.html) | 45 |
-| [Mock Exam 4](Databricks_Udemy_Mock_Exam_4.html) | 45 |
-| [Mock Exam 5](Databricks_Udemy_Mock_Exam_5.html) | 45 |
-| [Mock Exam 6](Databricks_Udemy_Mock_Exam_6.html) | 45 |
-| [Mock Exam 7](Databricks_Udemy_Mock_Exam_7.html) | 45 |
-| [Mock Exam 8](Databricks_Udemy_Mock_Exam_8.html) | 45 |
-| [Mock Exam 9](Databricks_Udemy_Mock_Exam_9.html) | 45 |
-| [Mock Exam 10](Databricks_Udemy_Mock_Exam_10.html) | 45 |
-| [Mock Exam 11](Databricks_Udemy_Mock_Exam_11.html) | 45 |
-| [Extra Practice 1](Databricks_Udemy_Extra_Practice_1.html) | 41 |
-| [Extra Practice 2](Databricks_Udemy_Extra_Practice_2.html) | 40 |
-| [Extra Practice 3](Databricks_Udemy_Extra_Practice_3.html) | 40 |
+| [Mock Exam 1](questions/udemy/Databricks_Udemy_Mock_Exam_1.html) | 45 |
+| [Mock Exam 2](questions/udemy/Databricks_Udemy_Mock_Exam_2.html) | 45 |
+| [Mock Exam 3](questions/udemy/Databricks_Udemy_Mock_Exam_3.html) | 45 |
+| [Mock Exam 4](questions/udemy/Databricks_Udemy_Mock_Exam_4.html) | 45 |
+| [Mock Exam 5](questions/udemy/Databricks_Udemy_Mock_Exam_5.html) | 45 |
+| [Mock Exam 6](questions/udemy/Databricks_Udemy_Mock_Exam_6.html) | 45 |
+| [Mock Exam 7](questions/udemy/Databricks_Udemy_Mock_Exam_7.html) | 45 |
+| [Mock Exam 8](questions/udemy/Databricks_Udemy_Mock_Exam_8.html) | 45 |
+| [Mock Exam 9](questions/udemy/Databricks_Udemy_Mock_Exam_9.html) | 45 |
+| [Mock Exam 10](questions/udemy/Databricks_Udemy_Mock_Exam_10.html) | 45 |
+| [Mock Exam 11](questions/udemy/Databricks_Udemy_Mock_Exam_11.html) | 45 |
+| [Extra Practice 1](questions/udemy/Databricks_Udemy_Extra_Practice_1.html) | 41 |
+| [Extra Practice 2](questions/udemy/Databricks_Udemy_Extra_Practice_2.html) | 40 |
+| [Extra Practice 3](questions/udemy/Databricks_Udemy_Extra_Practice_3.html) | 40 |
 
 The sets contain 616 unique syllabus questions with Bangla explanations, code, reference links, and original illustrations. Each question label keeps its original exam and question number, so it can be found in the PDFs. Saved answers are kept because they are stored per question.
 
-The 38 Udemy questions flagged as outside the syllabus are in [Syllabus-এর বাইরে](Databricks_Out_of_Syllabus.html), which contains 97 optional questions. Optional questions do not count toward overall syllabus progress.
+The 38 Udemy questions flagged as outside the syllabus are in [Syllabus-এর বাইরে](questions/optional/Databricks_Out_of_Syllabus.html), which contains 97 optional questions. Optional questions do not count toward overall syllabus progress.
 
 The twelve original PDFs keep all 640 Udemy questions in their original order with the English explanations:
 
@@ -56,13 +56,21 @@ ExamTopics questions are deduplicated and grouped into three mock exams that fol
 
 | Set | Questions |
 | --- | ---: |
-| [Mock Exam 1](Databricks_ExamTopics_Mock_Exam_1.html) | 45 |
-| [Mock Exam 2](Databricks_ExamTopics_Mock_Exam_2.html) | 45 |
-| [Mock Exam 3](Databricks_ExamTopics_Mock_Exam_3.html) | 45 |
-| [Extra Practice](Databricks_ExamTopics_Extra_Practice.html) | 74 |
+| [Mock Exam 1](questions/examtopics/Databricks_ExamTopics_Mock_Exam_1.html) | 45 |
+| [Mock Exam 2](questions/examtopics/Databricks_ExamTopics_Mock_Exam_2.html) | 45 |
+| [Mock Exam 3](questions/examtopics/Databricks_ExamTopics_Mock_Exam_3.html) | 45 |
+| [Extra Practice](questions/examtopics/Databricks_ExamTopics_Extra_Practice.html) | 74 |
 
 ## Databricks Academy
 
 The three Academy quiz sets mix the course topics by exam-guide section, so no two consecutive questions come from the same section. The course quizzes have no Platform questions, so exact exam-guide proportions are not possible for these sets.
 
 The home page also includes other practice sets. Answers are saved in browser local storage.
+
+## Review questions later
+
+Use ☆ Mark for Review on difficult or guessed questions, including correct answers. Stars appear in the question palette. Review Marked Questions opens the saved list during or after the quiz; select a question to revisit its answer and explanation. Click ★ Marked for Review to remove a mark. Review marks stay saved in the same browser, independently of scores and quiz resets.
+
+## Folder layout
+
+`Databricks_Home.html` is the entry point at the repository root. Question pages are grouped under `questions/academy/`, `questions/examtopics/`, `questions/udemy/`, `questions/github/`, and `questions/optional/`. PDFs remain in their existing locations.

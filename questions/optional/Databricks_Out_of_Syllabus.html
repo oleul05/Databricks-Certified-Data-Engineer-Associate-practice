@@ -190,12 +190,20 @@ kbd { font-family: "JetBrains Mono", monospace; font-size: 11px; border: 1px sol
 .summary { padding: 28px 24px; text-align: center; display: none; margin-top: 20px; }
 .summary.show { display: block; }
 .summary .big { font-size: 42px; font-weight: 700; margin: 6px 0; font-variant-numeric: tabular-nums; }
+.qhead { flex-wrap: wrap; }
+.qhead .qnum { flex: 1 1 240px; }
+.qhead-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+#markReviewBtn { white-space: nowrap; }
+.pbtn.review-marked { position: relative; }
+.pbtn.review-marked::after { content: "★"; position: absolute; top: -7px; right: -4px; color: var(--warn); font-size: 12px; }
+#reviewPanel { margin-top: 14px; }
+#reviewList { display: grid; gap: 6px; }
 </style>
 </head>
 <body>
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="home-link" href="Databricks_Home.html" title="Home">← Home</a>
+    <a class="home-link" href="../../Databricks_Home.html" title="Home">← Home</a>
     <div class="brand">Out of Syllabus<small class="bn">বর্তমান syllabus-এর বাইরের প্রশ্ন (ঐচ্ছিক) · ৯৭টি প্রশ্ন</small></div>
     <div class="stats">
       <span class="chip" id="timerChip"><span id="timerLabel">Time left</span> <b id="sTimer" role="timer" aria-label="Remaining time">00:00</b></span>
@@ -216,7 +224,10 @@ kbd { font-family: "JetBrains Mono", monospace; font-size: 11px; border: 1px sol
     <article class="card qcard" id="qcard">
       <div class="qhead">
         <div class="qnum" id="qnum"></div>
-        <div class="status-tag" id="statusTag"></div>
+        <div class="qhead-actions">
+          <div class="status-tag" id="statusTag"></div>
+          <button class="btn btn-ghost" id="markReviewBtn" type="button" aria-pressed="false">☆ Mark for Review</button>
+        </div>
       </div>
       <div class="stem" id="stem"></div>
       <div class="multi-note bn" id="multiNote" hidden></div>
@@ -237,7 +248,8 @@ kbd { font-family: "JetBrains Mono", monospace; font-size: 11px; border: 1px sol
       <div class="bn" style="color:var(--muted)">সব প্রশ্নের উত্তর দেওয়া হয়েছে 🎉</div>
       <div class="big" id="sumScore"></div>
       <div class="bn" id="sumText"></div>
-      <p style="margin-top:16px"><a class="home-link" href="Databricks_Home.html">← Home-এ ফিরে যান</a></p>
+      <button class="btn btn-ghost" id="summaryReviewBtn" type="button">Review Marked Questions</button>
+      <p style="margin-top:16px"><a class="home-link" href="../../Databricks_Home.html">← Home-এ ফিরে যান</a></p>
     </section>
   </main>
 
@@ -249,9 +261,16 @@ kbd { font-family: "JetBrains Mono", monospace; font-size: 11px; border: 1px sol
       <div><span class="sw l-bad"></span>ভুল</div>
       <div><span class="sw l-sel"></span>বেছে নেওয়া, এখনো জমা হয়নি</div>
       <div><span class="sw"></span>উত্তর দেওয়া হয়নি</div>
+      <div>★ Marked for review</div>
       <div><span class="sw l-oos"></span>বর্তমান syllabus-এর বাইরে</div>
       <div><span class="rn-new">হলুদ নাম</span><span>= May 2026 syllabus-এর নতুন নাম</span></div>
     </div>
+    <button class="btn btn-ghost" id="reviewMarkedBtn" type="button">Review Marked Questions</button>
+    <section id="reviewPanel" hidden aria-label="Marked questions">
+      <h2>Marked for Review</h2>
+      <p id="reviewEmpty">No marked questions yet. Use ☆ Mark for Review on a question.</p>
+      <div id="reviewList"></div>
+    </section>
     <button class="btn btn-ghost" id="nextUnBtn">পরের বাকি প্রশ্ন →</button>
     <button class="btn btn-ghost" id="retryWrongBtn">ভুলগুলো আবার দিন</button>
     <button class="btn btn-ghost" id="resetBtn">এই পেজ রিসেট করুন</button>
@@ -407,6 +426,59 @@ window.addEventListener("pagehide", pauseTimer);
 window.addEventListener("pageshow", resumeTimer);
 
 
+// Review marks are independent of answers and survive quiz resets.
+const REVIEW_KEY = "dbx-question-review-v1";
+let reviews = loadReviews();
+function loadReviews() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(REVIEW_KEY));
+    if (saved && typeof saved === "object" && !Array.isArray(saved)) return saved;
+  } catch (e) {}
+  return {};
+}
+function reviewEntry(i) {
+  return reviews[QUESTIONS[i].uid] || { marked: false, note: "" };
+}
+function saveReview(marked, note) {
+  const uid = QUESTIONS[state.current].uid;
+  reviews = loadReviews();
+  if (marked || note) reviews[uid] = { marked, note };
+  else delete reviews[uid];
+  try { localStorage.setItem(REVIEW_KEY, JSON.stringify(reviews)); } catch (e) {}
+}
+function renderReview() {
+  const e = reviewEntry(state.current);
+  $("markReviewBtn").textContent = e.marked ? "★ Marked for Review" : "☆ Mark for Review";
+  $("markReviewBtn").setAttribute("aria-pressed", String(!!e.marked));
+  const marked = QUESTIONS.map((q, i) => i).filter(i => reviewEntry(i).marked);
+  $("reviewMarkedBtn").textContent = `Review Marked Questions (${marked.length})`;
+  $("summaryReviewBtn").textContent = `Review Marked Questions (${marked.length})`;
+  $("reviewList").replaceChildren();
+  $("reviewEmpty").hidden = marked.length > 0;
+  marked.forEach(i => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "btn btn-ghost";
+    b.textContent = `★ Question ${i + 1}`;
+    b.title = QUESTIONS[i].label;
+    b.onclick = () => go(i);
+    $("reviewList").appendChild(b);
+  });
+}
+$("markReviewBtn").onclick = () => {
+  const e = reviewEntry(state.current);
+  saveReview(!e.marked, e.note || "");
+  renderReview(); renderPalette();
+};
+function showReviewList() {
+  $("reviewPanel").hidden = false;
+  $("reviewPanel").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  const first = $("reviewList").querySelector("button");
+  if (first) first.focus({ preventScroll: true });
+}
+$("reviewMarkedBtn").onclick = showReviewList;
+$("summaryReviewBtn").onclick = showReviewList;
+
 function entry(i) { return state.ans[i] || null; }
 function sameSet(a, b) { return a.length === b.length && a.every((x) => b.includes(x)); }
 function isCorrect(i) { const e = entry(i); return !!(e && e.revealed && sameSet(e.sel, QUESTIONS[i].answer)); }
@@ -484,6 +556,7 @@ function render() {
 
   $("prevBtn").disabled = i === 0;
   $("nextBtn").disabled = i === N - 1;
+  renderReview();
   renderPalette();
   renderStats();
 }
@@ -501,6 +574,8 @@ function renderPalette() {
   [...p.children].forEach((b, i) => {
     const e = entry(i);
     b.className = "pbtn";
+    if (reviewEntry(i).marked) b.classList.add("review-marked");
+    b.setAttribute("aria-label", `Question ${i + 1}${reviewEntry(i).marked ? ", marked for review" : ""}`);
     if (e && e.revealed) b.classList.add(isCorrect(i) ? "ok" : "bad");
     else if (hasSel(e)) b.classList.add("sel");
     if (i === state.current) b.classList.add("current");
@@ -571,7 +646,7 @@ $("resetBtn").onclick = () => {
 };
 
 document.addEventListener("keydown", (ev) => {
-  if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
+  if (ev.metaKey || ev.ctrlKey || ev.altKey || (ev.target.closest && ev.target.closest("textarea, input, select, [contenteditable]"))) return;
   const k = ev.key.toUpperCase();
   if ("ABCDE".includes(k) && k.length === 1) { select(k); }
   else if (ev.key === "Enter" && !(ev.target.closest && ev.target.closest("button:not(.opt)"))) { ev.preventDefault(); reveal(); }
