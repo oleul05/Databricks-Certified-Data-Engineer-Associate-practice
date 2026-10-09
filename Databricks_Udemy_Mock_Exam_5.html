@@ -198,6 +198,9 @@ kbd { font-family: "JetBrains Mono", monospace; font-size: 11px; border: 1px sol
     <a class="home-link" href="Databricks_Home.html" title="Home">← Home</a>
     <div class="brand">Udemy Mock Exam 5<small class="bn">Exam-guide অনুপাতে · Platform 3 · Ingestion 10 · Transformation 10 · Lakeflow Jobs 6 · CI/CD 5 · Optimization 4 · Governance 7 · ৪৫টি প্রশ্ন</small></div>
     <div class="stats">
+      <span class="chip" id="timerChip"><span id="timerLabel">Time left</span> <b id="sTimer" role="timer" aria-label="Remaining time">00:00</b></span>
+      <button class="icon-btn" id="pauseTimerBtn" type="button">Pause</button>
+      <button class="icon-btn" id="resetTimerBtn" type="button" title="Restart the timer without clearing answers">Reset Timer</button>
       <span class="chip">Answered <b id="sAnswered">0</b>/<b id="sTotal">0</b></span>
       <span class="chip ok">Correct <b id="sCorrect">0</b></span>
       <span class="chip bad">Wrong <b id="sWrong">0</b></span>
@@ -319,6 +322,91 @@ const $ = (id) => document.getElementById(id);
 const N = QUESTIONS.length;
 $("sTotal").textContent = N;
 
+// Count only time spent on a visible question page; save remaining time on exit.
+const TIMER_KEY = "dbx-set-timer-v1:" + PAGE_ID;
+const TIMER_DURATION = N * 70;
+let timer;
+let timerDeadline = null;
+function persistTimer() {
+  timer.remainingMs = remainingTimerMs();
+  try { localStorage.setItem(TIMER_KEY, JSON.stringify(timer)); } catch (e) {}
+}
+function remainingTimerMs() {
+  return timerDeadline === null ? timer.remainingMs : Math.max(0, timerDeadline - Date.now());
+}
+function pauseTimer() {
+  timer.remainingMs = remainingTimerMs();
+  timerDeadline = null;
+  persistTimer();
+  renderTimer();
+}
+function resumeTimer() {
+  if (!document.hidden && !timer.completed && !timer.paused && timerDeadline === null) {
+    timerDeadline = Date.now() + timer.remainingMs;
+  }
+  renderTimer();
+}
+function resetTimer() {
+  timerDeadline = null;
+  timer = { remainingMs: TIMER_DURATION * 1000, completed: false, paused: false };
+  resumeTimer();
+  persistTimer();
+}
+function timerSeconds() {
+  return Math.ceil(remainingTimerMs() / 1000);
+}
+function renderTimer() {
+  const seconds = timerSeconds();
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const clock = (hours ? hours + ":" : "") + String(minutes).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
+  $("sTimer").textContent = clock;
+  $("timerLabel").textContent = seconds === 0 ? "Time’s up" : timer.completed ? "Completed" : timerDeadline === null ? "Paused" : "Time left";
+  $("timerChip").classList.toggle("bad", seconds === 0);
+  $("pauseTimerBtn").textContent = timer.paused ? "Resume" : "Pause";
+  $("pauseTimerBtn").disabled = timer.completed || seconds === 0;
+  $("pauseTimerBtn").setAttribute("aria-pressed", String(!!timer.paused));
+  $("timerChip").title = `${N} questions × 70 seconds. Total: ${TIMER_DURATION} seconds. You can continue practicing after time runs out.`;
+}
+function syncTimer(done) {
+  if (done && !timer.completed) {
+    pauseTimer();
+    timer.completed = true;
+    persistTimer();
+  } else if (!done && timer.completed) {
+    resetTimer();
+  }
+  renderTimer();
+}
+try { timer = JSON.parse(localStorage.getItem(TIMER_KEY)); } catch (e) {}
+// Preserve timers saved by the earlier deadline-based version.
+if (timer && Number.isFinite(timer.deadline) && timer.remainingMs === undefined) {
+  timer = {
+    remainingMs: timer.remaining === null ? Math.max(0, timer.deadline - Date.now()) : timer.remaining * 1000,
+    completed: timer.remaining !== null
+  };
+}
+if (!timer || !Number.isFinite(timer.remainingMs) || timer.remainingMs < 0 || timer.remainingMs > TIMER_DURATION * 1000 || typeof timer.completed !== "boolean") resetTimer();
+else {
+  timer.paused = !!timer.paused;
+  resumeTimer();
+}
+$("pauseTimerBtn").onclick = () => {
+  if (timer.completed || timerSeconds() === 0) return;
+  timer.paused = !timer.paused;
+  if (timer.paused) pauseTimer();
+  else { resumeTimer(); persistTimer(); }
+};
+$("resetTimerBtn").onclick = resetTimer;
+setInterval(() => { persistTimer(); renderTimer(); }, 1000);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) pauseTimer();
+  else resumeTimer();
+});
+window.addEventListener("pagehide", pauseTimer);
+window.addEventListener("pageshow", resumeTimer);
+
+
 function entry(i) { return state.ans[i] || null; }
 function sameSet(a, b) { return a.length === b.length && a.every((x) => b.includes(x)); }
 function isCorrect(i) { const e = entry(i); return !!(e && e.revealed && sameSet(e.sel, QUESTIONS[i].answer)); }
@@ -430,6 +518,7 @@ function renderStats() {
   $("sPct").textContent = answered ? Math.round((correct / answered) * 100) + "%" : "0%";
   $("progressBar").style.width = (answered / N) * 100 + "%";
   const done = answered === N;
+  syncTimer(done);
   $("summary").classList.toggle("show", done);
   if (done) {
     const pct = Math.round((correct / N) * 100);
@@ -478,7 +567,7 @@ $("retryWrongBtn").onclick = () => {
 };
 $("resetBtn").onclick = () => {
   if (!confirm("এই পেজের সব উত্তর মুছে নতুন করে শুরু করবেন?")) return;
-  state = { current: 0, ans: {} }; save(); go(0);
+  state = { current: 0, ans: {} }; resetTimer(); save(); go(0);
 };
 
 document.addEventListener("keydown", (ev) => {

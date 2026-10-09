@@ -4,6 +4,8 @@ Interactive practice questions with Bangla explanations, answer grading, saved b
 
 Open `Databricks_Home.html` in a browser to choose a question set.
 
+Every set has a countdown of 70 seconds per question (45 questions = 52 minutes 30 seconds). It counts only while the question page is visible. Going home, closing the page, or switching tabs pauses it; returning or refreshing resumes the saved remaining time. Completing the set stops the timer; resetting the set or retrying wrong answers after completion starts a fresh timer. Use Pause/Resume to manually control the countdown; a manual pause stays paused when you return or refresh. Reset Timer starts the full duration again without clearing answers. When time runs out, you can continue practicing.
+
 ## Udemy practice exams
 
 Udemy questions are deduplicated, tagged with their May 2026 exam-guide section, and rebuilt into mock exams. Each mock exam has 45 questions in the same section split as the ExamTopics mock exams (Platform 3, Ingestion 10, Transformation 10, Lakeflow Jobs 6, CI/CD 5, Optimization 4, Governance 7). Questions are mixed so that no two consecutive questions come from the same section. Questions left over after the mock exams are in three extra practice sets.
