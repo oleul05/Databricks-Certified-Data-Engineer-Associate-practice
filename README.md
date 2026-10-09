@@ -21,12 +21,25 @@ Open `Databricks_Home.html` in a browser to choose a question set.
 | 11 | 52 | [Practice Exam 11](Databricks_DE_Associate_Practice_Exam_11_Udemy.html) | [PDF](output/pdf/udemy%20practice%20exam%2011.pdf) |
 | 12 | 50 | [Practice Exam 12](Databricks_DE_Associate_Practice_Exam_12_Udemy.html) | [PDF](output/pdf/udemy%20practice%20exam%2012.pdf) |
 
+[Udemy Extra Practice](Databricks_Udemy_Extra_Practice.html) is a separate 53-question Udemy set.
+
 The quizzes include Bangla explanations, code, reference links, and original illustrations. The PDFs include the original English explanations.
 
-All twelve Udemy quizzes are available and contain 602 syllabus questions in total. The 38 flagged questions have moved to [Syllabus-এর বাইরে](Databricks_Out_of_Syllabus.html), which contains 102 optional questions including the previous 64. Their original exam labels, Bangla explanations, syllabus flags, and saved answers are preserved. Optional questions do not count toward overall syllabus progress.
+All twelve Udemy quizzes are available and contain 602 syllabus questions in total. The 38 flagged questions have moved to [Syllabus-এর বাইরে](Databricks_Out_of_Syllabus.html), which contains 97 optional questions including the previous 59. Their original exam labels, Bangla explanations, syllabus flags, and saved answers are preserved. Optional questions do not count toward overall syllabus progress.
 
 The twelve PDFs retain all 640 original Udemy questions and their English explanations. Quiz counts in the table exclude the moved questions, so they can differ from PDF counts.
 
 The flags compare questions with the explicitly listed objectives in the [May 2026 exam guide](https://www.databricks.com/sites/default/files/2026-05/databricks-certified-data-engineer-associate-exam-guide-may-2026-000.pdf). These are study-priority judgments, not an official excluded-question list.
+
+## ExamTopics
+
+ExamTopics questions are deduplicated and grouped into three mock exams that follow the section weights in the May 2026 exam guide, plus an extra practice set:
+
+| Set | Questions |
+| --- | ---: |
+| [Mock Exam 1](Databricks_ExamTopics_Mock_Exam_1.html) | 45 |
+| [Mock Exam 2](Databricks_ExamTopics_Mock_Exam_2.html) | 45 |
+| [Mock Exam 3](Databricks_ExamTopics_Mock_Exam_3.html) | 45 |
+| [Extra Practice](Databricks_ExamTopics_Extra_Practice.html) | 74 |
 
 The home page also includes Databricks Academy quizzes and other practice sets. Answers are saved in browser local storage.
