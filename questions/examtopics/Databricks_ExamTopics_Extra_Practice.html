@@ -191,6 +191,12 @@ kbd { font-family: "JetBrains Mono", monospace; font-size: 11px; border: 1px sol
   box-shadow: 0 1px 3px rgba(0,0,0,.3); pointer-events: none; }
 #reviewPanel { margin-top: 14px; }
 #reviewList { display: grid; gap: 6px; }
+.mistake-summary { margin-top: 20px; text-align: left; }
+.mistake-summary h2 { font-size: 18px; }
+.mistake-summary h3 { font-size: 16px; margin-bottom: 8px; }
+.section-table-wrap { overflow-x: auto; }
+.section-results { display: table; }
+.mistake-link { display: block; width: 100%; text-align: left; margin: 6px 0; white-space: normal; }
 </style>
 </head>
 <body>
@@ -241,6 +247,15 @@ kbd { font-family: "JetBrains Mono", monospace; font-size: 11px; border: 1px sol
       <div class="bn" style="color:var(--muted)">সব প্রশ্নের উত্তর দেওয়া হয়েছে 🎉</div>
       <div class="big" id="sumScore"></div>
       <div class="bn" id="sumText"></div>
+      <section class="mistake-summary" aria-label="Mistakes by section">
+        <h2>Section performance</h2>
+        <p id="mistakeAdvice"></p>
+        <div class="section-table-wrap">
+          <table class="section-results"><thead><tr><th scope="col">Section</th><th scope="col">Correct / Total</th><th scope="col">Wrong</th><th scope="col">Accuracy</th></tr></thead><tbody id="sectionResults"></tbody></table>
+        </div>
+        <h2>Review your mistakes</h2>
+        <div id="mistakeQuestions"></div>
+      </section>
       <button class="btn btn-ghost" id="summaryReviewBtn" type="button">Review Marked Questions</button>
       <p style="margin-top:16px"><a class="home-link" href="../../Databricks_Home.html">← Home-এ ফিরে যান</a></p>
     </section>
@@ -576,6 +591,53 @@ function renderPalette() {
   });
 }
 
+const SECTION_NAMES = {
+  P: "Platform", I: "Ingestion", T: "Transformation", J: "Lakeflow Jobs",
+  C: "CI/CD", O: "Optimization", G: "Governance", unclassified: "Other / Unclassified"
+};
+function sectionResults() {
+  const groups = {};
+  QUESTIONS.forEach((q, i) => {
+    const key = q.sec || "unclassified";
+    if (!groups[key]) groups[key] = { name: SECTION_NAMES[key] || key, total: 0, correct: 0, mistakes: [] };
+    const group = groups[key]; group.total++;
+    if (isCorrect(i)) group.correct++;
+    else if (entry(i) && entry(i).revealed) group.mistakes.push(i);
+  });
+  return Object.values(groups).sort((a, b) => b.mistakes.length / b.total - a.mistakes.length / a.total || b.mistakes.length - a.mistakes.length || a.name.localeCompare(b.name));
+}
+function renderMistakeSummary() {
+  const groups = sectionResults();
+  const weak = groups.filter(g => g.mistakes.length);
+  $("mistakeAdvice").textContent = weak.length ? "Focus your revision on: " + weak.map(g => `${g.name} (${g.mistakes.length} wrong)`).join(", ") + ". Sections with the highest mistake rate appear first." : "Perfect score! No mistakes in this set.";
+  const rows = $("sectionResults"); rows.replaceChildren();
+  groups.forEach(group => {
+    const row = document.createElement("tr");
+    [group.name, `${group.correct} / ${group.total}`, String(group.mistakes.length), `${Math.round(group.correct / group.total * 100)}%`].forEach(value => {
+      const cell = document.createElement("td"); cell.textContent = value; row.appendChild(cell);
+    });
+    rows.appendChild(row);
+  });
+  const list = $("mistakeQuestions"); list.replaceChildren();
+  weak.forEach(group => {
+    const section = document.createElement("section");
+    const heading = document.createElement("h3"); heading.textContent = group.name; section.appendChild(heading);
+    group.mistakes.forEach(i => {
+      const button = document.createElement("button"); button.type = "button"; button.className = "btn btn-ghost mistake-link";
+      const stem = document.createElement("div"); stem.innerHTML = QUESTIONS[i].stem;
+      const excerpt = (stem.textContent || "").replace(/\s+/g, " ").trim();
+      button.textContent = `Question ${i + 1} · ${excerpt.slice(0, 150)}${excerpt.length > 150 ? "…" : ""}`;
+      button.title = QUESTIONS[i].label;
+      button.onclick = () => {
+        const e = entry(i); if (e) delete e.hide;
+        go(i);
+      };
+      section.appendChild(button);
+    });
+    list.appendChild(section);
+  });
+}
+
 function renderStats() {
   let answered = 0, correct = 0;
   for (let i = 0; i < N; i++) { const e = entry(i); if (e && e.revealed) { answered++; if (isCorrect(i)) correct++; } }
@@ -589,6 +651,7 @@ function renderStats() {
   syncTimer(done);
   $("summary").classList.toggle("show", done);
   if (done) {
+    renderMistakeSummary();
     const pct = Math.round((correct / N) * 100);
     $("sumScore").textContent = `${correct} / ${N}  (${pct}%)`;
     $("sumText").textContent = (correct / N) * 100 >= 80 ? "দারুণ! পাস করার মতো স্কোর (এই প্র্যাকটিসের পাস মার্ক ৮০%)।" : "ভুল প্রশ্নগুলো আবার দেখুন: \"ভুলগুলো আবার দিন\" button চাপুন।";

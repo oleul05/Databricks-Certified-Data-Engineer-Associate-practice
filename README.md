@@ -76,3 +76,5 @@ Use ☆ Mark for Review on difficult or guessed questions, including correct ans
 ## Folder layout
 
 `Databricks_Home.html` is the entry point at the repository root. Question pages are grouped under `questions/academy/`, `questions/examtopics/`, `questions/udemy/`, `questions/github/`, and `questions/optional/`. PDFs remain in their existing locations.
+
+After completing a set, the summary shows correct answers, mistakes, and accuracy for each section, ordered by mistake rate. Click a wrong question in the summary to read its answer and explanation. Questions without section tags appear under Other / Unclassified.
