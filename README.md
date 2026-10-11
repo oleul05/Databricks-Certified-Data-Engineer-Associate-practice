@@ -2,30 +2,32 @@
 
 Interactive practice questions with Bangla explanations, answer grading, saved browser progress, and light/dark themes.
 
+The practice pass mark is 80%; completed-set results and home readiness messages use this threshold.
+
 Open `Databricks_Home.html` in a browser to choose a question set.
 
-Every set has a countdown of 70 seconds per question (45 questions = 52 minutes 30 seconds). It counts only while the question page is visible. Going home, closing the page, or switching tabs pauses it; returning or refreshing resumes the saved remaining time. Completing the set stops the timer; resetting the set or retrying wrong answers after completion starts a fresh timer. Use Pause/Resume to manually control the countdown; a manual pause stays paused when you return or refresh. Reset Timer starts the full duration again without clearing answers. When time runs out, you can continue practicing.
+Udemy mock exams have a fixed 90-minute timer for 55 questions. Other sets have a countdown of 70 seconds per question (45 questions = 52 minutes 30 seconds). It counts only while the question page is visible. Going home, closing the page, or switching tabs pauses it; returning or refreshing resumes the saved remaining time. Completing the set stops the timer; resetting the set or retrying wrong answers after completion starts a fresh timer. Use Pause/Resume to manually control the countdown; a manual pause stays paused when you return or refresh. Reset Timer starts the full duration again without clearing answers. When time runs out, you can continue practicing.
 
 ## Udemy practice exams
 
-Udemy questions are deduplicated, tagged with their May 2026 exam-guide section, and rebuilt into mock exams. Each mock exam has 45 questions in the same section split as the ExamTopics mock exams (Platform 3, Ingestion 10, Transformation 10, Lakeflow Jobs 6, CI/CD 5, Optimization 4, Governance 7). Questions are mixed so that no two consecutive questions come from the same section. Questions left over after the mock exams are in three extra practice sets.
+Udemy questions are deduplicated and tagged with their May 2026 exam-guide section. All 11 mock exams contain 55 questions and allow 90 minutes. Each retains its original 45 questions and adds 10 from the extra practice pool, with different sections mixed together. The remaining 11 questions are in three extra practice sets.
 
 | Set | Questions |
 | --- | ---: |
-| [Mock Exam 1](questions/udemy/Databricks_Udemy_Mock_Exam_1.html) | 45 |
-| [Mock Exam 2](questions/udemy/Databricks_Udemy_Mock_Exam_2.html) | 45 |
-| [Mock Exam 3](questions/udemy/Databricks_Udemy_Mock_Exam_3.html) | 45 |
-| [Mock Exam 4](questions/udemy/Databricks_Udemy_Mock_Exam_4.html) | 45 |
-| [Mock Exam 5](questions/udemy/Databricks_Udemy_Mock_Exam_5.html) | 45 |
-| [Mock Exam 6](questions/udemy/Databricks_Udemy_Mock_Exam_6.html) | 45 |
-| [Mock Exam 7](questions/udemy/Databricks_Udemy_Mock_Exam_7.html) | 45 |
-| [Mock Exam 8](questions/udemy/Databricks_Udemy_Mock_Exam_8.html) | 45 |
-| [Mock Exam 9](questions/udemy/Databricks_Udemy_Mock_Exam_9.html) | 45 |
-| [Mock Exam 10](questions/udemy/Databricks_Udemy_Mock_Exam_10.html) | 45 |
-| [Mock Exam 11](questions/udemy/Databricks_Udemy_Mock_Exam_11.html) | 45 |
-| [Extra Practice 1](questions/udemy/Databricks_Udemy_Extra_Practice_1.html) | 41 |
-| [Extra Practice 2](questions/udemy/Databricks_Udemy_Extra_Practice_2.html) | 40 |
-| [Extra Practice 3](questions/udemy/Databricks_Udemy_Extra_Practice_3.html) | 40 |
+| [Mock Exam 1](questions/udemy/Databricks_Udemy_Mock_Exam_1.html) | 55 |
+| [Mock Exam 2](questions/udemy/Databricks_Udemy_Mock_Exam_2.html) | 55 |
+| [Mock Exam 3](questions/udemy/Databricks_Udemy_Mock_Exam_3.html) | 55 |
+| [Mock Exam 4](questions/udemy/Databricks_Udemy_Mock_Exam_4.html) | 55 |
+| [Mock Exam 5](questions/udemy/Databricks_Udemy_Mock_Exam_5.html) | 55 |
+| [Mock Exam 6](questions/udemy/Databricks_Udemy_Mock_Exam_6.html) | 55 |
+| [Mock Exam 7](questions/udemy/Databricks_Udemy_Mock_Exam_7.html) | 55 |
+| [Mock Exam 8](questions/udemy/Databricks_Udemy_Mock_Exam_8.html) | 55 |
+| [Mock Exam 9](questions/udemy/Databricks_Udemy_Mock_Exam_9.html) | 55 |
+| [Mock Exam 10](questions/udemy/Databricks_Udemy_Mock_Exam_10.html) | 55 |
+| [Mock Exam 11](questions/udemy/Databricks_Udemy_Mock_Exam_11.html) | 55 |
+| [Extra Practice 1](questions/udemy/Databricks_Udemy_Extra_Practice_1.html) | 4 |
+| [Extra Practice 2](questions/udemy/Databricks_Udemy_Extra_Practice_2.html) | 4 |
+| [Extra Practice 3](questions/udemy/Databricks_Udemy_Extra_Practice_3.html) | 3 |
 
 The sets contain 616 unique syllabus questions with Bangla explanations, code, reference links, and original illustrations. Each question label keeps its original exam and question number, so it can be found in the PDFs. Saved answers are kept because they are stored per question.
 

@@ -591,7 +591,7 @@ function renderStats() {
   if (done) {
     const pct = Math.round((correct / N) * 100);
     $("sumScore").textContent = `${correct} / ${N}  (${pct}%)`;
-    $("sumText").textContent = pct >= 70 ? "দারুণ! পাস করার মতো স্কোর (Databricks-এর পাস মার্ক প্রায় ৭০%)।" : "ভুল প্রশ্নগুলো আবার দেখুন: \"ভুলগুলো আবার দিন\" button চাপুন।";
+    $("sumText").textContent = (correct / N) * 100 >= 80 ? "দারুণ! পাস করার মতো স্কোর (এই প্র্যাকটিসের পাস মার্ক ৮০%)।" : "ভুল প্রশ্নগুলো আবার দেখুন: \"ভুলগুলো আবার দিন\" button চাপুন।";
   }
 }
 
