@@ -1,0 +1,74 @@
+[
+  {
+    "download": 1,
+    "source": "https://www.leetquiz.com/quiz/baehjvr59txwgar08sthbei1/practice?ref=undefined",
+    "uid": "lq-migration",
+    "status": "merged with existing question"
+  },
+  {
+    "download": 2,
+    "source": "https://www.leetquiz.com/quiz/bh1ze76lno4ni47r76ebpout/practice?ref=undefined",
+    "uid": "lq-mergeAvoid",
+    "status": "merged with existing question"
+  },
+  {
+    "download": 3,
+    "source": "https://www.leetquiz.com/quiz/chem7dmbzsotewxskadcn909/practice?ref=undefined",
+    "uid": "lq-tableCreate",
+    "status": "merged with existing question"
+  },
+  {
+    "download": 4,
+    "source": "https://www.leetquiz.com/quiz/clxaj1xuu0000q4kpff1mhdl3/practice?ref=undefined",
+    "uid": "lq-truth",
+    "status": "merged with existing question"
+  },
+  {
+    "download": 5,
+    "source": "https://www.leetquiz.com/quiz/clxaj2f250001q4kp4ooyqvo9/practice?ref=undefined",
+    "uid": "lq-pool",
+    "status": "merged with existing question"
+  },
+  {
+    "download": 6,
+    "source": "https://www.leetquiz.com/quiz/clxaj2v8s0002q4kpfwon9xsz/practice?ref=undefined",
+    "uid": "lq-web",
+    "status": "merged with existing question"
+  },
+  {
+    "download": 7,
+    "source": "https://www.leetquiz.com/quiz/clxaj3dvz0003q4kpvtr1yvvd/practice?ref=undefined",
+    "uid": "lq-delta",
+    "status": "merged with existing question"
+  },
+  {
+    "download": 8,
+    "source": "https://www.leetquiz.com/quiz/clxaj3xj20004q4kpaddll44i/practice?ref=undefined",
+    "uid": "lq-storage",
+    "status": "merged with existing question"
+  },
+  {
+    "download": 9,
+    "source": "https://www.leetquiz.com/quiz/clxaj4d9y0005q4kpwpzqmdh9/practice?ref=undefined",
+    "uid": "lq-delete",
+    "status": "merged with existing question"
+  },
+  {
+    "download": 10,
+    "source": "https://www.leetquiz.com/quiz/clxaj4z680006q4kpcic8s86x/practice?ref=undefined",
+    "uid": "lq-vacuumTimeTravel",
+    "status": "added"
+  },
+  {
+    "download": 11,
+    "source": "https://www.leetquiz.com/quiz/clxaj5tz90008q4kp8xfi3wpq/practice?ref=undefined",
+    "uid": "lq-quality",
+    "status": "merged with existing question"
+  },
+  {
+    "download": 12,
+    "source": "https://www.leetquiz.com/quiz/clxaj69h30009q4kpq2174urh/practice?ref=undefined",
+    "uid": "lq-gitBranches",
+    "status": "merged with existing question"
+  }
+]

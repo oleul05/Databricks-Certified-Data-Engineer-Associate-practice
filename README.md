@@ -84,3 +84,13 @@ After completing a set, the summary shows correct answers, mistakes, and accurac
 Open [Final Mock Exam](questions/mock/Databricks_Final_Mock_Exam.html), also linked from Home. Each attempt selects 55 unique questions only from the syllabus ExamTopics and GitHub pools, with 3 Platform, 12 Ingestion, 12 Transformation, 9 Lakeflow Jobs, 5 CI/CD, 6 Optimization, and 8 Governance questions. These rounded counts follow the May 2026 guide's 6/21/22/16/10/10/15 percent section weights. GitHub questions are manually assigned section tags in this standalone pool.
 
 The 90-minute wall-clock timer continues across tab changes, closure, and refresh, and submits on expiry (on reopening if the page was closed). Answers can be changed and flagged during the exam; grading, correct answers, and Bangla explanations appear only after submission. Results show section scores and the existing 80% practice target. Attempts use separate browser storage and do not change practice-set progress. New attempt returns to the start screen and generates a fresh selection when started.
+
+## LeetQuiz
+
+[LeetQuiz](questions/leetquiz/leetquiz.html) contains 77 refined questions from four screenshot PDFs and accessible downloads, with Bangla explanations, saved progress, review marks, and the same timer and grading behavior as ExamTopics. Names updated for the May 2026 guide have a yellow background.
+
+Across 158 source pages, 60 duplicate copies and 22 unique questions outside the explicit guide objectives were removed. Substantive corrections to ambiguous/outdated questions are disclosed in their explanations and the [audit](leetquiz/refinement-audit.md). This bank is not complete coverage of every guide objective.
+
+The four PDFs in `leetquiz/` now contain 21, 18, 24, and 13 unique questions respectively. Original screenshot PDFs remain in `leetquiz/originals/`.
+
+The 12 accessible Next-button downloads add one new time-travel question; 11 overlap with existing LeetQuiz entries and are preserved as source references. See `leetquiz/downloads/import-audit.json`. The four refined PDFs retain their original 76-question allocation.

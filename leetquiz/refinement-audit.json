@@ -1,0 +1,1449 @@
+{
+  "guide": "https://www.databricks.com/sites/default/files/2026-05/databricks-certified-data-engineer-associate-exam-guide-may-2026-000.pdf",
+  "source_pages": 158,
+  "unique_questions": 98,
+  "kept": 76,
+  "excluded_unique": 22,
+  "duplicate_pages": 60,
+  "note": "Syllabus exclusions are study-priority judgments against explicit May 2026 objectives, not an official excluded-question list. Cosmetic renames are yellow; substantive corrections are disclosed separately.",
+  "pages": [
+    {
+      "pdf": 1,
+      "page": 1,
+      "key": "quality",
+      "status": "kept",
+      "uid": "lq-quality",
+      "section": "P",
+      "correction": ""
+    },
+    {
+      "pdf": 1,
+      "page": 2,
+      "key": "gold",
+      "status": "kept",
+      "uid": "lq-gold",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 1,
+      "page": 3,
+      "key": "gold",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 1,
+        "page": 2
+      }
+    },
+    {
+      "pdf": 1,
+      "page": 4,
+      "key": "pivot",
+      "status": "excluded",
+      "reason": "Outside the explicitly listed objectives: dynamic SQL PIVOT/category discovery. Original options also fail the stated dynamic-category requirement."
+    },
+    {
+      "pdf": 1,
+      "page": 5,
+      "key": "delta",
+      "status": "kept",
+      "uid": "lq-delta",
+      "section": "P",
+      "correction": ""
+    },
+    {
+      "pdf": 1,
+      "page": 6,
+      "key": "notebooklibs",
+      "status": "kept",
+      "uid": "lq-notebooklibs",
+      "section": "T",
+      "correction": "Reworded notebook libraries as pipeline source files; modern pipelines are not restricted to notebook libraries."
+    },
+    {
+      "pdf": 1,
+      "page": 7,
+      "key": "temperature",
+      "status": "excluded",
+      "reason": "Higher-order FILTER/SIZE array processing is not explicitly listed; the guide names exploding arrays."
+    },
+    {
+      "pdf": 1,
+      "page": 8,
+      "key": "concurrency",
+      "status": "kept",
+      "uid": "lq-concurrency",
+      "section": "P",
+      "correction": ""
+    },
+    {
+      "pdf": 1,
+      "page": 9,
+      "key": "tempScope",
+      "status": "excluded",
+      "reason": "Temporary/global temporary view lifetime trivia is not a listed objective; retained the separate view-creation use case."
+    },
+    {
+      "pdf": 1,
+      "page": 10,
+      "key": "usage",
+      "status": "kept",
+      "uid": "lq-usage",
+      "section": "G",
+      "correction": "Migrated the legacy database metadata-inspection question to catalog-level BROWSE. This is a privilege-model correction, not a simple rename."
+    },
+    {
+      "pdf": 1,
+      "page": 11,
+      "key": "pipelineOptional",
+      "status": "excluded",
+      "reason": "Legacy pipeline configuration-field optionality is not a listed objective and differs in modern Unity Catalog pipelines."
+    },
+    {
+      "pdf": 1,
+      "page": 12,
+      "key": "dashboardTask",
+      "status": "kept",
+      "uid": "lq-dashboardTask",
+      "section": "J",
+      "correction": ""
+    },
+    {
+      "pdf": 1,
+      "page": 13,
+      "key": "delete",
+      "status": "kept",
+      "uid": "lq-delete",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 1,
+      "page": 14,
+      "key": "expectFail",
+      "status": "kept",
+      "uid": "lq-expectFail",
+      "section": "T",
+      "correction": "Corrected FAIL syntax and narrowed failure to the affected flow rather than claiming all independent flows stop."
+    },
+    {
+      "pdf": 1,
+      "page": 15,
+      "key": "autostop",
+      "status": "kept",
+      "uid": "lq-autostop",
+      "section": "P",
+      "correction": "Consolidated equivalent daily-refresh variants; clarified the idle-compute question without relying on legacy dashboard endpoint matching."
+    },
+    {
+      "pdf": 1,
+      "page": 16,
+      "key": "overwriteSchema",
+      "status": "kept",
+      "uid": "lq-overwriteSchema",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 1,
+      "page": 17,
+      "key": "pyIf",
+      "status": "excluded",
+      "reason": "Standalone Python condition syntax is not a listed objective; the guide covers Lakeflow Jobs conditional tasks."
+    },
+    {
+      "pdf": 1,
+      "page": 18,
+      "key": "truth",
+      "status": "kept",
+      "uid": "lq-truth",
+      "section": "P",
+      "correction": ""
+    },
+    {
+      "pdf": 1,
+      "page": 19,
+      "key": "schemaStorage",
+      "status": "kept",
+      "uid": "lq-schemaStorage",
+      "section": "G",
+      "correction": "Specified a parent catalog with managed storage; schema creation itself does not create a directory containing data."
+    },
+    {
+      "pdf": 1,
+      "page": 20,
+      "key": "externalDrop",
+      "status": "kept",
+      "uid": "lq-externalDrop",
+      "section": "G",
+      "correction": ""
+    },
+    {
+      "pdf": 1,
+      "page": 21,
+      "key": "discount",
+      "status": "kept",
+      "uid": "lq-discount",
+      "section": "T",
+      "correction": "Changed choose two to choose one: only B satisfies the row-level requirements; E duplicates non-discounted rows."
+    },
+    {
+      "pdf": 1,
+      "page": 22,
+      "key": "vacuum",
+      "status": "kept",
+      "uid": "lq-vacuum",
+      "section": "O",
+      "correction": ""
+    },
+    {
+      "pdf": 1,
+      "page": 23,
+      "key": "gold",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 1,
+        "page": 2
+      }
+    },
+    {
+      "pdf": 1,
+      "page": 24,
+      "key": "dashFilters",
+      "status": "excluded",
+      "reason": "Browser visualization/query filter tuning is not a listed optimization objective."
+    },
+    {
+      "pdf": 1,
+      "page": 25,
+      "key": "ucIntegration",
+      "status": "kept",
+      "uid": "lq-ucIntegration",
+      "section": "P",
+      "correction": "Narrowed the broad original integration claim to compatible existing data and storage."
+    },
+    {
+      "pdf": 1,
+      "page": 26,
+      "key": "gitBranches",
+      "status": "kept",
+      "uid": "lq-gitBranches",
+      "section": "C",
+      "correction": ""
+    },
+    {
+      "pdf": 1,
+      "page": 27,
+      "key": "bundle",
+      "status": "kept",
+      "uid": "lq-bundle",
+      "section": "C",
+      "correction": ""
+    },
+    {
+      "pdf": 1,
+      "page": 28,
+      "key": "overwriteHistory",
+      "status": "kept",
+      "uid": "lq-overwriteHistory",
+      "section": "P",
+      "correction": "Qualified the original claim that all historical versions are preserved indefinitely."
+    },
+    {
+      "pdf": 1,
+      "page": 29,
+      "key": "grantUI",
+      "status": "kept",
+      "uid": "lq-grantUI",
+      "section": "G",
+      "correction": "Merged Catalog Explorer and Data Explorer wording variants."
+    },
+    {
+      "pdf": 1,
+      "page": 30,
+      "key": "legacyLocation",
+      "status": "excluded",
+      "reason": "Legacy Hive/DBFS default database directory is outside the Unity Catalog-focused outline."
+    },
+    {
+      "pdf": 2,
+      "page": 1,
+      "key": "explodeSQL",
+      "status": "kept",
+      "uid": "lq-explodeSQL",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 2,
+      "page": 2,
+      "key": "overwriteWhy",
+      "status": "kept",
+      "uid": "lq-overwriteWhy",
+      "section": "P",
+      "correction": "Clarified ambiguous clean-history wording to mean discarding history, making the incorrect claim explicit."
+    },
+    {
+      "pdf": 2,
+      "page": 3,
+      "key": "scheduleEnd",
+      "status": "excluded",
+      "reason": "SQL query-editor refresh schedule expiry is not the Lakeflow Jobs scheduling objective."
+    },
+    {
+      "pdf": 2,
+      "page": 4,
+      "key": "tempCreate",
+      "status": "kept",
+      "uid": "lq-tempCreate",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 2,
+      "page": 5,
+      "key": "merge",
+      "status": "kept",
+      "uid": "lq-merge",
+      "section": "T",
+      "correction": "Removed the original guarantee that MERGE automatically handles all duplicates; source rows must have unambiguous matches."
+    },
+    {
+      "pdf": 2,
+      "page": 6,
+      "key": "explodeDF",
+      "status": "kept",
+      "uid": "lq-explodeDF",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 2,
+      "page": 7,
+      "key": "qualitySchema",
+      "status": "kept",
+      "uid": "lq-qualitySchema",
+      "section": "P",
+      "correction": ""
+    },
+    {
+      "pdf": 2,
+      "page": 8,
+      "key": "tempCreate",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 4
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 9,
+      "key": "merge",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 5
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 10,
+      "key": "explodeDF",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 6
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 11,
+      "key": "qualitySchema",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 7
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 12,
+      "key": "eventlog",
+      "status": "excluded",
+      "reason": "Direct pipeline event-log querying is not a listed monitoring objective; the guide specifies Jobs UI/history and Spark UI."
+    },
+    {
+      "pdf": 2,
+      "page": 13,
+      "key": "classification",
+      "status": "excluded",
+      "reason": "Generic sensitivity-classification taxonomy alone is not a listed control objective; the guide specifies privileges, masks, row filters, and ABAC."
+    },
+    {
+      "pdf": 2,
+      "page": 14,
+      "key": "grantUI",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 1,
+        "page": 29
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 15,
+      "key": "businessCatalog",
+      "status": "kept",
+      "uid": "lq-businessCatalog",
+      "section": "G",
+      "correction": ""
+    },
+    {
+      "pdf": 2,
+      "page": 16,
+      "key": "tempCreate",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 4
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 17,
+      "key": "managed",
+      "status": "kept",
+      "uid": "lq-managed",
+      "section": "G",
+      "correction": "Reworked two conflicting incorrect choices and corrected immediate-delete wording for Unity Catalog managed tables."
+    },
+    {
+      "pdf": 2,
+      "page": 18,
+      "key": "pull",
+      "status": "kept",
+      "uid": "lq-pull",
+      "section": "C",
+      "correction": ""
+    },
+    {
+      "pdf": 2,
+      "page": 19,
+      "key": "uniqueCategory",
+      "status": "kept",
+      "uid": "lq-uniqueCategory",
+      "section": "T",
+      "correction": "Specified product-name summary output; the original detail-row subquery was also a valid way to find violations and would otherwise make two options correct."
+    },
+    {
+      "pdf": 2,
+      "page": 20,
+      "key": "managed",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 17
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 21,
+      "key": "queryDelta",
+      "status": "kept",
+      "uid": "lq-queryDelta",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 2,
+      "page": 22,
+      "key": "tempCreate",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 4
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 23,
+      "key": "pull",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 18
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 24,
+      "key": "uniqueCategory",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 19
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 25,
+      "key": "queryDelta",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 21
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 26,
+      "key": "qualityTool",
+      "status": "kept",
+      "uid": "lq-qualityTool",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 2,
+      "page": 27,
+      "key": "mergeAvoid",
+      "status": "kept",
+      "uid": "lq-mergeAvoid",
+      "section": "T",
+      "correction": "Made key-based duplicate avoidance explicit; MERGE is not a blanket deduplication guarantee."
+    },
+    {
+      "pdf": 2,
+      "page": 28,
+      "key": "namespace",
+      "status": "kept",
+      "uid": "lq-namespace",
+      "section": "G",
+      "correction": ""
+    },
+    {
+      "pdf": 2,
+      "page": 29,
+      "key": "web",
+      "status": "kept",
+      "uid": "lq-web",
+      "section": "P",
+      "correction": ""
+    },
+    {
+      "pdf": 2,
+      "page": 30,
+      "key": "mode",
+      "status": "excluded",
+      "reason": "Detailed continuous/triggered plus development/production pipeline compute lifecycle is not a listed objective."
+    },
+    {
+      "pdf": 2,
+      "page": 31,
+      "key": "qualityTool",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 26
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 32,
+      "key": "mergeAvoid",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 27
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 33,
+      "key": "web",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 29
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 34,
+      "key": "namespace",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 28
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 35,
+      "key": "mode",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 30
+      }
+    },
+    {
+      "pdf": 2,
+      "page": 36,
+      "key": "owner",
+      "status": "kept",
+      "uid": "lq-owner",
+      "section": "G",
+      "correction": "Added the metadata-discovery prerequisite; lack of SELECT alone does not guarantee or prevent owner visibility."
+    },
+    {
+      "pdf": 2,
+      "page": 37,
+      "key": "update",
+      "status": "kept",
+      "uid": "lq-update",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 2,
+      "page": 38,
+      "key": "jobstartup",
+      "status": "kept",
+      "uid": "lq-jobstartup",
+      "section": "P",
+      "correction": "Clarified classic job compute and avoided claiming universally higher operational cost."
+    },
+    {
+      "pdf": 3,
+      "page": 1,
+      "key": "coauthor",
+      "status": "excluded",
+      "reason": "Notebook real-time coauthoring feature trivia is not a listed objective."
+    },
+    {
+      "pdf": 3,
+      "page": 2,
+      "key": "migration",
+      "status": "kept",
+      "uid": "lq-migration",
+      "section": "T",
+      "correction": "Clarified that no listed architecture change is required, not that the code needs no migration work."
+    },
+    {
+      "pdf": 3,
+      "page": 3,
+      "key": "joinLeft",
+      "status": "kept",
+      "uid": "lq-joinLeft",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 3,
+      "page": 4,
+      "key": "tableCreate",
+      "status": "kept",
+      "uid": "lq-tableCreate",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 3,
+      "page": 5,
+      "key": "sundayPython",
+      "status": "excluded",
+      "reason": "Wrapping SQL in standalone Python weekday control flow is outside the listed Jobs conditional-task objective."
+    },
+    {
+      "pdf": 3,
+      "page": 6,
+      "key": "tableCreate",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 4
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 7,
+      "key": "coauthor",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 1
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 8,
+      "key": "migration",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 2
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 9,
+      "key": "joinLeft",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 3
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 10,
+      "key": "sundayPython",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 5
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 11,
+      "key": "nestedCity",
+      "status": "kept",
+      "uid": "lq-nestedCity",
+      "section": "T",
+      "correction": "Specified retaining existing columns: the original select-and-alias choice also extracts a top-level field and was otherwise valid."
+    },
+    {
+      "pdf": 3,
+      "page": 12,
+      "key": "hof",
+      "status": "excluded",
+      "reason": "Listing higher-order Spark SQL functions is not a listed objective."
+    },
+    {
+      "pdf": 3,
+      "page": 13,
+      "key": "delete",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 1,
+        "page": 13
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 14,
+      "key": "autoWorkloads",
+      "status": "kept",
+      "uid": "lq-autoWorkloads",
+      "section": "I",
+      "correction": "Avoided the original misleading batch-versus-streaming dichotomy: Auto Loader can support batch-style scheduled processing using AvailableNow."
+    },
+    {
+      "pdf": 3,
+      "page": 15,
+      "key": "once",
+      "status": "kept",
+      "uid": "lq-once",
+      "section": "I",
+      "correction": "Corrected source readStream, non-aggregated append output mode, and toTable sink. once=True is legacy/deprecated; retained its ingestion concept with an explicit explanation."
+    },
+    {
+      "pdf": 3,
+      "page": 16,
+      "key": "storage",
+      "status": "kept",
+      "uid": "lq-storage",
+      "section": "P",
+      "correction": ""
+    },
+    {
+      "pdf": 3,
+      "page": 17,
+      "key": "shareNotebook",
+      "status": "excluded",
+      "reason": "Sharing notebooks with a person lacking workspace access is not a listed Unity Catalog data-access objective."
+    },
+    {
+      "pdf": 3,
+      "page": 18,
+      "key": "pyOutput",
+      "status": "excluded",
+      "reason": "Standalone Python function tracing is not a listed objective."
+    },
+    {
+      "pdf": 3,
+      "page": 19,
+      "key": "taskValue",
+      "status": "kept",
+      "uid": "lq-taskValue",
+      "section": "J",
+      "correction": ""
+    },
+    {
+      "pdf": 3,
+      "page": 20,
+      "key": "storage",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 16
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 21,
+      "key": "metastoreColocate",
+      "status": "excluded",
+      "reason": "Metastore colocation/performance configuration is not a listed objective."
+    },
+    {
+      "pdf": 3,
+      "page": 22,
+      "key": "shareNotebook",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 17
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 23,
+      "key": "taskValue",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 19
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 24,
+      "key": "pyOutput",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 18
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 25,
+      "key": "metastoreColocate",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 21
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 26,
+      "key": "salesPy",
+      "status": "kept",
+      "uid": "lq-salesPy",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 3,
+      "page": 27,
+      "key": "legacyLocation",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 1,
+        "page": 30
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 28,
+      "key": "dateParts",
+      "status": "kept",
+      "uid": "lq-dateParts",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 3,
+      "page": 29,
+      "key": "notebookRevision",
+      "status": "excluded",
+      "reason": "Notebook automatic revision history trivia is not a listed CI/CD objective; Git branches and bundles are."
+    },
+    {
+      "pdf": 3,
+      "page": 30,
+      "key": "securables",
+      "status": "kept",
+      "uid": "lq-securables",
+      "section": "G",
+      "correction": "Replaced the original Database/Data Location vocabulary with the actual Unity Catalog objects, not a cosmetic product rename."
+    },
+    {
+      "pdf": 3,
+      "page": 31,
+      "key": "grantSelect",
+      "status": "kept",
+      "uid": "lq-grantSelect",
+      "section": "G",
+      "correction": "Corrected principal quoting and stated parent-usage prerequisites."
+    },
+    {
+      "pdf": 3,
+      "page": 32,
+      "key": "grantSelect",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 31
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 33,
+      "key": "except",
+      "status": "kept",
+      "uid": "lq-except",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 3,
+      "page": 34,
+      "key": "autoFeatures",
+      "status": "kept",
+      "uid": "lq-autoFeatures",
+      "section": "I",
+      "correction": ""
+    },
+    {
+      "pdf": 3,
+      "page": 35,
+      "key": "pipelineCreate",
+      "status": "kept",
+      "uid": "lq-pipelineCreate",
+      "section": "J",
+      "correction": "Updated creation UI and clarified declarative dataset dependencies instead of notebook execution ordering."
+    },
+    {
+      "pdf": 3,
+      "page": 36,
+      "key": "createEmpty",
+      "status": "kept",
+      "uid": "lq-createEmpty",
+      "section": "T",
+      "correction": "Merged equivalent empty-table variants and clarified that existing contents may be replaced."
+    },
+    {
+      "pdf": 3,
+      "page": 37,
+      "key": "streamRead",
+      "status": "kept",
+      "uid": "lq-streamRead",
+      "section": "T",
+      "correction": "Replaced legacy LIVE syntax and corrected the original claim that STREAM proves the source itself is a streaming live table."
+    },
+    {
+      "pdf": 3,
+      "page": 38,
+      "key": "streamRead",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 37
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 39,
+      "key": "optimize",
+      "status": "kept",
+      "uid": "lq-optimize",
+      "section": "O",
+      "correction": ""
+    },
+    {
+      "pdf": 3,
+      "page": 40,
+      "key": "dashboardDelay",
+      "status": "excluded",
+      "reason": "Legacy dashboard manual-refresh architecture trivia is not a listed objective."
+    },
+    {
+      "pdf": 3,
+      "page": 41,
+      "key": "vacuumRetention",
+      "status": "kept",
+      "uid": "lq-vacuumRetention",
+      "section": "O",
+      "correction": "Clarified unreferenced-file retention rather than claiming all files older than one week are deleted."
+    },
+    {
+      "pdf": 3,
+      "page": 42,
+      "key": "pool",
+      "status": "kept",
+      "uid": "lq-pool",
+      "section": "P",
+      "correction": ""
+    },
+    {
+      "pdf": 3,
+      "page": 43,
+      "key": "storage",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 16
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 44,
+      "key": "viewLegacyPermission",
+      "status": "kept",
+      "uid": "lq-viewLegacyPermission",
+      "section": "G",
+      "correction": "Corrected the old consumer-needs-base-table-SELECT premise for Unity Catalog SQL warehouses and stated the actual failing permission."
+    },
+    {
+      "pdf": 3,
+      "page": 45,
+      "key": "vacuumPartial",
+      "status": "kept",
+      "uid": "lq-vacuumPartial",
+      "section": "O",
+      "correction": ""
+    },
+    {
+      "pdf": 3,
+      "page": 46,
+      "key": "gitBranches",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 1,
+        "page": 26
+      }
+    },
+    {
+      "pdf": 3,
+      "page": 47,
+      "key": "pythonFunction",
+      "status": "excluded",
+      "reason": "Standalone Python function-definition syntax is not a listed objective."
+    },
+    {
+      "pdf": 3,
+      "page": 48,
+      "key": "shallowClone",
+      "status": "excluded",
+      "reason": "Shallow/deep clone selection is not an explicitly listed objective."
+    },
+    {
+      "pdf": 3,
+      "page": 49,
+      "key": "viewCreate",
+      "status": "kept",
+      "uid": "lq-viewCreate",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 3,
+      "page": 50,
+      "key": "optimizeWhere",
+      "status": "kept",
+      "uid": "lq-optimizeWhere",
+      "section": "O",
+      "correction": "Added partition prerequisite and an upper date bound so the query really targets 2022 only."
+    },
+    {
+      "pdf": 4,
+      "page": 1,
+      "key": "bronze",
+      "status": "kept",
+      "uid": "lq-bronze",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 4,
+      "page": 2,
+      "key": "incremental",
+      "status": "kept",
+      "uid": "lq-incremental",
+      "section": "I",
+      "correction": ""
+    },
+    {
+      "pdf": 4,
+      "page": 3,
+      "key": "hop",
+      "status": "kept",
+      "uid": "lq-hop",
+      "section": "T",
+      "correction": "Specified Bronze input and cleaned output; the original raw-table wording could otherwise be ambiguous."
+    },
+    {
+      "pdf": 4,
+      "page": 4,
+      "key": "jsonStruct",
+      "status": "kept",
+      "uid": "lq-jsonStruct",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 4,
+      "page": 5,
+      "key": "transferOwner",
+      "status": "kept",
+      "uid": "lq-transferOwner",
+      "section": "G",
+      "correction": "Corrected TO syntax/principal quoting and specified an authorized owner."
+    },
+    {
+      "pdf": 4,
+      "page": 6,
+      "key": "hop",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 4,
+        "page": 3
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 7,
+      "key": "incremental",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 4,
+        "page": 2
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 8,
+      "key": "jsonStruct",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 4,
+        "page": 4
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 9,
+      "key": "bronze",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 4,
+        "page": 1
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 10,
+      "key": "transferOwner",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 4,
+        "page": 5
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 11,
+      "key": "hop",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 4,
+        "page": 3
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 12,
+      "key": "createEmpty",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 36
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 13,
+      "key": "streamingVsMV",
+      "status": "kept",
+      "uid": "lq-streamingVsMV",
+      "section": "T",
+      "correction": "Updated legacy live-table SQL names to modern streaming table/materialized view syntax."
+    },
+    {
+      "pdf": 4,
+      "page": 14,
+      "key": "autoStrings",
+      "status": "kept",
+      "uid": "lq-autoStrings",
+      "section": "I",
+      "correction": "Clarified the default configuration; being text-based does not universally force JSON readers to produce strings."
+    },
+    {
+      "pdf": 4,
+      "page": 15,
+      "key": "dashboardDelay",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 40
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 16,
+      "key": "createEmpty",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 36
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 17,
+      "key": "autostop",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 1,
+        "page": 15
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 18,
+      "key": "streamingVsMV",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 4,
+        "page": 13
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 19,
+      "key": "autoStrings",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 4,
+        "page": 14
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 20,
+      "key": "dashboardDelay",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 40
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 21,
+      "key": "autostop",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 1,
+        "page": 15
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 22,
+      "key": "viewCreate",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 49
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 23,
+      "key": "urlDomain",
+      "status": "kept",
+      "uid": "lq-urlDomain",
+      "section": "T",
+      "correction": "Original A and C both extracted the domain and B/D were valid projections. Retaining columns and regex requirement now distinguish one answer; adjusted distractor C."
+    },
+    {
+      "pdf": 4,
+      "page": 24,
+      "key": "goldSource",
+      "status": "kept",
+      "uid": "lq-goldSource",
+      "section": "T",
+      "correction": ""
+    },
+    {
+      "pdf": 4,
+      "page": 25,
+      "key": "csv",
+      "status": "kept",
+      "uid": "lq-csv",
+      "section": "I",
+      "correction": "Corrected the displayed path to match the stated CSV location; keep required external-location permissions in mind for Unity Catalog."
+    },
+    {
+      "pdf": 4,
+      "page": 26,
+      "key": "storage",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 16
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 27,
+      "key": "viewCreate",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 49
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 28,
+      "key": "goldSource",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 4,
+        "page": 24
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 29,
+      "key": "urlDomain",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 4,
+        "page": 23
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 30,
+      "key": "csv",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 4,
+        "page": 25
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 31,
+      "key": "storage",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 16
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 32,
+      "key": "checkpoint",
+      "status": "kept",
+      "uid": "lq-checkpoint",
+      "section": "I",
+      "correction": ""
+    },
+    {
+      "pdf": 4,
+      "page": 33,
+      "key": "copyIdempotent",
+      "status": "kept",
+      "uid": "lq-copyIdempotent",
+      "section": "I",
+      "correction": "Made COPY INTO explicit in the question; the original omitted the executed command."
+    },
+    {
+      "pdf": 4,
+      "page": 34,
+      "key": "web",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 2,
+        "page": 29
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 35,
+      "key": "autoExactlyOnce",
+      "status": "kept",
+      "uid": "lq-autoExactlyOnce",
+      "section": "I",
+      "correction": "Clarified Delta sink and file-ingestion scope; checkpoint state alone does not guarantee every possible external sink."
+    },
+    {
+      "pdf": 4,
+      "page": 36,
+      "key": "alert",
+      "status": "excluded",
+      "reason": "Databricks SQL alert creation and refresh scheduling is not a listed Lakeflow Jobs objective."
+    },
+    {
+      "pdf": 4,
+      "page": 37,
+      "key": "tableCreate",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 4
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 38,
+      "key": "migration",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 2
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 39,
+      "key": "joinLeft",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 3
+      }
+    },
+    {
+      "pdf": 4,
+      "page": 40,
+      "key": "sundayPython",
+      "status": "duplicate",
+      "canonical": {
+        "pdf": 3,
+        "page": 5
+      }
+    }
+  ]
+}
