@@ -78,3 +78,9 @@ Use ☆ Mark for Review on difficult or guessed questions, including correct ans
 `Databricks_Home.html` is the entry point at the repository root. Question pages are grouped under `questions/academy/`, `questions/examtopics/`, `questions/udemy/`, `questions/github/`, and `questions/optional/`. PDFs remain in their existing locations.
 
 After completing a set, the summary shows correct answers, mistakes, and accuracy for each section, ordered by mistake rate. Click a wrong question in the summary to read its answer and explanation. Questions without section tags appear under Other / Unclassified.
+
+## Final exam simulation
+
+Open [Final Mock Exam](questions/mock/Databricks_Final_Mock_Exam.html), also linked from Home. Each attempt selects 55 unique questions only from the syllabus ExamTopics and GitHub pools, with 3 Platform, 12 Ingestion, 12 Transformation, 9 Lakeflow Jobs, 5 CI/CD, 6 Optimization, and 8 Governance questions. These rounded counts follow the May 2026 guide's 6/21/22/16/10/10/15 percent section weights. GitHub questions are manually assigned section tags in this standalone pool.
+
+The 90-minute wall-clock timer continues across tab changes, closure, and refresh, and submits on expiry (on reopening if the page was closed). Answers can be changed and flagged during the exam; grading, correct answers, and Bangla explanations appear only after submission. Results show section scores and the existing 80% practice target. Attempts use separate browser storage and do not change practice-set progress. New attempt returns to the start screen and generates a fresh selection when started.
