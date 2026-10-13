@@ -87,10 +87,24 @@ The 90-minute wall-clock timer continues across tab changes, closure, and refres
 
 ## LeetQuiz
 
-[LeetQuiz](questions/leetquiz/leetquiz.html) contains 77 refined questions from four screenshot PDFs and accessible downloads, with Bangla explanations, saved progress, review marks, and the same timer and grading behavior as ExamTopics. Names updated for the May 2026 guide have a yellow background.
+[LeetQuiz](questions/leetquiz/leetquiz.html) contains 42 questions with Bangla explanations, saved progress, review marks, and the same timer and grading behavior as ExamTopics. Its preserved source bank has 77 refined questions from four screenshot PDFs and accessible downloads; 35 questions overlapping with the syllabus ExamTopics bank were removed from the active page. Names updated for the May 2026 guide have a yellow background.
 
 Across 158 source pages, 60 duplicate copies and 22 unique questions outside the explicit guide objectives were removed. Substantive corrections to ambiguous/outdated questions are disclosed in their explanations and the [audit](leetquiz/refinement-audit.md). This bank is not complete coverage of every guide objective.
 
-The four PDFs in `leetquiz/` now contain 21, 18, 24, and 13 unique questions respectively. Original screenshot PDFs remain in `leetquiz/originals/`.
+The four source-archive PDFs in `leetquiz/` contain 21, 18, 24, and 13 questions respectively. Their historical allocation is preserved and includes questions since removed from the interactive page due to ExamTopics overlap. Original screenshot PDFs remain in `leetquiz/originals/`.
 
 The 12 accessible Next-button downloads add one new time-travel question; 11 overlap with existing LeetQuiz entries and are preserved as source references. See `leetquiz/downloads/import-audit.json`. The four refined PDFs retain their original 76-question allocation.
+
+The larger download collection has 611 Real Exam entries. Together with the 12 Next-button downloads, these contain **197 distinct questions**, after grouping 426 repeated or reworded copies. Browse the [searchable source archive](leetquiz/downloads/unique-questions.html), [Markdown](leetquiz/downloads/unique-questions.md), or [JSON with all source versions](leetquiz/downloads/unique-questions.json). The [source deduplication audit](leetquiz/downloads/unique-questions-audit.json) maps every source entry to its retained source question. This archive preserves source answers and explanations and has not been syllabus-filtered; the active exams below use the reviewed and filtered questions.
+
+The downloaded questions were reviewed against the May 2026 guide: **147 syllabus questions retained and 50 outside the listed objectives excluded**. The original 77-question refined bank also passed this syllabus review. Product-name changes are highlighted yellow in question text, choices, and explanations; behavior/answer corrections are disclosed separately. See the [syllabus audit](leetquiz/downloads/syllabus-refinement-audit.md) for every syllabus decision and correction. These are study-priority judgments against the guide, not an official excluded-question list.
+
+A subsequent comparison with all **209 syllabus ExamTopics questions removed 120 overlapping LeetQuiz entries: 35 from the original bank and 85 from the downloaded bank**. Exact copies, paraphrases, and corrected modernizations of the same source question are grouped; same-topic questions testing different requirements remain. The [cross-bank audit](leetquiz/examtopics-deduplication-audit.md) identifies the retained ExamTopics counterpart for every removal. ExamTopics pages remain unchanged.
+
+The **62 remaining downloads** are mixed across three interactive exam sets linked from Home, and each appears exactly once. Together with the original page's 42 questions, the LeetQuiz section now contains 104 active question entries. Each set has saved progress, review marks, answer grading, section results, and explanations. Stable question IDs preserve saved answers and review marks for retained questions. Timers restart for the changed set contents.
+
+| Set | Questions | Timer |
+| --- | ---: | --- |
+| [LeetQuiz Download Exam 1](questions/leetquiz/LeetQuiz_Download_Exam_1.html) | 21 | 24 minutes 30 seconds |
+| [LeetQuiz Download Exam 2](questions/leetquiz/LeetQuiz_Download_Exam_2.html) | 21 | 24 minutes 30 seconds |
+| [LeetQuiz Download Exam 3](questions/leetquiz/LeetQuiz_Download_Exam_3.html) | 20 | 23 minutes 20 seconds |

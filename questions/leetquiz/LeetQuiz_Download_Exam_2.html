@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeetQuiz Download Exam 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f6f9; --surface: #ffffff; --surface-2: #f7f9fb; --ink: #1c2430; --muted: #5d6b7c;
+  --line: #dde3ea; --accent: #1d5fb4; --accent-soft: #e6effa; --accent-ink: #ffffff;
+  --ok: #17803d; --ok-soft: #e3f6e9; --bad: #c42b2b; --bad-soft: #fde8e8;
+  --warn: #b7791f; --warn-soft: #fff6e0; --code-bg: #f1f3f6; --rn-bg: #ffe866; --rn-ink: #3b2f00; --shadow: 0 1px 2px rgba(16,24,40,.06), 0 4px 16px rgba(16,24,40,.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f141b; --surface: #171e27; --surface-2: #1c2530; --ink: #e5eaf0; --muted: #98a5b5;
+    --line: #2b3643; --accent: #5b9cf0; --accent-soft: #1b2a3d; --accent-ink: #0f141b;
+    --ok: #4cc27a; --ok-soft: #15301f; --bad: #f07070; --bad-soft: #3a1c1c;
+    --warn: #e0ac4f; --warn-soft: #33290f; --code-bg: #111821; --rn-bg: #ffe866; --rn-ink: #3b2f00; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f141b; --surface: #171e27; --surface-2: #1c2530; --ink: #e5eaf0; --muted: #98a5b5;
+  --line: #2b3643; --accent: #5b9cf0; --accent-soft: #1b2a3d; --accent-ink: #0f141b;
+  --ok: #4cc27a; --ok-soft: #15301f; --bad: #f07070; --bad-soft: #3a1c1c;
+  --warn: #e0ac4f; --warn-soft: #33290f; --code-bg: #111821; --rn-bg: #ffe866; --rn-ink: #3b2f00; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: "Inter", "Hind Siliguri", "Kohinoor Bangla", "Noto Sans Bengali", system-ui, sans-serif;
+  font-size: 16px; line-height: 1.6;
+}
+.bn, .explain { font-family: "Hind Siliguri", "Kohinoor Bangla", "Noto Sans Bengali", "Inter", system-ui, sans-serif; }
+code, pre { font-family: "JetBrains Mono", Menlo, Consolas, "Hind Siliguri", monospace; }
+
+/* Top bar */
+.topbar { position: sticky; top: 0; z-index: 10; background: var(--surface); border-bottom: 1px solid var(--line); }
+.topbar-inner { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.brand { font-weight: 700; font-size: 15px; letter-spacing: -.01em; flex: 1 1 auto; min-width: 0; }
+.home-link { font-weight: 600; font-size: 14px; color: var(--accent); text-decoration: none; border: 1px solid var(--line);
+             border-radius: 8px; padding: 6px 10px; white-space: nowrap; }
+.home-link:hover { background: var(--accent-soft); }
+.brand small { display: block; font-weight: 500; color: var(--muted); font-size: 12px; }
+.stats { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { font-size: 13px; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); white-space: nowrap; }
+.chip b { font-variant-numeric: tabular-nums; }
+.chip.ok b { color: var(--ok); } .chip.bad b { color: var(--bad); }
+.icon-btn { background: transparent; border: 1px solid var(--line); color: var(--ink); border-radius: 8px; padding: 6px 10px; font: inherit; font-size: 13px; cursor: pointer; }
+.icon-btn:hover { background: var(--surface-2); }
+.progress { height: 3px; background: var(--line); }
+.progress > div { height: 100%; width: 0; background: var(--accent); transition: width .25s ease; }
+
+/* Layout */
+.wrap { max-width: 1180px; margin: 0 auto; padding: 20px 16px 48px; display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 20px; align-items: start; }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); } .side { order: 2; } }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+.qcard { padding: 22px 24px 24px; }
+@media (max-width: 600px) { .qcard { padding: 16px; } }
+.qhead { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.qnum { font-weight: 700; font-size: 18px; }
+.qnum span { color: var(--muted); font-weight: 500; font-size: 14px; }
+.qnum .src-num { font-size: 12px; margin-left: 4px; }
+.status-tag { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+.status-tag.ok { background: var(--ok-soft); color: var(--ok); }
+.status-tag.bad { background: var(--bad-soft); color: var(--bad); }
+.status-tag.pending { background: var(--accent-soft); color: var(--accent); }
+
+.stem { font-size: 16px; }
+.stem p { margin: 0 0 10px; }
+.stem pre, .opt pre, .explain pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; font-size: 13px; line-height: 1.5; margin: 8px 0; }
+.stem code, .opt code, .explain code { font-size: .88em; }
+:not(pre) > code { background: var(--code-bg); border: 1px solid var(--line); padding: 1px 5px; border-radius: 5px; overflow-wrap: anywhere; }
+pre code { background: none; border: 0; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 14px; display: block; overflow-x: auto; }
+th, td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+th { background: var(--surface-2); }
+
+/* Options */
+.opts { display: grid; gap: 10px; margin: 18px 0 0; }
+.opt { display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left; background: var(--surface); color: var(--ink);
+       border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 14px; font: inherit; font-size: 15px; cursor: pointer;
+       transition: border-color .15s, background .15s; }
+.opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.opt .key { flex: 0 0 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px;
+            border: 1.5px solid var(--line); background: var(--surface-2); }
+.opt .txt { flex: 1 1 auto; min-width: 0; padding-top: 2px; }
+.opt .txt pre { margin: 2px 0 0; }
+.opt .mark { flex: 0 0 auto; font-weight: 700; font-size: 13px; padding-top: 3px; }
+.opts.multi .opt .key { border-radius: 6px; }
+.multi-note { margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--warn); background: var(--warn-soft);
+              border-radius: 8px; padding: 6px 12px; display: inline-block; }
+.multi-note[hidden] { display: none; }
+/* syllabus annotations */
+.oos { margin: 0 0 14px; padding: 10px 14px; border: 2px solid var(--bad); background: var(--bad-soft); color: var(--bad);
+       border-radius: 10px; font-size: 15px; line-height: 1.5; }
+.oos strong { color: var(--bad); font-weight: 800; }
+.oos .oos-why { display: block; font-size: 13px; font-weight: 500; margin-top: 2px; }
+.rn-new { background: var(--rn-bg); color: var(--rn-ink); font-weight: 700; padding: 0 4px; border-radius: 4px; }
+.rn-old { color: var(--bad); font-size: .92em; }
+.rn-old s { text-decoration-color: var(--bad); text-decoration-thickness: 2px; }
+.rn-x { font-weight: 800; }
+.pbtn { position: relative; }
+.pbtn.oos-q::after { content: ""; position: absolute; top: 3px; right: 3px; width: 7px; height: 7px; border-radius: 50%;
+                     background: var(--bad); box-shadow: 0 0 0 1.5px var(--surface); }
+.legend .sw.l-oos { border-radius: 50%; background: var(--bad); border-color: var(--bad); width: 9px; height: 9px; }
+.opt.missed { border-color: var(--ok); border-style: dashed; background: var(--ok-soft); }
+.opt.missed .key { background: var(--surface); border-color: var(--ok); color: var(--ok); }
+.opt.missed .mark { color: var(--ok); }
+.opt.selected { border-color: var(--accent); background: var(--accent-soft); }
+.opt.selected .key { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.opt:disabled { cursor: default; }
+.opt.correct { border-color: var(--ok); background: var(--ok-soft); }
+.opt.correct .key { background: var(--ok); border-color: var(--ok); color: #fff; }
+.opt.correct .mark { color: var(--ok); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opt.wrong .key { background: var(--bad); border-color: var(--bad); color: #fff; }
+.opt.wrong .mark { color: var(--bad); }
+.opt.dim { opacity: .55; }
+
+.actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 18px; }
+.btn { font: inherit; font-weight: 600; font-size: 15px; border-radius: 10px; padding: 10px 18px; cursor: pointer; border: 1.5px solid transparent; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-primary:disabled { opacity: .45; cursor: not-allowed; }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover:not(:disabled) { background: var(--surface-2); }
+.btn-ghost:disabled { opacity: .4; cursor: not-allowed; }
+.hint { font-size: 13px; color: var(--muted); }
+.spacer { flex: 1; }
+
+/* Result + explanation */
+.result { margin-top: 18px; border-radius: 10px; padding: 12px 14px; font-weight: 600; display: none; }
+.result.ok { display: block; background: var(--ok-soft); color: var(--ok); border: 1px solid var(--ok); }
+.result.bad { display: block; background: var(--bad-soft); color: var(--bad); border: 1px solid var(--bad); }
+.explain { display: none; margin-top: 16px; padding-top: 6px; border-top: 1px dashed var(--line); font-size: 15.5px; }
+.explain.show { display: block; }
+.explain .ans { display: none; }
+.explain h3 { font-size: 17px; color: var(--accent); margin: 20px 0 8px; }
+.explain h4 { font-size: 15.5px; margin: 16px 0 6px; }
+.explain p { margin: 8px 0; }
+.explain ul, .explain ol { padding-left: 22px; margin: 8px 0; }
+.explain blockquote { margin: 10px 0; padding: 8px 14px; border-left: 4px solid var(--warn); background: var(--warn-soft); border-radius: 0 8px 8px 0; }
+.explain blockquote p { margin: 4px 0; }
+.planes { margin: 10px 0; }
+.plane { border: 1.5px solid var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 8px 14px; }
+.plane.data { border-color: var(--ok); background: var(--ok-soft); }
+.plane p { text-align: center; margin: 2px 0; }
+.plane .sub { color: var(--muted); font-size: 14px; }
+.arrow { text-align: center; color: var(--muted); margin: 6px 0; font-size: 14px; }
+
+/* Sidebar */
+.side { padding: 16px; position: sticky; top: 76px; }
+@media (max-width: 900px) { .side { position: static; } }
+.side h2 { font-size: 14px; margin: 0 0 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); gap: 6px; }
+.pbtn { font: inherit; font-size: 13px; font-weight: 600; height: 36px; border-radius: 8px; border: 1.5px solid var(--line);
+        background: var(--surface-2); color: var(--ink); cursor: pointer; font-variant-numeric: tabular-nums; }
+.pbtn:hover { border-color: var(--accent); }
+.pbtn.sel { border-color: var(--accent); color: var(--accent); }
+.pbtn.ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.pbtn.bad { background: var(--bad); border-color: var(--bad); color: #fff; }
+.pbtn.current { outline: 2px solid var(--ink); outline-offset: 1px; }
+.legend > div { display: flex; align-items: center; flex-wrap: wrap; gap: 0 4px; }
+.legend { display: grid; gap: 6px; margin-top: 14px; font-size: 13px; color: var(--muted); }
+.legend .sw { display: inline-block; flex: none; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; border: 1.5px solid var(--line); }
+.legend .l-ok { background: var(--ok); border-color: var(--ok); }
+.legend .l-bad { background: var(--bad); border-color: var(--bad); }
+.legend .l-sel { border-color: var(--accent); }
+.side .btn { width: 100%; margin-top: 14px; font-size: 14px; padding: 8px 12px; }
+.kbd-help { font-size: 12px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+kbd { font-family: "JetBrains Mono", monospace; font-size: 11px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; background: var(--surface-2); }
+
+/* Summary */
+.summary { padding: 28px 24px; text-align: center; display: none; margin-top: 20px; }
+.summary.show { display: block; }
+.summary .big { font-size: 42px; font-weight: 700; margin: 6px 0; font-variant-numeric: tabular-nums; }
+.qhead { flex-wrap: wrap; }
+.qhead .qnum { flex: 1 1 240px; }
+.qhead-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+#markReviewBtn { white-space: nowrap; }
+.pbtn.review-marked { position: relative; }
+.pbtn.review-marked::before { content: "★"; position: absolute; top: -8px; right: -5px; z-index: 1;
+  display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
+  background: #fff4b8; color: #704400; border: 2px solid var(--surface); font-size: 19px; line-height: 1;
+  box-shadow: 0 1px 3px rgba(0,0,0,.3); pointer-events: none; }
+#reviewPanel { margin-top: 14px; }
+#reviewList { display: grid; gap: 6px; }
+.mistake-summary { margin-top: 20px; text-align: left; }
+.mistake-summary h2 { font-size: 18px; }
+.mistake-summary h3 { font-size: 16px; margin-bottom: 8px; }
+.section-table-wrap { overflow-x: auto; }
+.section-results { display: table; }
+.mistake-link { display: block; width: 100%; text-align: left; margin: 6px 0; white-space: normal; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="home-link" href="../../Databricks_Home.html" title="Home">← Home</a>
+    <div class="brand">LeetQuiz Download Exam 2<small>May 2026 syllabus · 21 questions · 24m 30s · updated terms in yellow</small><small>Source corrections are disclosed in explanations.</small></div>
+    <div class="stats">
+      <span class="chip" id="timerChip"><span id="timerLabel">Time left</span> <b id="sTimer" role="timer" aria-label="Remaining time">00:00</b></span>
+      <button class="icon-btn" id="pauseTimerBtn" type="button">Pause</button>
+      <button class="icon-btn" id="resetTimerBtn" type="button" title="Restart the timer without clearing answers">Reset Timer</button>
+      <span class="chip">Answered <b id="sAnswered">0</b>/<b id="sTotal">0</b></span>
+      <span class="chip ok">Correct <b id="sCorrect">0</b></span>
+      <span class="chip bad">Wrong <b id="sWrong">0</b></span>
+      <span class="chip">Score <b id="sPct">0%</b></span>
+    </div>
+    <button class="icon-btn" id="themeBtn" title="Toggle theme">◐ Theme</button>
+  </div>
+  <div class="progress"><div id="progressBar"></div></div>
+</header>
+
+<div style="max-width:1180px;margin:16px auto 0;padding:0 16px;font-size:14px">77 unique syllabus questions from the four PDFs and accessible downloads. <span class="rn-new">Yellow = updated name</span>. <a href="../../leetquiz/refinement-audit.md">Refinement audit</a> · <a href="../../leetquiz/refined-questions.json">Question data</a>. This is a practice bank, not a claim of complete syllabus coverage.</div>
+<div class="wrap">
+  <main>
+    <article class="card qcard" id="qcard">
+      <div class="qhead">
+        <div class="qnum" id="qnum"></div>
+        <div class="qhead-actions">
+          <div class="status-tag" id="statusTag"></div>
+          <button class="btn btn-ghost" id="markReviewBtn" type="button" aria-pressed="false">☆ Mark for Review</button>
+        </div>
+      </div>
+      <div class="stem" id="stem"></div>
+      <div class="multi-note bn" id="multiNote" hidden></div>
+      <div class="opts" id="opts" role="radiogroup" aria-label="Options"></div>
+      <div class="actions">
+        <button class="btn btn-primary" id="revealBtn" disabled>উত্তর দেখুন (Reveal Answer)</button>
+        <span class="hint bn" id="hint">আগে একটি option বেছে নিন</span>
+      </div>
+      <div class="result bn" id="result"></div>
+      <div class="explain" id="explain"></div>
+      <div class="actions" style="margin-top:22px">
+        <button class="btn btn-ghost" id="prevBtn">← Previous</button>
+        <span class="spacer"></span>
+        <button class="btn btn-ghost" id="nextBtn">Next →</button>
+      </div>
+    </article>
+    <section class="card summary" id="summary">
+      <div class="bn" style="color:var(--muted)">সব প্রশ্নের উত্তর দেওয়া হয়েছে 🎉</div>
+      <div class="big" id="sumScore"></div>
+      <div class="bn" id="sumText"></div>
+      <section class="mistake-summary" aria-label="Mistakes by section">
+        <h2>Section performance</h2>
+        <p id="mistakeAdvice"></p>
+        <div class="section-table-wrap">
+          <table class="section-results"><thead><tr><th scope="col">Section</th><th scope="col">Correct / Total</th><th scope="col">Wrong</th><th scope="col">Accuracy</th></tr></thead><tbody id="sectionResults"></tbody></table>
+        </div>
+        <h2>Review your mistakes</h2>
+        <div id="mistakeQuestions"></div>
+      </section>
+      <button class="btn btn-ghost" id="summaryReviewBtn" type="button">Review Marked Questions</button>
+      <p style="margin-top:16px"><a class="home-link" href="../../Databricks_Home.html">← Home-এ ফিরে যান</a></p>
+    </section>
+  </main>
+
+  <aside class="card side">
+    <h2>Questions</h2>
+    <div class="palette" id="palette"></div>
+    <div class="legend bn">
+      <div><span class="sw l-ok"></span>সঠিক</div>
+      <div><span class="sw l-bad"></span>ভুল</div>
+      <div><span class="sw l-sel"></span>বেছে নেওয়া, এখনো জমা হয়নি</div>
+      <div><span class="sw"></span>উত্তর দেওয়া হয়নি</div>
+      <div>★ Marked for review</div>
+      <div><span class="sw l-oos"></span>বর্তমান syllabus-এর বাইরে</div>
+      <div><span class="rn-new">হলুদ নাম</span><span>= May 2026 syllabus-এর নতুন নাম</span></div>
+    </div>
+    <button class="btn btn-ghost" id="reviewMarkedBtn" type="button">Review Marked Questions</button>
+    <section id="reviewPanel" hidden aria-label="Marked questions">
+      <h2>Marked for Review</h2>
+      <p id="reviewEmpty">No marked questions yet. Use ☆ Mark for Review on a question.</p>
+      <div id="reviewList"></div>
+    </section>
+    <button class="btn btn-ghost" id="nextUnBtn">পরের বাকি প্রশ্ন →</button>
+    <button class="btn btn-ghost" id="retryWrongBtn">ভুলগুলো আবার দিন</button>
+    <button class="btn btn-ghost" id="resetBtn">এই পেজ রিসেট করুন</button>
+    <div class="kbd-help">Keyboard: <kbd>A</kbd>–<kbd>E</kbd> select · <kbd>Enter</kbd> reveal · <kbd>←</kbd> <kbd>→</kbd> navigate</div>
+  </aside>
+</div>
+
+<script>
+const QUESTIONS = [{"uid": "lqd-002", "n": 1, "label": "LeetQuiz Download Exam 2 · lqd-002 · Platform", "stem": "<div style=\"white-space: pre-wrap\">A data architect is designing a data model that works for both video-based machine learning workloads and highly audited batch ETL/ELT workloads.\n\nWhich of the following describes how using a data lakehouse can help the data architect meet the needs of both workloads?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">A data lakehouse requires very little data modeling.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">A data lakehouse combines compute and storage for simple governance.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">A data lakehouse provides autoscaling for compute clusters.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">A data lakehouse stores unstructured data and is ACID-compliant.</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">A data lakehouse fully exists in the cloud.</div>"}], "sec": "P", "answer": ["D"], "explain": "<p class=\"ans\">Answer: D</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">A lakehouse combines the best aspects of data lakes (supporting unstructured data like video, flexible storage formats) and data warehouses (ACID transactions, schema enforcement, and reliable governance), making it well-suited for both video-based machine learning and highly audited batch ETL/ELT workloads. Specifically, it can store large unstructured data such as video and still provide ACID transactions and schema enforcement for audited batch operations. Option A is incorrect because modeling is still important; option B is incorrect because lakehouses decouple compute and storage (not combine) for scalability and governance; option C is true of some platforms but not a defining characteristic addressing the requirement; option E is not universally true and is not relevant to the workload needs.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 1: platform architecture, Delta Lake/Unity Catalog foundations, or compute characteristics and workload selection.</p><p><a href=\"https://www.leetquiz.com/quiz/cmgwamutc0001qc0fkmfsb826/see?quizType=REAL_EXAM&amp;page=75\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-002\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-007", "n": 2, "label": "LeetQuiz Download Exam 2 · lqd-007 · Platform", "stem": "<div style=\"white-space: pre-wrap\">Which of the following statements describes Delta Lake?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">Delta Lake is an open source analytics engine used for big data workloads.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">Delta Lake is an open format storage layer that delivers reliability, security, and performance.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Delta Lake is an open source platform to help manage the complete machine learning lifecycle.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">Delta Lake is an open source data storage format for distributed data.</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">Delta Lake is an open format storage layer that processes data.</div>"}], "sec": "P", "answer": ["B"], "explain": "<p class=\"ans\">Answer: B</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nDelta Lake is correctly described as &quot;an open format storage layer that delivers reliability, security, and performance&quot; (Option B). Here&#x27;s why:\n\nDelta Lake is an open-source storage layer that sits on top of data lakes and provides ACID transactions, scalable metadata handling, and unified streaming and batch data processing.\n\nOption A is incorrect because this describes Apache Spark, not Delta Lake. Spark is the analytics engine, while Delta Lake is the storage layer.\n\nOption C is incorrect because this describes MLflow, which is a separate platform for managing the machine learning lifecycle.\n\nOption D is partially correct but incomplete. While Delta Lake is indeed an open-source data storage format for distributed data, the most accurate and comprehensive description is Option B, which emphasizes its role as a storage layer delivering reliability, security, and performance.\n\nOption E is incorrect because Delta Lake doesn&#x27;t process data - it stores data. Data processing is handled by engines like Apache Spark.\n\nDelta Lake&#x27;s key features include:\n\nACID transactions\nSchema enforcement and evolution\nTime travel (data versioning)\nUnified batch and streaming\nData reliability and quality\nSign in to unlock 🔓\nPowered By\nGPT 5.6 Luna powered</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 1: platform architecture, Delta Lake/Unity Catalog foundations, or compute characteristics and workload selection.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya33000701k0p4hger6n/see?quizType=REAL_EXAM&amp;page=76\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-007\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-014", "n": 3, "label": "LeetQuiz Download Exam 2 · lqd-014 · Governance", "stem": "<div style=\"white-space: pre-wrap\">A junior data engineer needs to create a managed Delta table main.retail.my_table. <span class=\"rn-new\" title=\"Previously: legacy DBFS managed storage\">Unity Catalog</span> should manage its metadata and data-file lifecycle, using the configured managed storage. Which command should they run?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">CREATE TABLE main.retail.my_table (id STRING, value STRING) USING DELTA LOCATION &#x27;s3://external-data/my_table&#x27;;</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">CREATE MANAGED TABLE main.retail.my_table (id STRING, value STRING) USING DELTA;</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">CREATE VIEW main.retail.my_table AS SELECT 1 AS id;</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">CREATE TABLE main.retail.my_table (id STRING, value STRING) USING DBFS;</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">CREATE TABLE main.retail.my_table (id STRING, value STRING) USING DELTA;</div>"}], "sec": "G", "answer": ["E"], "explain": "<p class=\"ans\">Answer: E</p><h3>Source correction</h3><ul><li>Kept the managed-versus-external creation concept; replaced legacy DBFS storage assumptions with Unity Catalog managed storage.</li></ul><h3>Explanation</h3><div style=\"white-space: pre-wrap\">CREATE TABLE without LOCATION creates a managed table. Unity Catalog selects its managed storage and manages its lifecycle. A table created with an external LOCATION is external.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 7: Unity Catalog managed/external lifecycle, hierarchy, UI/SQL privileges, ownership, or row filters.</p><p><a href=\"https://docs.databricks.com/aws/en/tables/managed\" target=\"_blank\" rel=\"noopener noreferrer\">Databricks documentation</a></p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya34000c01k0es4yhpdg/see?quizType=REAL_EXAM&amp;page=77\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-014\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-019", "n": 4, "label": "LeetQuiz Download Exam 2 · lqd-019 · Ingestion", "stem": "<div style=\"white-space: pre-wrap\">A data engineer has ingested a JSON file into a table raw_table with the following schema:\n\ntransaction_id STRING,\npayload ARRAY&lt;customer_id:STRING, date:TIMESTAMP, store_id:STRING&gt;\n\n\nThe data engineer wants to efficiently extract the date of each transaction into a table with the following schema:\n\ntransaction_id STRING,\ndate TIMESTAMP\n\n\nWhich of the following commands should the data engineer run to complete this task?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">SELECT transaction_id, explode(payload) FROM raw_table;</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">SELECT transaction_id, payload.date FROM raw_table;</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">SELECT transaction_id, date FROM raw_table;</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">SELECT transaction_id, payload[date] FROM raw_table;</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">SELECT transaction_id, date from payload FROM raw_table;</div>"}], "sec": "I", "answer": ["B"], "explain": "<p class=\"ans\">Answer: B</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nThe correct answer is B because:\n\nThe payload field is an array of structs with fields including date\nIn Spark SQL, when you have an array of structs, you can directly access struct fields using dot notation (payload.date)\nThis will return an array of dates for each transaction_id\n\nWhy the other options are incorrect:\n\nOption A: explode(payload) would create multiple rows for each element in the array, which is not what&#x27;s needed here. The requirement is to extract just the date field from the payload array.\n\nOption C: date alone would not work because the date field is nested inside the payload array struct, not at the top level of the table schema.\n\nKey Concept: When working with arrays of structs in Spark SQL, you can use dot notation to access struct fields directly, which returns an array of the specified field values. This is more efficient than using explode() when you only need to extract specific fields from the struct elements.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 2: batch/streaming/incremental ingestion, Auto Loader schema/discovery, COPY INTO, connectors, JDBC, and nested input.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya34000k01k09oyh1v1l/see?quizType=REAL_EXAM&amp;page=78\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-019\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-023", "n": 5, "label": "LeetQuiz Download Exam 2 · lqd-023 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">Which of the following commands will return records from an existing Delta table my_table where duplicates have been removed?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">DROP DUPLICATES FROM my_table;</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">SELECT * FROM my_table WHERE duplicate = False;</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">SELECT DISTINCT * FROM my_table;</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">MERGE INTO my_table a USING new_records b ON a.id = b.id WHEN NOT MATCHED THEN INSERT *;</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">MERGE INTO my_table a USING new_records b;</div>"}], "sec": "T", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nLet&#x27;s analyze each option:\n\nA. DROP DUPLICATES FROM my_table; - This is not a valid SQL command. There is no DROP DUPLICATES statement in standard SQL or Databricks SQL.\n\nB. SELECT * FROM my_table WHERE duplicate = False; - This assumes there&#x27;s a column named duplicate in the table, which is unlikely. Even if such a column existed, it wouldn&#x27;t necessarily remove all duplicates from the result set.\n\nC. SELECT DISTINCT * FROM my_table; - ✅ CORRECT - This command will return all records from my_table but will remove duplicate rows (rows where all column values are identical). The DISTINCT keyword ensures that only unique rows are returned.\n\nD. MERGE INTO my_table a USING new_records b ON a.id = b.id WHEN NOT MATCHED THEN INSERT *; - This is a MERGE operation that inserts new records from new_records into my_table where they don&#x27;t already exist. It doesn&#x27;t remove duplicates from the existing table.\n\nE. MERGE INTO my_table a USING new_records b; - This is an incomplete MERGE statement that will result in a syntax error because it&#x27;s missing the required ON clause and WHEN conditions.\n\nTherefore, only option C (SELECT DISTINCT * FROM my_table;) will return records from the existing Delta table with duplicates removed.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya34000h01k0mxnqax04/see?quizType=REAL_EXAM&amp;page=78\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-023\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-028", "n": 6, "label": "LeetQuiz Download Exam 2 · lqd-028 · Ingestion", "stem": "<div style=\"white-space: pre-wrap\">A data engineer has configured a Structured Streaming job to read from a table, manipulate the data, and then perform a streaming write into a new table.\n\nThe code block used by the data engineer is below:\n\n(spark.readStream.table(&quot;sales&quot;)\n  .withColumn(&quot;avg_price&quot;, col(&quot;sales&quot;) / col(&quot;units&quot;))\n  .writeStream\n  .option(&quot;checkpointLocation&quot;, checkpointPath)\n  .outputMode(&quot;complete&quot;)\n  .______\n  .table(&quot;new_sales&quot;))\n\n\nIf the data engineer only wants the query to execute a single micro-batch to process all of the available data, which of the following lines of code should the data engineer use to fill in the blank?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">trigger(once=True)</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">trigger(continuous=&quot;once&quot;)</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">processingTime(&quot;once&quot;)</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">trigger(processingTime=&quot;once&quot;)</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">processingTime(1)</div>"}], "sec": "I", "answer": ["A"], "explain": "<p class=\"ans\">Answer: A</p><h3>Source correction</h3><ul><li>Corrected the source example to use spark.readStream.table before writeStream; spark.table produces a batch DataFrame.</li></ul><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nIn Apache Spark Structured Streaming, when you want to execute a streaming query that processes all available data in a single micro-batch and then stops, you should use the trigger(once=True) option.\n\nWhy Option A is correct:\ntrigger(once=True) is specifically designed for this use case\nIt processes all available data in one batch and then terminates the streaming query\nThis is commonly used for batch-like processing using the streaming framework\nWhy other options are incorrect:\nB. trigger(continuous=&quot;once&quot;): This syntax is incorrect. Continuous processing mode doesn&#x27;t use &quot;once&quot; as a parameter\nC. processingTime(&quot;once&quot;): This is invalid syntax. processingTime expects a time interval string like &quot;1 second&quot; or &quot;5 minutes&quot;\nD. trigger(processingTime=&quot;once&quot;): Invalid syntax - processingTime trigger expects a time interval, not the string &quot;once&quot;\nE. processingTime(1): This would trigger the query every 1 millisecond, creating continuous micro-batches, not a single batch\nKey Points:\ntrigger(once=True) is the proper way to execute a one-time batch processing using Structured Streaming\nThis is useful for scenarios where you want to process all available data at once and then stop\nThe query will process all data that has accumulated since the last trigger and then terminate</div><p>May 2026 guide: Section 2: batch/streaming/incremental ingestion, Auto Loader schema/discovery, COPY INTO, connectors, JDBC, and nested input.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya35000p01k0sfyf3c1z/see?quizType=REAL_EXAM&amp;page=79\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-028\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-032", "n": 7, "label": "LeetQuiz Download Exam 2 · lqd-032 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">Which of the following Structured Streaming queries is performing a hop from a Bronze table to a Silver table?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">(spark.readStream.table(&quot;sales&quot;)\n  .groupBy(&quot;store&quot;)\n  .agg(sum(&quot;sales&quot;))\n  .writeStream\n  .option(&quot;checkpointLocation&quot;, checkpointPath)\n  .outputMode(&quot;complete&quot;)\n  .table(&quot;aggregatedSales&quot;))\n</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">(spark.readStream.table(&quot;sales&quot;)\n  .agg(sum(&quot;sales&quot;), sum(&quot;units&quot;))\n  .writeStream\n  .option(&quot;checkpointLocation&quot;, checkpointPath)\n  .outputMode(&quot;complete&quot;)\n  .table(&quot;aggregatedSales&quot;))\n</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">(spark.readStream.table(&quot;sales&quot;)\n  .withColumn(&quot;avgPrice&quot;, col(&quot;sales&quot;) / col(&quot;units&quot;))\n  .writeStream\n  .option(&quot;checkpointLocation&quot;, checkpointPath)\n  .outputMode(&quot;append&quot;)\n  .table(&quot;cleanedSales&quot;))\n</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">(spark.readStream.load(rawSalesLocation)\n  .writeStream\n  .option(&quot;checkpointLocation&quot;, checkpointPath)\n  .outputMode(&quot;append&quot;)\n  .table(&quot;uncleanedSales&quot;))\n</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">(spark.read.load(rawSalesLocation)\n  .writeStream\n</div>"}], "sec": "T", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Source correction</h3><ul><li>Corrected the source example to use spark.readStream.table before writeStream; spark.table produces a batch DataFrame.</li></ul><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nIn the Databricks medallion architecture:\n\nBronze tables contain raw, unprocessed data\nSilver tables contain cleaned, validated, and enriched data\nGold tables contain aggregated data for business intelligence\n\nAnalysis of each option:\n\nOption A &amp; B: These perform aggregations (groupBy and agg) which are typically associated with creating Gold tables from Silver tables, not Bronze to Silver transformations.\n\nOption C: This query performs data cleaning/enrichment by calculating avgPrice using withColumn(col(&quot;sales&quot;) / col(&quot;units&quot;)) and writes to a table named cleanedSales. This represents the typical Bronze to Silver transformation where raw data is cleaned and enriched.\n\nOption D: This writes to a table named uncleanedSales, indicating it&#x27;s still in the Bronze stage (raw data).\n\nOption E: This is an incomplete query and doesn&#x27;t represent a valid transformation.\n\nThe key indicators that Option C represents a Bronze to Silver hop are:\n\nData transformation/cleaning (withColumn operation)\nOutput table named cleanedSales (suggesting cleaned data)\nappend output mode (appropriate for incremental data processing)\n\nTherefore, Option C correctly represents moving from Bronze (raw data) to Silver (cleaned, processed data).\n\nSign in to unlock 🔓\nPowered By\nGPT 5.6 Luna powered</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya36000u01k0mz1dvpvu/see?quizType=REAL_EXAM&amp;page=80\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-032\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-035", "n": 8, "label": "LeetQuiz Download Exam 2 · lqd-035 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">Which of the following describes the change the colleague needs to make to the query?\n\nA data engineer has written the following query:\n\nSELECT *\nFROM json.`/path/to/json/file.json`;\n\n\nThe data engineer asks a colleague for help to convert this query for use in a Delta Live\nTables (<span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span>) pipeline. The query should create the first table in the <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span> pipeline.\nWhich of the following describes the change the colleague needs to make to the query?\n</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">They need to add a COMMENT line at the beginning of the query.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">They need to add a <span class=\"rn-new\" title=\"Previously: CREATE LIVE TABLE\">CREATE OR REFRESH MATERIALIZED VIEW</span> table_name AS line at the beginning of the query.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">They need to add a live. prefix prior to json. in the FROM line.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">They need to add a CREATE <span class=\"rn-new\" title=\"Previously: DELTA LIVE TABLE\">Lakeflow Spark Declarative Pipeline</span> table_name AS line at the beginning of the query.</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">They need to add the cloud_files(...) wrapper to the JSON file path.</div>"}], "sec": "T", "answer": ["B"], "explain": "<p class=\"ans\">Answer: B</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">The correct answer is B. They need to add a <span class=\"rn-new\" title=\"Previously: CREATE LIVE TABLE\">CREATE OR REFRESH MATERIALIZED VIEW</span> table_name AS line at the beginning of the query.\n\nHere&#x27;s the detailed explanation:\n\nIn <span class=\"rn-new\" title=\"Previously: Delta Live Tables\">Lakeflow Spark Declarative Pipelines</span> (<span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span>), you define tables using SQL by prefixing standard SQL queries with <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span>-specific declarations. The basic syntax for creating a table is:\n\n<span class=\"rn-new\" title=\"Previously: CREATE LIVE TABLE\">CREATE OR REFRESH MATERIALIZED VIEW</span> table_name\nAS\nSELECT * FROM json.`/path/to/json/file.json`;\n\n\nLet&#x27;s examine why the other options are incorrect:\n\nA. They need to add a COMMENT line at the beginning of the query. - While comments are good practice, they are not required for the query to function in <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span>.\nC. They need to add a live. prefix prior to json. in the FROM line. - The live. prefix is used to reference other tables within the same <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span> pipeline, not to read external data sources.\nD. They need to add a CREATE <span class=\"rn-new\" title=\"Previously: DELTA LIVE TABLE\">Lakeflow Spark Declarative Pipeline</span> table_name AS line at the beginning of the query. - The correct keyword is <span class=\"rn-new\" title=\"Previously: CREATE LIVE TABLE\">CREATE OR REFRESH MATERIALIZED VIEW</span>, not CREATE <span class=\"rn-new\" title=\"Previously: DELTA LIVE TABLE\">Lakeflow Spark Declarative Pipeline</span>.\nE. They need to add the cloud_files(...) wrapper to the JSON file path. - While cloud_files is an excellent function for autoloader-style ingestion and is commonly used in <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span> pipelines for incremental processing, it&#x27;s not strictly required to convert this specific query. The original query using the json. data source will work in <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span> when wrapped with the proper <span class=\"rn-new\" title=\"Previously: CREATE LIVE TABLE\">CREATE OR REFRESH MATERIALIZED VIEW</span> syntax. The cloud_files wrapper would be an enhancement for better pipeline performance and incremental processing, but the fundamental change needed is the <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span> table creation syntax.\n\nThe core requirement to convert any standard Databricks SQL query for use in a <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span> pipeline is to add the appropriate <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span> declaration (<span class=\"rn-new\" title=\"Previously: CREATE LIVE TABLE\">CREATE OR REFRESH MATERIALIZED VIEW</span>..., CREATE LIVE VIEW..., etc.) at the beginning.\n\nSign in to unlock 🔓\nPowered By\nGPT 5.6 Luna powered\nThe current SQL declaration for this materialized result is CREATE OR REFRESH MATERIALIZED VIEW; keep the SELECT query as its definition.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya36000x01k09ol7e4t9/see?quizType=REAL_EXAM&amp;page=80\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-035\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-041", "n": 9, "label": "LeetQuiz Download Exam 2 · lqd-041 · Lakeflow Jobs", "stem": "<div style=\"white-space: pre-wrap\">A data engineer has set up a notebook to automatically process using a Job. The data engineer&#x27;s manager wants to version control the schedule due to its complexity.\n\nWhich of the following approaches can the data engineer use to obtain a version-controllable configuration of the Job&#x27;s schedule?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">They can link the Job to notebooks that are a part of a <span class=\"rn-new\" title=\"Previously: Databricks Repo\">Databricks Git Folder</span>.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">They can submit the Job once on a Job cluster.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">They can download the JSON description of the Job from the Job&#x27;s page.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">They can submit the Job once on an all-purpose cluster.</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">They can download the XML description of the Job from the Job&#x27;s page.</div>"}], "sec": "J", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nThe correct answer is C because:\n\nOption C: Downloading the JSON description of the Job from the Job&#x27;s page provides a complete, machine-readable configuration file that includes the schedule settings. This JSON file can be stored in a version control system (like Git) and tracked over time, allowing for proper version control of the Job&#x27;s schedule configuration.\nWhy other options are incorrect:\n\nOption A: Linking the Job to notebooks in a <span class=\"rn-new\" title=\"Previously: Databricks Repo\">Databricks Git Folder</span> only version controls the notebook code, not the Job&#x27;s schedule configuration itself.\n\nOption B: Submitting the Job once on a Job cluster doesn&#x27;t provide a version-controllable configuration file for the schedule.\n\nOption D: Submitting the Job once on an all-purpose cluster similarly doesn&#x27;t provide a configuration file for version control.\n\nOption E: <span class=\"rn-new\" title=\"Previously: Databricks Jobs\">Lakeflow Jobs</span> use JSON format for configuration, not XML. Downloading XML description is not a valid option.\n\nBest Practice:\n\nThe JSON description contains all Job settings including the schedule, which can be committed to version control, enabling tracking of changes, rollback capabilities, and collaborative development of Job configurations.\n\nSign in to unlock 🔓\nPowered By\nGPT 5.6 Luna powered</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 4: notebook/pipeline tasks, parameters, dependencies, retries, scheduling, and task control flow.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya36001201k04o45tw5t/see?quizType=REAL_EXAM&amp;page=81\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-041\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-119", "n": 10, "label": "LeetQuiz Download Exam 2 · lqd-119 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">A data engineer is working with two tables. Each of these tables is displayed below in its entirety.\n\nsales\n\ncustomer_id\tspend\tunits\na1\t28.94\t7\na3\t874.12\t23\na4\t8.99\t1\n\nfavorite_stores\n\ncustomer_id\tstore_id\na1\ts1\na2\ts1\na4\ts2\n\nThe data engineer runs the following query to join these tables together:\n\nSELECT\n    sales.customer_id,\n    sales.spend,\n    favorite_stores.store_id\nFROM sales\nLEFT JOIN favorite_stores\nON sales.customer_id = favorite_stores.customer_id;\n\n\nWhich of the following will be returned by the above query?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">customer_id\tspend\tstore_id\na1\t28.94\ts1\na4\t8.99\ts2</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">customer_id\tspend\tunits\tstore_id\na1\t28.94\t7\ts1\na4\t8.99\t1\ts2</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">customer_id\tspend\tstore_id\na1\t28.94\ts1\na3\t874.12\tNULL\na4\t8.99\ts2</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">customer_id\tspend\tstore_id\na1\t28.94\ts1\na2\tNULL\ts1\na3\t874.12\tNULL\na4\t8.99\ts2</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">customer_id\tspend\tstore_id\na1\t28.94\ts1\na2\tNULL\ts1\na4\t8.99\ts2</div>"}], "sec": "T", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nThe correct answer is C because:\n\nLEFT JOIN returns all rows from the left table (sales) and matching rows from the right table (favorite_stores).\nWhen there&#x27;s no match in the right table, NULL values are returned for the right table&#x27;s columns.\nThe query selects only sales.customer_id, sales.spend, and favorite_stores.store_id.\n\nAnalysis of each row:\n\na1: Exists in both tables → store_id = s1\na3: Exists only in sales table → store_id = NULL (no match in favorite_stores)\na4: Exists in both tables → store_id = s2\na2: Exists only in favorite_stores → NOT included because LEFT JOIN starts from sales table\n\nWhy other options are incorrect:\n\nA: Missing row for a3 (should be included with NULL store_id)\nB: Includes units column (not selected in query) and missing row for a3\nD: Includes row for a2 (should not be included as it&#x27;s not in sales table)\nE: Includes row for a2 (should not be included) and missing row for a3</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmkcd75o2001n01jwxjt5q6zs/see?quizType=REAL_EXAM&amp;page=100\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-119\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-133", "n": 11, "label": "LeetQuiz Download Exam 2 · lqd-133 · Optimization", "stem": "<div style=\"white-space: pre-wrap\">Where in the Spark UI are two of the primary indicators that a partition is spilling to disk?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">Query’s detail screen and Job’s detail screen</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">Stage’s detail screen and Executor’s log files</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Driver’s and Executor’s log files</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">Executor’s detail screen and Executor’s log files</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">Stage’s detail screen and Query’s detail screen</div>"}], "sec": "O", "answer": ["B"], "explain": "<p class=\"ans\">Answer: B</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nIn the Spark UI, the primary indicators that a partition is spilling to disk are found in:\n\nStage&#x27;s detail screen - This shows metrics for each stage, including spill metrics (disk spill bytes, memory spill bytes, etc.)\nExecutor&#x27;s log files - These contain detailed logging information about spill events during task execution\nWhy other options are incorrect:\nA: Query&#x27;s detail screen provides high-level query information but not detailed spill metrics for individual partitions\nC: Driver&#x27;s log files don&#x27;t typically contain partition-level spill information; spill happens at executor level\nD: Executor&#x27;s detail screen shows resource usage but not specific spill indicators\nE: Query&#x27;s detail screen doesn&#x27;t show partition-level spill details\nKey Points:\nSpilling occurs when data doesn&#x27;t fit in memory and needs to be written to disk\nThe Stage detail screen in Spark UI provides aggregated spill statistics for each stage\nExecutor logs contain detailed messages about when and how much data is spilled during task execution\nMonitoring these indicators helps identify memory pressure and optimize Spark job performance</div><p>May 2026 guide: Section 6: job run monitoring, Spark bottlenecks/tuning, library/startup diagnosis, or Delta file-layout maintenance supporting optimization.</p><p><a href=\"https://www.leetquiz.com/quiz/cmkcd7gpt002l01jvhnjg4gbk/see?quizType=REAL_EXAM&amp;page=116\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-133\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-140", "n": 12, "label": "LeetQuiz Download Exam 2 · lqd-140 · CI/CD", "stem": "<div style=\"white-space: pre-wrap\">The Databricks CLI is used to trigger a run of an existing job by passing the job_id parameter. The response that the job run request has been submitted successfully includes a field run_id. Which statement describes what the number alongside this field represents?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">The job_id and number of times the job has been run are concatenated and returned.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">The total number of jobs that have been run in the workspace.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">The number of times the job definition has been run in this workspace.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">The job_id is returned in this field.</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">The globally unique ID of the newly triggered run.</div>"}], "sec": "C", "answer": ["E"], "explain": "<p class=\"ans\">Answer: E</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nIn Databricks, when you trigger a job run using the CLI or API, the response includes a run_id field. This run_id is a globally unique identifier for that specific job run instance.\n\nKey points:\n\nGlobally unique: Each job run gets a unique identifier that distinguishes it from all other job runs in the workspace\nNot concatenated with job_id: The run_id is not simply a concatenation of job_id and run count\nNot a simple counter: It&#x27;s not just a sequential number of how many times the job has been run\nNot the job_id itself: The run_id is different from the job_id\nNot workspace-wide job count: It doesn&#x27;t represent the total number of jobs run in the workspace\n\nThis unique run_id is essential for:\n\nTracking the specific run&#x27;s status and progress\nRetrieving logs and results for that particular execution\nMonitoring and debugging individual job runs\nReferencing the run in subsequent API calls\n\nWhen you submit a job run request successfully, Databricks generates and returns this unique identifier to allow you to monitor and manage that specific execution.</div><p>May 2026 guide: Section 5: workspace Git development, environment configuration, bundles, or CLI management of automated workspace assets.</p><p><a href=\"https://www.leetquiz.com/quiz/cmkcd7gpu002v01jvfa5lrwad/see?quizType=REAL_EXAM&amp;page=117\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-140\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-146", "n": 13, "label": "LeetQuiz Download Exam 2 · lqd-146 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">How do you reference another table defined in the same modern <span class=\"rn-new\" title=\"Previously: Delta Live Tables\">Lakeflow Spark Declarative Pipelines</span> pipeline using SQL?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">FROM stream(table)</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">FROM catalog.schema.table</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\"><span class=\"rn-new\" title=\"Previously: FROM live.table_name\">FROM table_name</span></div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">FROM dlt_table</div>"}], "sec": "T", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Source correction</h3><ul><li>Updated the legacy LIVE namespace requirement while retaining the pipeline dataset-reference concept.</li></ul><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Refer to the pipeline dataset by name. The LIVE virtual schema is a legacy compatibility mechanism; modern pipelines use the configured catalog/schema and do not require LIVE.table_name.</div><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://docs.databricks.com/aws/en/ldp/developer/sql-dev\" target=\"_blank\" rel=\"noopener noreferrer\">Databricks documentation</a></p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pbx000001jxsuafm6ab/see?quizType=REAL_EXAM&amp;page=144\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-146\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-151", "n": 14, "label": "LeetQuiz Download Exam 2 · lqd-151 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">What is the correct syntax to hint Spark to broadcast a small table during a join?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">OPTIMIZE FOR BROADCAST</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">SET spark.join.type=&#x27;BROADCAST&#x27;</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">/*+ BROADCAST(small_table) */</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">WITH (BROADCAST)</div>"}], "sec": "T", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">The correct syntax to apply a broadcast join hint in Spark SQL is to use a comment block right after the SELECT statement: SELECT /*+ BROADCAST(table_name) */ .... This instructs the Catalyst optimizer to broadcast the specified table to all worker nodes, speeding up the join.</div><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pby000501jx491qzqid/see?quizType=REAL_EXAM&amp;page=145\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-151\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-155", "n": 15, "label": "LeetQuiz Download Exam 2 · lqd-155 · Governance", "stem": "<div style=\"white-space: pre-wrap\">Which Unity Catalog privilege allows a user to see that a catalog exists in the UI without granting access to its data?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">USAGE</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">SELECT</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">BROWSE</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">READ METADATA</div>"}], "sec": "G", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">In Unity Catalog, the BROWSE privilege enables users to discover data by viewing the metadata (names, descriptions, existence) of securable objects like catalogs, schemas, and tables in the UI (Catalog Explorer) or via search. However, it does not grant them SELECT permission to read the actual data, nor does it grant USAGE, which is required to actually traverse the catalog or schema to query the objects within it.</div><p>May 2026 guide: Section 7: Unity Catalog managed/external lifecycle, hierarchy, UI/SQL privileges, ownership, or row filters.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pby000901jxwtbqgcc7/see?quizType=REAL_EXAM&amp;page=145\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-155\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-161", "n": 16, "label": "LeetQuiz Download Exam 2 · lqd-161 · Platform", "stem": "<div style=\"white-space: pre-wrap\">What is a key technical restriction of using Serverless Jobs?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">They only support SQL.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">They have a strict 15-minute execution limit.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">They cannot use manual cluster init scripts or custom Docker images.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">They can only process CSV files.</div>"}], "sec": "P", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Serverless compute abstracts away the underlying infrastructure. Therefore, it does not support cluster-level customizations like manual init scripts or custom Docker containers that rely on direct OS/infrastructure access.</div><p>May 2026 guide: Section 1: platform architecture, Delta Lake/Unity Catalog foundations, or compute characteristics and workload selection.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pbz000f01jx9wymux40/see?quizType=REAL_EXAM&amp;page=146\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-161\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-165", "n": 17, "label": "LeetQuiz Download Exam 2 · lqd-165 · Governance", "stem": "<div style=\"white-space: pre-wrap\">A team needs to filter rows dynamically so UK analysts only see UK data. Which Unity Catalog feature handles this?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">Shallow Clones</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">Column-level Security</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Row-Level Security (RLS) Filter Functions</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">Creating separate Views manually</div>"}], "sec": "G", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Unity Catalog supports Row-Level Security (RLS) using filter functions. These allow you to define rules that evaluate dynamically based on the current user&#x27;s identity or group memberships, limiting the rows returned to only those they are authorized to see.</div><p>May 2026 guide: Section 7: Unity Catalog managed/external lifecycle, hierarchy, UI/SQL privileges, ownership, or row filters.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pc0000j01jxmukktmar/see?quizType=REAL_EXAM&amp;page=147\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-165\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-168", "n": 18, "label": "LeetQuiz Download Exam 2 · lqd-168 · Platform", "stem": "<div style=\"white-space: pre-wrap\">An engineer needs to physically roll a Delta table back to its state from 48 hours ago due to corruption. Which command is best?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">RESTORE TABLE</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">VACUUM</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">SHALLOW CLONE</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">Time Travel SELECT</div>"}], "sec": "P", "answer": ["A"], "explain": "<p class=\"ans\">Answer: A</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">The RESTORE TABLE command physically reverts a Delta table to a prior state based on a timestamp or version number. It modifies the table state to point to the historical version, rolling back any accidental or corruptive changes.</div><p>May 2026 guide: Section 1: platform architecture, Delta Lake/Unity Catalog foundations, or compute characteristics and workload selection.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pc0000m01jx5h7i83aq/see?quizType=REAL_EXAM&amp;page=147\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-168\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-177", "n": 19, "label": "LeetQuiz Download Exam 2 · lqd-177 · Platform", "stem": "<div style=\"white-space: pre-wrap\">An engineer runs a VACUUM command. What is the default retention period before files are permanently deleted?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">24 hours</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">7 days</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">30 days</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">0 hours</div>"}], "sec": "P", "answer": ["B"], "explain": "<p class=\"ans\">Answer: B</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">The VACUUM command removes data files that are no longer referenced by a Delta table and are older than the retention threshold. By default, this threshold is 7 days (168 hours) to prevent accidental data loss and allow for point-in-time recovery via Time Travel.</div><p>May 2026 guide: Section 1: platform architecture, Delta Lake/Unity Catalog foundations, or compute characteristics and workload selection.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pc2000z01jxk813a3jl/see?quizType=REAL_EXAM&amp;page=149\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-177\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-185", "n": 20, "label": "LeetQuiz Download Exam 2 · lqd-185 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">Which SQL structure is most efficient to view only the most recent update for each &#x27;order_id&#x27; based on &#x27;transaction_timestamp&#x27;?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">GROUP BY</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">SELECT DISTINCT</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Window Function (row_number() OVER ...)</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">Self-Join</div>"}], "sec": "T", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">A Window Function using row_number() OVER (PARTITION BY order_id ORDER BY transaction_timestamp DESC) is the most efficient and standard SQL approach to isolate the latest record per ID without losing other column data. Databricks SQL makes this even easier by allowing the QUALIFY clause to filter the results in one step.</div><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pc3001901jx2p0rkcs3/see?quizType=REAL_EXAM&amp;page=150\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-185\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-193", "n": 21, "label": "LeetQuiz Download Exam 2 · lqd-193 · Governance", "stem": "<div style=\"white-space: pre-wrap\">An engineer needs to use ALTER COLUMN and SET TBLPROPERTIES on a Unity Catalog table. Assuming required parent usage privileges, which is the least-privilege table grant among these options?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">SELECT</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">USAGE</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">MODIFY</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">ALL PRIVILEGES (or Ownership)</div>"}], "sec": "G", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Source correction</h3><ul><li>Specified the ALTER operations and corrected the least-privilege answer to MODIFY.</li></ul><h3>Explanation</h3><div style=\"white-space: pre-wrap\">MODIFY permits ALTER COLUMN, ADD/DROP COLUMN, and SET/UNSET TBLPROPERTIES. Other ALTER TABLE operations can require ownership or MANAGE; do not assume every alteration uses the same permission.</div><p>May 2026 guide: Section 7: Unity Catalog managed/external lifecycle, hierarchy, UI/SQL privileges, ownership, or row filters.</p><p><a href=\"https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-alter-table\" target=\"_blank\" rel=\"noopener noreferrer\">Databricks documentation</a></p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pc5001j01jx0lrk0mbf/see?quizType=REAL_EXAM&amp;page=152\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-193\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}];
+const PAGE_ID = "leetquiz-download-exam-2";
+const GKEY = "dbx-de-progress-v2";          // shared with the home page: { answers: {uid: {sel, revealed}}, current: {page: idx} }
+function loadG() {
+  try { const g = JSON.parse(localStorage.getItem(GKEY)); if (g && g.answers) { g.current = g.current || {}; return g; } } catch (e) {}
+  return { answers: {}, current: {} };
+}
+function writeG(g) { try { localStorage.setItem(GKEY, JSON.stringify(g)); } catch (e) {} }
+// one-time move of answers saved by the older single-set pages (keyed by index) into the shared store
+function migrateOld(g, qs) {
+  const olds = {}; let changed = false;
+  qs.forEach((q) => {
+    if (!q.src) return;
+    const [ok, oi] = q.src;
+    if (!(ok in olds)) { try { olds[ok] = JSON.parse(localStorage.getItem(ok)); } catch (e) { olds[ok] = null; } }
+    const o = olds[ok];
+    if (!o || !o.ans || !o.ans[oi]) return;
+    const e = o.ans[oi];
+    const sel = typeof e.sel === "string" ? [e.sel] : (e.sel || []);
+    if (!g.answers[q.uid] && sel.length) g.answers[q.uid] = { sel, revealed: !!e.revealed };
+    delete o.ans[oi]; o.__dirty = true; changed = true;
+  });
+  for (const k in olds) {
+    const o = olds[k];
+    if (o && o.__dirty) {
+      delete o.__dirty;
+      try { if (Object.keys(o.ans).length) localStorage.setItem(k, JSON.stringify(o)); else localStorage.removeItem(k); } catch (e) {}
+    }
+  }
+  return changed;
+}
+let G0 = loadG();
+if (migrateOld(G0, QUESTIONS)) writeG(G0);
+// ans[i] = { sel: ["B"], revealed: true, hide: true }
+//   revealed = graded (counts in stats, palette green/red); hide = graded by leaving the question, answer not shown yet
+let state = { current: G0.current[PAGE_ID] || 0, ans: {} };
+QUESTIONS.forEach((q, i) => { const e = G0.answers[q.uid]; if (e && e.sel && e.sel.length) state.ans[i] = { sel: [...e.sel], revealed: !!e.revealed, hide: !!e.hide }; });
+function save() {
+  const g = loadG();                         // re-read so other tabs' progress is kept
+  QUESTIONS.forEach((q, i) => {
+    const e = state.ans[i];
+    if (e && e.sel && e.sel.length) g.answers[q.uid] = e.hide ? { sel: e.sel, revealed: !!e.revealed, hide: true } : { sel: e.sel, revealed: !!e.revealed };
+    else delete g.answers[q.uid];
+  });
+  g.current[PAGE_ID] = state.current;
+  g.last = PAGE_ID;
+  writeG(g);
+}
+(() => { const g = loadG(); g.last = PAGE_ID; writeG(g); })();   // home page "continue" button
+
+try { const t = localStorage.getItem("dbx-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+document.getElementById("themeBtn").onclick = () => {
+  const root = document.documentElement;
+  const isDark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme = isDark ? "light" : "dark";
+  try { localStorage.setItem("dbx-theme", root.dataset.theme); } catch (e) {}
+};
+
+const $ = (id) => document.getElementById(id);
+const N = QUESTIONS.length;
+$("sTotal").textContent = N;
+
+// Count only time spent on a visible question page; save remaining time on exit.
+const TIMER_KEY = "dbx-set-timer-v1:" + PAGE_ID + ":288f6198f9e9";
+const TIMER_DURATION = N * 70;
+let timer;
+let timerDeadline = null;
+function persistTimer() {
+  timer.remainingMs = remainingTimerMs();
+  try { localStorage.setItem(TIMER_KEY, JSON.stringify(timer)); } catch (e) {}
+}
+function remainingTimerMs() {
+  return timerDeadline === null ? timer.remainingMs : Math.max(0, timerDeadline - Date.now());
+}
+function pauseTimer() {
+  timer.remainingMs = remainingTimerMs();
+  timerDeadline = null;
+  persistTimer();
+  renderTimer();
+}
+function resumeTimer() {
+  if (!document.hidden && !timer.completed && !timer.paused && timerDeadline === null) {
+    timerDeadline = Date.now() + timer.remainingMs;
+  }
+  renderTimer();
+}
+function resetTimer() {
+  timerDeadline = null;
+  timer = { remainingMs: TIMER_DURATION * 1000, completed: false, paused: false };
+  resumeTimer();
+  persistTimer();
+}
+function timerSeconds() {
+  return Math.ceil(remainingTimerMs() / 1000);
+}
+function renderTimer() {
+  const seconds = timerSeconds();
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const clock = (hours ? hours + ":" : "") + String(minutes).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
+  $("sTimer").textContent = clock;
+  $("timerLabel").textContent = seconds === 0 ? "Time’s up" : timer.completed ? "Completed" : timerDeadline === null ? "Paused" : "Time left";
+  $("timerChip").classList.toggle("bad", seconds === 0);
+  $("pauseTimerBtn").textContent = timer.paused ? "Resume" : "Pause";
+  $("pauseTimerBtn").disabled = timer.completed || seconds === 0;
+  $("pauseTimerBtn").setAttribute("aria-pressed", String(!!timer.paused));
+  $("timerChip").title = `${N} questions × 70 seconds. Total: ${TIMER_DURATION} seconds. You can continue practicing after time runs out.`;
+}
+function syncTimer(done) {
+  if (done && !timer.completed) {
+    pauseTimer();
+    timer.completed = true;
+    persistTimer();
+  } else if (!done && timer.completed) {
+    resetTimer();
+  }
+  renderTimer();
+}
+try { timer = JSON.parse(localStorage.getItem(TIMER_KEY)); } catch (e) {}
+// Preserve timers saved by the earlier deadline-based version.
+if (timer && Number.isFinite(timer.deadline) && timer.remainingMs === undefined) {
+  timer = {
+    remainingMs: timer.remaining === null ? Math.max(0, timer.deadline - Date.now()) : timer.remaining * 1000,
+    completed: timer.remaining !== null
+  };
+}
+if (!timer || !Number.isFinite(timer.remainingMs) || timer.remainingMs < 0 || timer.remainingMs > TIMER_DURATION * 1000 || typeof timer.completed !== "boolean") resetTimer();
+else {
+  timer.paused = !!timer.paused;
+  resumeTimer();
+}
+$("pauseTimerBtn").onclick = () => {
+  if (timer.completed || timerSeconds() === 0) return;
+  timer.paused = !timer.paused;
+  if (timer.paused) pauseTimer();
+  else { resumeTimer(); persistTimer(); }
+};
+$("resetTimerBtn").onclick = resetTimer;
+setInterval(() => { persistTimer(); renderTimer(); }, 1000);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) pauseTimer();
+  else resumeTimer();
+});
+window.addEventListener("pagehide", pauseTimer);
+window.addEventListener("pageshow", resumeTimer);
+
+
+// Review marks are independent of answers and survive quiz resets.
+const REVIEW_KEY = "dbx-question-review-v1";
+let reviews = loadReviews();
+function loadReviews() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(REVIEW_KEY));
+    if (saved && typeof saved === "object" && !Array.isArray(saved)) return saved;
+  } catch (e) {}
+  return {};
+}
+function reviewEntry(i) {
+  return reviews[QUESTIONS[i].uid] || { marked: false, note: "" };
+}
+function saveReview(marked, note) {
+  const uid = QUESTIONS[state.current].uid;
+  reviews = loadReviews();
+  if (marked || note) reviews[uid] = { marked, note };
+  else delete reviews[uid];
+  try { localStorage.setItem(REVIEW_KEY, JSON.stringify(reviews)); } catch (e) {}
+}
+function renderReview() {
+  const e = reviewEntry(state.current);
+  $("markReviewBtn").textContent = e.marked ? "★ Marked for Review" : "☆ Mark for Review";
+  $("markReviewBtn").setAttribute("aria-pressed", String(!!e.marked));
+  const marked = QUESTIONS.map((q, i) => i).filter(i => reviewEntry(i).marked);
+  $("reviewMarkedBtn").textContent = `Review Marked Questions (${marked.length})`;
+  $("summaryReviewBtn").textContent = `Review Marked Questions (${marked.length})`;
+  $("reviewList").replaceChildren();
+  $("reviewEmpty").hidden = marked.length > 0;
+  marked.forEach(i => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "btn btn-ghost";
+    b.textContent = `★ Question ${i + 1}`;
+    b.title = QUESTIONS[i].label;
+    b.onclick = () => go(i);
+    $("reviewList").appendChild(b);
+  });
+}
+$("markReviewBtn").onclick = () => {
+  const e = reviewEntry(state.current);
+  saveReview(!e.marked, e.note || "");
+  renderReview(); renderPalette();
+};
+function showReviewList() {
+  $("reviewPanel").hidden = false;
+  $("reviewPanel").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  const first = $("reviewList").querySelector("button");
+  if (first) first.focus({ preventScroll: true });
+}
+$("reviewMarkedBtn").onclick = showReviewList;
+$("summaryReviewBtn").onclick = showReviewList;
+
+function entry(i) { return state.ans[i] || null; }
+function sameSet(a, b) { return a.length === b.length && a.every((x) => b.includes(x)); }
+function isCorrect(i) { const e = entry(i); return !!(e && e.revealed && sameSet(e.sel, QUESTIONS[i].answer)); }
+function hasSel(e) { return !!(e && e.sel && e.sel.length); }
+// a complete selection that has not been graded yet: leaving the question grades it silently
+function pending(i) { const e = entry(i); return !!(hasSel(e) && !e.revealed && e.sel.length === QUESTIONS[i].answer.length); }
+const BN_DIGITS = "০১২৩৪৫৬৭৮৯";
+function bn(n) { return String(n).replace(/\d/g, (d) => BN_DIGITS[d]); }
+
+function render() {
+  const i = state.current, q = QUESTIONS[i], e = entry(i);
+  const revealed = !!(e && e.revealed && !e.hide);   // answer + explanation visible
+  const locked = !!(e && e.revealed && e.hide);       // graded on leaving, answer still hidden
+  $("qnum").innerHTML = `Question ${i + 1} <span>/ ${N}</span> <span class="src-num">· ${q.label}</span>`;
+
+  const tag = $("statusTag");
+  const multi = q.answer.length > 1;
+  if (revealed) { const ok = isCorrect(i); tag.className = "status-tag " + (ok ? "ok" : "bad"); tag.textContent = ok ? "Correct" : "Wrong"; }
+  else if (hasSel(e)) { tag.className = "status-tag pending"; tag.textContent = locked ? "Submitted" : "Selected"; }
+  else { tag.className = "status-tag"; tag.textContent = ""; }
+
+  $("stem").innerHTML = q.stem;
+
+  const note = $("multiNote");
+  note.hidden = !multi;
+  note.textContent = multi ? `একাধিক উত্তর: ${bn(q.answer.length)}টি option বেছে নিন (Choose ${q.answer.length})` : "";
+  const opts = $("opts");
+  opts.className = "opts" + (multi ? " multi" : "");
+  opts.setAttribute("role", multi ? "group" : "radiogroup");
+  opts.innerHTML = "";
+  q.options.forEach((o) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.setAttribute("role", multi ? "checkbox" : "radio");
+    b.dataset.k = o.k;
+    let mark = "";
+    if (revealed) {
+      b.disabled = true;
+      const isAns = q.answer.includes(o.k), isSel = e.sel.includes(o.k);
+      if (isAns && isSel) { b.classList.add("correct"); mark = "✓ আপনার উত্তর"; }
+      else if (isAns) { b.classList.add(multi ? "missed" : "correct"); mark = "✓ সঠিক"; }
+      else if (isSel) { b.classList.add("wrong"); mark = "✗ আপনার উত্তর"; }
+      else b.classList.add("dim");
+    } else if (hasSel(e) && e.sel.includes(o.k)) {
+      b.classList.add("selected");
+    }
+    if (locked) b.disabled = true;
+    b.setAttribute("aria-checked", hasSel(e) && e.sel.includes(o.k) ? "true" : "false");
+    b.innerHTML = `<span class="key">${o.k}</span><span class="txt">${o.html}</span>${mark ? `<span class="mark bn">${mark}</span>` : ""}`;
+    b.onclick = () => select(o.k);
+    opts.appendChild(b);
+  });
+
+  const reveal = $("revealBtn");
+  reveal.style.display = revealed ? "none" : "";
+  const need = q.answer.length, have = hasSel(e) ? e.sel.length : 0;
+  reveal.disabled = have !== need;
+  const hint = $("hint");
+  hint.style.display = revealed || (have === need && !locked) ? "none" : "";
+  hint.textContent = locked ? "উত্তর জমা হয়েছে (ডান পাশের তালিকায় সবুজ/লাল)। ব্যাখ্যা দেখতে Reveal চাপুন" : need > 1 ? `আরও ${bn(need - have)}টি option বেছে নিন` : "আগে একটি option বেছে নিন";
+
+  const res = $("result");
+  if (revealed) {
+    const ok = isCorrect(i);
+    const ans = q.answer.join(", "), mine = [...e.sel].sort().join(", ");
+    res.className = "result bn " + (ok ? "ok" : "bad");
+    res.textContent = ok ? `✅ সঠিক! উত্তর: ${ans}` : `❌ ভুল। আপনি দিয়েছেন ${mine}, সঠিক উত্তর: ${ans}`;
+    $("explain").innerHTML = q.explain;
+    $("explain").classList.add("show");
+  } else {
+    res.className = "result bn";
+    $("explain").innerHTML = "";
+    $("explain").classList.remove("show");
+  }
+
+  $("prevBtn").disabled = i === 0;
+  $("nextBtn").disabled = i === N - 1;
+  renderReview();
+  renderPalette();
+  renderStats();
+}
+
+function renderPalette() {
+  const p = $("palette");
+  if (!p.children.length) {
+    QUESTIONS.forEach((q, i) => {
+      const b = document.createElement("button");
+      b.className = "pbtn"; b.textContent = i + 1; b.title = q.label;
+      b.onclick = () => go(i);
+      p.appendChild(b);
+    });
+  }
+  [...p.children].forEach((b, i) => {
+    const e = entry(i);
+    b.className = "pbtn";
+    if (reviewEntry(i).marked) b.classList.add("review-marked");
+    b.setAttribute("aria-label", `Question ${i + 1}${reviewEntry(i).marked ? ", marked for review" : ""}`);
+    if (e && e.revealed) b.classList.add(isCorrect(i) ? "ok" : "bad");
+    else if (hasSel(e)) b.classList.add("sel");
+    if (i === state.current) b.classList.add("current");
+    if (QUESTIONS[i].oos) { b.classList.add("oos-q"); if (!b.title.includes("syllabus")) b.title += " · out of current syllabus"; }
+  });
+}
+
+const SECTION_NAMES = {
+  P: "Platform", I: "Ingestion", T: "Transformation", J: "Lakeflow Jobs",
+  C: "CI/CD", O: "Optimization", G: "Governance", unclassified: "Other / Unclassified"
+};
+function sectionResults() {
+  const groups = {};
+  QUESTIONS.forEach((q, i) => {
+    const key = q.sec || "unclassified";
+    if (!groups[key]) groups[key] = { name: SECTION_NAMES[key] || key, total: 0, correct: 0, mistakes: [] };
+    const group = groups[key]; group.total++;
+    if (isCorrect(i)) group.correct++;
+    else if (entry(i) && entry(i).revealed) group.mistakes.push(i);
+  });
+  return Object.values(groups).sort((a, b) => b.mistakes.length / b.total - a.mistakes.length / a.total || b.mistakes.length - a.mistakes.length || a.name.localeCompare(b.name));
+}
+function renderMistakeSummary() {
+  const groups = sectionResults();
+  const weak = groups.filter(g => g.mistakes.length);
+  $("mistakeAdvice").textContent = weak.length ? "Focus your revision on: " + weak.map(g => `${g.name} (${g.mistakes.length} wrong)`).join(", ") + ". Sections with the highest mistake rate appear first." : "Perfect score! No mistakes in this set.";
+  const rows = $("sectionResults"); rows.replaceChildren();
+  groups.forEach(group => {
+    const row = document.createElement("tr");
+    [group.name, `${group.correct} / ${group.total}`, String(group.mistakes.length), `${Math.round(group.correct / group.total * 100)}%`].forEach(value => {
+      const cell = document.createElement("td"); cell.textContent = value; row.appendChild(cell);
+    });
+    rows.appendChild(row);
+  });
+  const list = $("mistakeQuestions"); list.replaceChildren();
+  weak.forEach(group => {
+    const section = document.createElement("section");
+    const heading = document.createElement("h3"); heading.textContent = group.name; section.appendChild(heading);
+    group.mistakes.forEach(i => {
+      const button = document.createElement("button"); button.type = "button"; button.className = "btn btn-ghost mistake-link";
+      const stem = document.createElement("div"); stem.innerHTML = QUESTIONS[i].stem;
+      const excerpt = (stem.textContent || "").replace(/\s+/g, " ").trim();
+      button.textContent = `Question ${i + 1} · ${excerpt.slice(0, 150)}${excerpt.length > 150 ? "…" : ""}`;
+      button.title = QUESTIONS[i].label;
+      button.onclick = () => {
+        const e = entry(i); if (e) delete e.hide;
+        go(i);
+      };
+      section.appendChild(button);
+    });
+    list.appendChild(section);
+  });
+}
+
+function renderStats() {
+  let answered = 0, correct = 0;
+  for (let i = 0; i < N; i++) { const e = entry(i); if (e && e.revealed) { answered++; if (isCorrect(i)) correct++; } }
+  const wrong = answered - correct;
+  $("sAnswered").textContent = answered;
+  $("sCorrect").textContent = correct;
+  $("sWrong").textContent = wrong;
+  $("sPct").textContent = answered ? Math.round((correct / answered) * 100) + "%" : "0%";
+  $("progressBar").style.width = (answered / N) * 100 + "%";
+  const done = answered === N;
+  syncTimer(done);
+  $("summary").classList.toggle("show", done);
+  if (done) {
+    renderMistakeSummary();
+    const pct = Math.round((correct / N) * 100);
+    $("sumScore").textContent = `${correct} / ${N}  (${pct}%)`;
+    $("sumText").textContent = (correct / N) * 100 >= 80 ? "দারুণ! পাস করার মতো স্কোর (এই প্র্যাকটিসের পাস মার্ক ৮০%)।" : "ভুল প্রশ্নগুলো আবার দেখুন: \"ভুলগুলো আবার দিন\" button চাপুন।";
+  }
+}
+
+function select(k) {
+  const i = state.current, e = entry(i), q = QUESTIONS[i];
+  if (e && e.revealed) return;
+  if (!q.options.some((o) => o.k === k)) return;
+  let sel = hasSel(e) ? [...e.sel] : [];
+  if (q.answer.length === 1) sel = [k];
+  else if (sel.includes(k)) sel = sel.filter((x) => x !== k);
+  else if (sel.length < q.answer.length) sel.push(k);
+  else return;                                   // limit reached: deselect one first
+  state.ans[i] = { sel, revealed: false };
+  save(); render();
+}
+function reveal() {
+  const i = state.current, e = entry(i);
+  if (!hasSel(e) || (e.revealed && !e.hide) || e.sel.length !== QUESTIONS[i].answer.length) return;
+  e.revealed = true; delete e.hide; save(); render();
+  $("result").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+function go(i) {
+  if (i < 0 || i >= N) return;
+  if (i !== state.current && pending(state.current)) Object.assign(entry(state.current), { revealed: true, hide: true });
+  state.current = i; save(); render();
+  $("qcard").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+$("revealBtn").onclick = reveal;
+$("prevBtn").onclick = () => go(state.current - 1);
+$("nextBtn").onclick = () => go(state.current + 1);
+$("nextUnBtn").onclick = () => {
+  for (let k = 1; k <= N; k++) { const i = (state.current + k) % N; const e = entry(i); if (!e || !e.revealed) return go(i); }
+};
+$("retryWrongBtn").onclick = () => {
+  const wrong = [];
+  for (let i = 0; i < N; i++) { const e = entry(i); if (e && e.revealed && !isCorrect(i)) wrong.push(i); }
+  if (!wrong.length) { alert("কোনো ভুল উত্তর নেই।"); return; }
+  wrong.forEach((i) => delete state.ans[i]);
+  save(); go(wrong[0]);
+};
+$("resetBtn").onclick = () => {
+  if (!confirm("এই পেজের সব উত্তর মুছে নতুন করে শুরু করবেন?")) return;
+  state = { current: 0, ans: {} }; resetTimer(); save(); go(0);
+};
+
+document.addEventListener("keydown", (ev) => {
+  if (ev.metaKey || ev.ctrlKey || ev.altKey || (ev.target.closest && ev.target.closest("textarea, input, select, [contenteditable]"))) return;
+  const k = ev.key.toUpperCase();
+  if ("ABCDE".includes(k) && k.length === 1) { select(k); }
+  else if (ev.key === "Enter" && !(ev.target.closest && ev.target.closest("button:not(.opt)"))) { ev.preventDefault(); reveal(); }
+  else if (ev.key === "ArrowRight") { go(state.current + 1); }
+  else if (ev.key === "ArrowLeft") { go(state.current - 1); }
+});
+
+if (state.current >= N) state.current = 0;
+render();
+</script>
+</body>
+</html>

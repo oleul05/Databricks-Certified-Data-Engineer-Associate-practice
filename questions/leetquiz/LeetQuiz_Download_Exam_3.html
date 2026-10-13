@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeetQuiz Download Exam 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f6f9; --surface: #ffffff; --surface-2: #f7f9fb; --ink: #1c2430; --muted: #5d6b7c;
+  --line: #dde3ea; --accent: #1d5fb4; --accent-soft: #e6effa; --accent-ink: #ffffff;
+  --ok: #17803d; --ok-soft: #e3f6e9; --bad: #c42b2b; --bad-soft: #fde8e8;
+  --warn: #b7791f; --warn-soft: #fff6e0; --code-bg: #f1f3f6; --rn-bg: #ffe866; --rn-ink: #3b2f00; --shadow: 0 1px 2px rgba(16,24,40,.06), 0 4px 16px rgba(16,24,40,.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f141b; --surface: #171e27; --surface-2: #1c2530; --ink: #e5eaf0; --muted: #98a5b5;
+    --line: #2b3643; --accent: #5b9cf0; --accent-soft: #1b2a3d; --accent-ink: #0f141b;
+    --ok: #4cc27a; --ok-soft: #15301f; --bad: #f07070; --bad-soft: #3a1c1c;
+    --warn: #e0ac4f; --warn-soft: #33290f; --code-bg: #111821; --rn-bg: #ffe866; --rn-ink: #3b2f00; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f141b; --surface: #171e27; --surface-2: #1c2530; --ink: #e5eaf0; --muted: #98a5b5;
+  --line: #2b3643; --accent: #5b9cf0; --accent-soft: #1b2a3d; --accent-ink: #0f141b;
+  --ok: #4cc27a; --ok-soft: #15301f; --bad: #f07070; --bad-soft: #3a1c1c;
+  --warn: #e0ac4f; --warn-soft: #33290f; --code-bg: #111821; --rn-bg: #ffe866; --rn-ink: #3b2f00; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: "Inter", "Hind Siliguri", "Kohinoor Bangla", "Noto Sans Bengali", system-ui, sans-serif;
+  font-size: 16px; line-height: 1.6;
+}
+.bn, .explain { font-family: "Hind Siliguri", "Kohinoor Bangla", "Noto Sans Bengali", "Inter", system-ui, sans-serif; }
+code, pre { font-family: "JetBrains Mono", Menlo, Consolas, "Hind Siliguri", monospace; }
+
+/* Top bar */
+.topbar { position: sticky; top: 0; z-index: 10; background: var(--surface); border-bottom: 1px solid var(--line); }
+.topbar-inner { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.brand { font-weight: 700; font-size: 15px; letter-spacing: -.01em; flex: 1 1 auto; min-width: 0; }
+.home-link { font-weight: 600; font-size: 14px; color: var(--accent); text-decoration: none; border: 1px solid var(--line);
+             border-radius: 8px; padding: 6px 10px; white-space: nowrap; }
+.home-link:hover { background: var(--accent-soft); }
+.brand small { display: block; font-weight: 500; color: var(--muted); font-size: 12px; }
+.stats { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { font-size: 13px; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); white-space: nowrap; }
+.chip b { font-variant-numeric: tabular-nums; }
+.chip.ok b { color: var(--ok); } .chip.bad b { color: var(--bad); }
+.icon-btn { background: transparent; border: 1px solid var(--line); color: var(--ink); border-radius: 8px; padding: 6px 10px; font: inherit; font-size: 13px; cursor: pointer; }
+.icon-btn:hover { background: var(--surface-2); }
+.progress { height: 3px; background: var(--line); }
+.progress > div { height: 100%; width: 0; background: var(--accent); transition: width .25s ease; }
+
+/* Layout */
+.wrap { max-width: 1180px; margin: 0 auto; padding: 20px 16px 48px; display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 20px; align-items: start; }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); } .side { order: 2; } }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+.qcard { padding: 22px 24px 24px; }
+@media (max-width: 600px) { .qcard { padding: 16px; } }
+.qhead { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.qnum { font-weight: 700; font-size: 18px; }
+.qnum span { color: var(--muted); font-weight: 500; font-size: 14px; }
+.qnum .src-num { font-size: 12px; margin-left: 4px; }
+.status-tag { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+.status-tag.ok { background: var(--ok-soft); color: var(--ok); }
+.status-tag.bad { background: var(--bad-soft); color: var(--bad); }
+.status-tag.pending { background: var(--accent-soft); color: var(--accent); }
+
+.stem { font-size: 16px; }
+.stem p { margin: 0 0 10px; }
+.stem pre, .opt pre, .explain pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; font-size: 13px; line-height: 1.5; margin: 8px 0; }
+.stem code, .opt code, .explain code { font-size: .88em; }
+:not(pre) > code { background: var(--code-bg); border: 1px solid var(--line); padding: 1px 5px; border-radius: 5px; overflow-wrap: anywhere; }
+pre code { background: none; border: 0; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 14px; display: block; overflow-x: auto; }
+th, td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+th { background: var(--surface-2); }
+
+/* Options */
+.opts { display: grid; gap: 10px; margin: 18px 0 0; }
+.opt { display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left; background: var(--surface); color: var(--ink);
+       border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 14px; font: inherit; font-size: 15px; cursor: pointer;
+       transition: border-color .15s, background .15s; }
+.opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.opt .key { flex: 0 0 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px;
+            border: 1.5px solid var(--line); background: var(--surface-2); }
+.opt .txt { flex: 1 1 auto; min-width: 0; padding-top: 2px; }
+.opt .txt pre { margin: 2px 0 0; }
+.opt .mark { flex: 0 0 auto; font-weight: 700; font-size: 13px; padding-top: 3px; }
+.opts.multi .opt .key { border-radius: 6px; }
+.multi-note { margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--warn); background: var(--warn-soft);
+              border-radius: 8px; padding: 6px 12px; display: inline-block; }
+.multi-note[hidden] { display: none; }
+/* syllabus annotations */
+.oos { margin: 0 0 14px; padding: 10px 14px; border: 2px solid var(--bad); background: var(--bad-soft); color: var(--bad);
+       border-radius: 10px; font-size: 15px; line-height: 1.5; }
+.oos strong { color: var(--bad); font-weight: 800; }
+.oos .oos-why { display: block; font-size: 13px; font-weight: 500; margin-top: 2px; }
+.rn-new { background: var(--rn-bg); color: var(--rn-ink); font-weight: 700; padding: 0 4px; border-radius: 4px; }
+.rn-old { color: var(--bad); font-size: .92em; }
+.rn-old s { text-decoration-color: var(--bad); text-decoration-thickness: 2px; }
+.rn-x { font-weight: 800; }
+.pbtn { position: relative; }
+.pbtn.oos-q::after { content: ""; position: absolute; top: 3px; right: 3px; width: 7px; height: 7px; border-radius: 50%;
+                     background: var(--bad); box-shadow: 0 0 0 1.5px var(--surface); }
+.legend .sw.l-oos { border-radius: 50%; background: var(--bad); border-color: var(--bad); width: 9px; height: 9px; }
+.opt.missed { border-color: var(--ok); border-style: dashed; background: var(--ok-soft); }
+.opt.missed .key { background: var(--surface); border-color: var(--ok); color: var(--ok); }
+.opt.missed .mark { color: var(--ok); }
+.opt.selected { border-color: var(--accent); background: var(--accent-soft); }
+.opt.selected .key { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.opt:disabled { cursor: default; }
+.opt.correct { border-color: var(--ok); background: var(--ok-soft); }
+.opt.correct .key { background: var(--ok); border-color: var(--ok); color: #fff; }
+.opt.correct .mark { color: var(--ok); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opt.wrong .key { background: var(--bad); border-color: var(--bad); color: #fff; }
+.opt.wrong .mark { color: var(--bad); }
+.opt.dim { opacity: .55; }
+
+.actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 18px; }
+.btn { font: inherit; font-weight: 600; font-size: 15px; border-radius: 10px; padding: 10px 18px; cursor: pointer; border: 1.5px solid transparent; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-primary:disabled { opacity: .45; cursor: not-allowed; }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover:not(:disabled) { background: var(--surface-2); }
+.btn-ghost:disabled { opacity: .4; cursor: not-allowed; }
+.hint { font-size: 13px; color: var(--muted); }
+.spacer { flex: 1; }
+
+/* Result + explanation */
+.result { margin-top: 18px; border-radius: 10px; padding: 12px 14px; font-weight: 600; display: none; }
+.result.ok { display: block; background: var(--ok-soft); color: var(--ok); border: 1px solid var(--ok); }
+.result.bad { display: block; background: var(--bad-soft); color: var(--bad); border: 1px solid var(--bad); }
+.explain { display: none; margin-top: 16px; padding-top: 6px; border-top: 1px dashed var(--line); font-size: 15.5px; }
+.explain.show { display: block; }
+.explain .ans { display: none; }
+.explain h3 { font-size: 17px; color: var(--accent); margin: 20px 0 8px; }
+.explain h4 { font-size: 15.5px; margin: 16px 0 6px; }
+.explain p { margin: 8px 0; }
+.explain ul, .explain ol { padding-left: 22px; margin: 8px 0; }
+.explain blockquote { margin: 10px 0; padding: 8px 14px; border-left: 4px solid var(--warn); background: var(--warn-soft); border-radius: 0 8px 8px 0; }
+.explain blockquote p { margin: 4px 0; }
+.planes { margin: 10px 0; }
+.plane { border: 1.5px solid var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 8px 14px; }
+.plane.data { border-color: var(--ok); background: var(--ok-soft); }
+.plane p { text-align: center; margin: 2px 0; }
+.plane .sub { color: var(--muted); font-size: 14px; }
+.arrow { text-align: center; color: var(--muted); margin: 6px 0; font-size: 14px; }
+
+/* Sidebar */
+.side { padding: 16px; position: sticky; top: 76px; }
+@media (max-width: 900px) { .side { position: static; } }
+.side h2 { font-size: 14px; margin: 0 0 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); gap: 6px; }
+.pbtn { font: inherit; font-size: 13px; font-weight: 600; height: 36px; border-radius: 8px; border: 1.5px solid var(--line);
+        background: var(--surface-2); color: var(--ink); cursor: pointer; font-variant-numeric: tabular-nums; }
+.pbtn:hover { border-color: var(--accent); }
+.pbtn.sel { border-color: var(--accent); color: var(--accent); }
+.pbtn.ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.pbtn.bad { background: var(--bad); border-color: var(--bad); color: #fff; }
+.pbtn.current { outline: 2px solid var(--ink); outline-offset: 1px; }
+.legend > div { display: flex; align-items: center; flex-wrap: wrap; gap: 0 4px; }
+.legend { display: grid; gap: 6px; margin-top: 14px; font-size: 13px; color: var(--muted); }
+.legend .sw { display: inline-block; flex: none; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; border: 1.5px solid var(--line); }
+.legend .l-ok { background: var(--ok); border-color: var(--ok); }
+.legend .l-bad { background: var(--bad); border-color: var(--bad); }
+.legend .l-sel { border-color: var(--accent); }
+.side .btn { width: 100%; margin-top: 14px; font-size: 14px; padding: 8px 12px; }
+.kbd-help { font-size: 12px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+kbd { font-family: "JetBrains Mono", monospace; font-size: 11px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; background: var(--surface-2); }
+
+/* Summary */
+.summary { padding: 28px 24px; text-align: center; display: none; margin-top: 20px; }
+.summary.show { display: block; }
+.summary .big { font-size: 42px; font-weight: 700; margin: 6px 0; font-variant-numeric: tabular-nums; }
+.qhead { flex-wrap: wrap; }
+.qhead .qnum { flex: 1 1 240px; }
+.qhead-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+#markReviewBtn { white-space: nowrap; }
+.pbtn.review-marked { position: relative; }
+.pbtn.review-marked::before { content: "★"; position: absolute; top: -8px; right: -5px; z-index: 1;
+  display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
+  background: #fff4b8; color: #704400; border: 2px solid var(--surface); font-size: 19px; line-height: 1;
+  box-shadow: 0 1px 3px rgba(0,0,0,.3); pointer-events: none; }
+#reviewPanel { margin-top: 14px; }
+#reviewList { display: grid; gap: 6px; }
+.mistake-summary { margin-top: 20px; text-align: left; }
+.mistake-summary h2 { font-size: 18px; }
+.mistake-summary h3 { font-size: 16px; margin-bottom: 8px; }
+.section-table-wrap { overflow-x: auto; }
+.section-results { display: table; }
+.mistake-link { display: block; width: 100%; text-align: left; margin: 6px 0; white-space: normal; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="home-link" href="../../Databricks_Home.html" title="Home">← Home</a>
+    <div class="brand">LeetQuiz Download Exam 3<small>May 2026 syllabus · 20 questions · 23m 20s · updated terms in yellow</small><small>Source corrections are disclosed in explanations.</small></div>
+    <div class="stats">
+      <span class="chip" id="timerChip"><span id="timerLabel">Time left</span> <b id="sTimer" role="timer" aria-label="Remaining time">00:00</b></span>
+      <button class="icon-btn" id="pauseTimerBtn" type="button">Pause</button>
+      <button class="icon-btn" id="resetTimerBtn" type="button" title="Restart the timer without clearing answers">Reset Timer</button>
+      <span class="chip">Answered <b id="sAnswered">0</b>/<b id="sTotal">0</b></span>
+      <span class="chip ok">Correct <b id="sCorrect">0</b></span>
+      <span class="chip bad">Wrong <b id="sWrong">0</b></span>
+      <span class="chip">Score <b id="sPct">0%</b></span>
+    </div>
+    <button class="icon-btn" id="themeBtn" title="Toggle theme">◐ Theme</button>
+  </div>
+  <div class="progress"><div id="progressBar"></div></div>
+</header>
+
+<div style="max-width:1180px;margin:16px auto 0;padding:0 16px;font-size:14px">77 unique syllabus questions from the four PDFs and accessible downloads. <span class="rn-new">Yellow = updated name</span>. <a href="../../leetquiz/refinement-audit.md">Refinement audit</a> · <a href="../../leetquiz/refined-questions.json">Question data</a>. This is a practice bank, not a claim of complete syllabus coverage.</div>
+<div class="wrap">
+  <main>
+    <article class="card qcard" id="qcard">
+      <div class="qhead">
+        <div class="qnum" id="qnum"></div>
+        <div class="qhead-actions">
+          <div class="status-tag" id="statusTag"></div>
+          <button class="btn btn-ghost" id="markReviewBtn" type="button" aria-pressed="false">☆ Mark for Review</button>
+        </div>
+      </div>
+      <div class="stem" id="stem"></div>
+      <div class="multi-note bn" id="multiNote" hidden></div>
+      <div class="opts" id="opts" role="radiogroup" aria-label="Options"></div>
+      <div class="actions">
+        <button class="btn btn-primary" id="revealBtn" disabled>উত্তর দেখুন (Reveal Answer)</button>
+        <span class="hint bn" id="hint">আগে একটি option বেছে নিন</span>
+      </div>
+      <div class="result bn" id="result"></div>
+      <div class="explain" id="explain"></div>
+      <div class="actions" style="margin-top:22px">
+        <button class="btn btn-ghost" id="prevBtn">← Previous</button>
+        <span class="spacer"></span>
+        <button class="btn btn-ghost" id="nextBtn">Next →</button>
+      </div>
+    </article>
+    <section class="card summary" id="summary">
+      <div class="bn" style="color:var(--muted)">সব প্রশ্নের উত্তর দেওয়া হয়েছে 🎉</div>
+      <div class="big" id="sumScore"></div>
+      <div class="bn" id="sumText"></div>
+      <section class="mistake-summary" aria-label="Mistakes by section">
+        <h2>Section performance</h2>
+        <p id="mistakeAdvice"></p>
+        <div class="section-table-wrap">
+          <table class="section-results"><thead><tr><th scope="col">Section</th><th scope="col">Correct / Total</th><th scope="col">Wrong</th><th scope="col">Accuracy</th></tr></thead><tbody id="sectionResults"></tbody></table>
+        </div>
+        <h2>Review your mistakes</h2>
+        <div id="mistakeQuestions"></div>
+      </section>
+      <button class="btn btn-ghost" id="summaryReviewBtn" type="button">Review Marked Questions</button>
+      <p style="margin-top:16px"><a class="home-link" href="../../Databricks_Home.html">← Home-এ ফিরে যান</a></p>
+    </section>
+  </main>
+
+  <aside class="card side">
+    <h2>Questions</h2>
+    <div class="palette" id="palette"></div>
+    <div class="legend bn">
+      <div><span class="sw l-ok"></span>সঠিক</div>
+      <div><span class="sw l-bad"></span>ভুল</div>
+      <div><span class="sw l-sel"></span>বেছে নেওয়া, এখনো জমা হয়নি</div>
+      <div><span class="sw"></span>উত্তর দেওয়া হয়নি</div>
+      <div>★ Marked for review</div>
+      <div><span class="sw l-oos"></span>বর্তমান syllabus-এর বাইরে</div>
+      <div><span class="rn-new">হলুদ নাম</span><span>= May 2026 syllabus-এর নতুন নাম</span></div>
+    </div>
+    <button class="btn btn-ghost" id="reviewMarkedBtn" type="button">Review Marked Questions</button>
+    <section id="reviewPanel" hidden aria-label="Marked questions">
+      <h2>Marked for Review</h2>
+      <p id="reviewEmpty">No marked questions yet. Use ☆ Mark for Review on a question.</p>
+      <div id="reviewList"></div>
+    </section>
+    <button class="btn btn-ghost" id="nextUnBtn">পরের বাকি প্রশ্ন →</button>
+    <button class="btn btn-ghost" id="retryWrongBtn">ভুলগুলো আবার দিন</button>
+    <button class="btn btn-ghost" id="resetBtn">এই পেজ রিসেট করুন</button>
+    <div class="kbd-help">Keyboard: <kbd>A</kbd>–<kbd>E</kbd> select · <kbd>Enter</kbd> reveal · <kbd>←</kbd> <kbd>→</kbd> navigate</div>
+  </aside>
+</div>
+
+<script>
+const QUESTIONS = [{"uid": "lqd-004", "n": 1, "label": "LeetQuiz Download Exam 3 · lqd-004 · Governance", "stem": "<div style=\"white-space: pre-wrap\">A data engineer has created a Delta table as part of a data pipeline. Downstream data analysts now need SELECT permission on the Delta table.\n\nAssuming the data engineer is the Delta table owner, which part of the <span class=\"rn-new\" title=\"Previously: Databricks Lakehouse Platform\">Databricks Data Intelligence Platform</span> can the data engineer use to grant the data analysts the appropriate access?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\"><span class=\"rn-new\" title=\"Previously: Repos\">Git Folders</span></div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">Jobs</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\"><span class=\"rn-new\" title=\"Previously: Data Explorer\">Catalog Explorer</span></div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">Databricks Filesystem</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">Dashboards</div>"}], "sec": "G", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\"><span class=\"rn-new\" title=\"Previously: Data Explorer\">Catalog Explorer</span> provides the ability to manage and grant permissions on tables and other data objects in the Databricks workspace. As the owner of a Delta table, the data engineer can use <span class=\"rn-new\" title=\"Previously: Data Explorer\">Catalog Explorer</span> to grant SELECT (and other) permissions to downstream analysts. <span class=\"rn-new\" title=\"Previously: Repos\">Git Folders</span> manages code, Jobs manages scheduled jobs, DBFS is a storage layer, and Dashboards provide visualizations but do not manage table permissions.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 7: Unity Catalog managed/external lifecycle, hierarchy, UI/SQL privileges, ownership, or row filters.</p><p><a href=\"https://www.leetquiz.com/quiz/cmgwavc1i0001wlaudnkprw8g/see?quizType=REAL_EXAM&amp;page=75\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-004\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-008", "n": 2, "label": "LeetQuiz Download Exam 3 · lqd-008 · Platform", "stem": "<div style=\"white-space: pre-wrap\">Which of the following locations hosts the driver and worker nodes of a Databricks-managed cluster?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">Data plane</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">Control plane</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Databricks Filesystem</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">JDBC data source</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">Databricks web application</div>"}], "sec": "P", "answer": ["A"], "explain": "<p class=\"ans\">Answer: A</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nIn Databricks architecture, the Data plane (also known as the compute plane) is where the driver and worker nodes of a Databricks-managed cluster are hosted. Here&#x27;s why:\n\nData Plane: This is the environment where your actual data processing occurs. It contains the compute resources (clusters) that run your Spark jobs, notebooks, and workflows. The driver node coordinates the execution, while worker nodes perform the actual data processing tasks.\n\nControl Plane: This manages the workspace, user authentication, job scheduling, and cluster management, but does not host the actual compute nodes.\n\nDatabricks Filesystem (DBFS): This is a distributed file system for storing data, not for hosting cluster nodes.\n\nJDBC data source: This is a connectivity method for accessing external databases, not a location for cluster nodes.\n\nDatabricks web application: This is the user interface for interacting with Databricks, not where cluster compute resources run.\n\nThe data plane is typically hosted in your cloud account (AWS, Azure, or GCP) and contains the actual virtual machines that form the Databricks clusters.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 1: platform architecture, Delta Lake/Unity Catalog foundations, or compute characteristics and workload selection.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya32000101k006q5hlvt/see?quizType=REAL_EXAM&amp;page=76\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-008\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-015", "n": 3, "label": "LeetQuiz Download Exam 3 · lqd-015 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">A data engineer wants to create a relational object by pulling data from two tables. The relational object must be used by other data engineers in other sessions. In order to save on storage costs, the data engineer wants to avoid copying and storing physical data.\n\nWhich of the following relational objects should the data engineer create?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">View</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">Temporary view</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Delta Table</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">Database</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">Spark SQL Table</div>"}], "sec": "T", "answer": ["A"], "explain": "<p class=\"ans\">Answer: A</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nThe correct answer is A. View.\n\nHere&#x27;s why:\n\nView: A view is a virtual table that represents the result of a SQL query. It doesn&#x27;t store physical data but rather provides a logical representation of data from underlying tables. Views can be accessed by multiple users across different sessions, making them ideal for sharing relational objects without duplicating data.\n\nTemporary view (B): Temporary views are session-scoped and cannot be accessed by other data engineers in different sessions, which violates the requirement.\n\nDelta Table (C): Delta Tables store physical data on storage, which would incur storage costs and duplicate data, contrary to the requirement to avoid copying and storing physical data.\n\nDatabase (D): A database is a container for tables and other objects, not a relational object that pulls data from tables.\n\nSpark SQL Table (E): Like Delta Tables, Spark SQL Tables store physical data and would require storage space, defeating the cost-saving objective.\n\nViews provide the perfect solution as they:\n\nCreate relational objects from multiple tables\nDon&#x27;t store physical data (no storage costs)\nAre accessible across different sessions\nCan be shared with other data engineers</div><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya34000d01k06t0ss4c5/see?quizType=REAL_EXAM&amp;page=77\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-015\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-021", "n": 4, "label": "LeetQuiz Download Exam 3 · lqd-021 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">A table customerLocations exists with the following schema:\n\nid STRING,\ndate STRING,\ncity STRING,\ncountry STRING\n\n\nA senior data engineer wants to create a new table from this table using the following command:\n\nCREATE TABLE customersPerCountry AS\nSELECT country,\n       COUNT(*) AS customers\nFROM customerLocations\nGROUP BY country;\n\n\nA junior data engineer asks why the schema is not being declared for the new table.\n\nWhich of the following responses explains why declaring the schema is not necessary?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">CREATE TABLE AS SELECT statements adopt schema details from the source table and query.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">CREATE TABLE AS SELECT statements infer the schema by scanning the data.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">CREATE TABLE AS SELECTstatements result in tables where schemas are optional.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">CREATE TABLE AS SELECTstatements assign all columns the type STRING.</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">CREATE TABLE AS SELECTstatements result in tables that do not support schemas.</div>"}], "sec": "T", "answer": ["A"], "explain": "<p class=\"ans\">Answer: A</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nIn Databricks and Spark SQL, the CREATE TABLE AS SELECT (CTAS) statement automatically adopts the schema from the source table and the query results. Here&#x27;s why:\n\nOption A is correct: CTAS statements inherit the schema definition from the SELECT query&#x27;s result set. The new table customersPerCountry will have:\n\ncountry column with STRING type (inherited from the source table)\ncustomers column with BIGINT type (result of COUNT(*))\n\nOption B is incorrect: Schema inference by scanning data is not how CTAS works. The schema is determined at query compilation time, not by scanning actual data.\n\nOption C is incorrect: Schemas are not optional in Databricks tables - all tables have defined schemas.\n\nOption D is incorrect: CTAS does not default all columns to STRING type. It preserves the actual data types from the query result.\n\nOption E is incorrect: All tables in Databricks support schemas and have defined schemas.\n\nThe CTAS statement automatically determines the schema based on:\n\nColumn names and types from the source table (country from customerLocations)\nAggregation functions and their result types (COUNT(*) returns BIGINT)\nExpression results and their inferred types\n\nThis eliminates the need for manual schema declaration when creating tables from existing data.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya34000f01k06h3fo22d/see?quizType=REAL_EXAM&amp;page=78\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-021\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-024", "n": 5, "label": "LeetQuiz Download Exam 3 · lqd-024 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">Which of the following data workloads will utilize a Bronze table as its source?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">A job that aggregates cleaned data to create standard summary statistics</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">A job that queries aggregated data to publish key insights into a dashboard</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">A job that ingests raw data from a streaming source into the Lakehouse</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">A job that develops a feature set for a machine learning application</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">A job that enriches data by parsing its timestamps into a human-readable format</div>"}], "sec": "T", "answer": ["E"], "explain": "<p class=\"ans\">Answer: E</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nIn the <span class=\"rn-new\" title=\"Previously: Databricks Lakehouse architecture\">Databricks Data Intelligence Platform architecture</span>, the Bronze table is the first layer where raw data is ingested and stored in its original format. The Bronze layer typically contains:\n\nRaw, unprocessed data\nData in its original format (JSON, CSV, etc.)\nData that may need cleaning, transformation, or enrichment\n\nLooking at the options:\n\nOption A: Aggregates cleaned data - This would use Silver or Gold tables as source, not Bronze\nOption B: Queries aggregated data - This would use Gold tables for reporting/dashboards\nOption C: Ingests raw data - This is the process that CREATES Bronze tables, not uses them as source\nOption D: Develops feature sets - This typically uses Silver tables with cleaned, structured data\nOption E: Enriches data by parsing timestamps - This is exactly the type of transformation that would use Bronze tables as source, taking raw data and performing initial data quality/enrichment operations\n\nTherefore, Option E is correct because parsing timestamps from raw data into human-readable format is a typical data enrichment operation that would use Bronze tables as the source.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya35000s01k01lst45v8/see?quizType=REAL_EXAM&amp;page=79\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-024\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-030", "n": 6, "label": "LeetQuiz Download Exam 3 · lqd-030 · Ingestion", "stem": "<div style=\"white-space: pre-wrap\">A data engineering team is in the process of converting their existing data pipeline to utilize Auto Loader for incremental processing in the ingestion of JSON files. One data engineer comes across the following code block in the Auto Loader documentation:\n\n(streaming_df = spark.readStream.format(&quot;cloudFiles&quot;)\n .option(&quot;cloudFiles.format&quot;, &quot;json&quot;)\n .option(&quot;cloudFiles.schemaLocation&quot;, schemaLocation)\n .load(sourcePath))\n\n\nAssuming that schemaLocation and sourcePath have been set correctly, which of the following changes does the data engineer need to make to convert this code block to use Auto Loader to ingest the data?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">The data engineer needs to change the format(&quot;cloudFiles&quot;) line to format(&quot;autoLoader&quot;).</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">There is no change required. Databricks automatically uses Auto Loader for streaming reads.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">There is no change required. The inclusion of format(&quot;cloudFiles&quot;) enables the use of Auto Loader.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">The data engineer needs to add the .autoLoader line before the .load(sourcePath) line.</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">There is no change required. The data engineer needs to ask their administrator to turn on Auto Loader.</div>"}], "sec": "I", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nThe correct answer is C because the code block shown is already using the proper Auto Loader syntax.\n\nKey Points:\n\nformat(&quot;cloudFiles&quot;) is the correct format specification for Auto Loader in Databricks\ncloudFiles.format option specifies the file format (JSON in this case)\ncloudFiles.schemaLocation option is used for schema evolution in Auto Loader\nThe code already follows the standard Auto Loader pattern for streaming ingestion\n\nWhy other options are incorrect:\n\nA: Auto Loader uses &quot;cloudFiles&quot; format, not &quot;autoLoader&quot;\nB: Auto Loader is not automatically used for all streaming reads - it requires specific configuration\nD: There is no .autoLoader method in the Auto Loader API\nE: Auto Loader doesn&#x27;t require administrator intervention to enable - it&#x27;s available by default\n\nAuto Loader Syntax:\n\nspark.readStream.format(&quot;cloudFiles&quot;)\n  .option(&quot;cloudFiles.format&quot;, &quot;&lt;file-format&gt;&quot;)\n  .option(&quot;cloudFiles.schemaLocation&quot;, &quot;&lt;schema-location&gt;&quot;)\n  .load(&quot;&lt;source-path&gt;&quot;)\n\n\nThe provided code is already correctly configured for Auto Loader incremental processing.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 2: batch/streaming/incremental ingestion, Auto Loader schema/discovery, COPY INTO, connectors, JDBC, and nested input.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya35000r01k057reo4gf/see?quizType=REAL_EXAM&amp;page=79\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-030\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-033", "n": 7, "label": "LeetQuiz Download Exam 3 · lqd-033 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">Which of the following benefits does <span class=\"rn-new\" title=\"Previously: Delta Live Tables\">Lakeflow Spark Declarative Pipelines</span> provide for ELT pipelines over standard data pipelines that utilize Spark and Delta Lake on Databricks?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">The ability to declare and maintain data table dependencies</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">The ability to write pipelines in Python and/or SQL</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">The ability to access previous versions of data tables</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">The ability to automatically scale compute resources</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">The ability to perform batch and streaming queries</div>"}], "sec": "T", "answer": ["A"], "explain": "<p class=\"ans\">Answer: A</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\n<span class=\"rn-new\" title=\"Previously: Delta Live Tables\">Lakeflow Spark Declarative Pipelines</span> (<span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span>) provides several advantages over standard Spark and Delta Lake pipelines, but the key distinguishing benefit is the ability to declare and maintain data table dependencies (Option A).\n\nLet&#x27;s analyze each option:\n\nA. The ability to declare and maintain data table dependencies ✅ - This is a core <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span> feature. <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span> automatically manages dependencies between tables in your pipeline, ensuring proper execution order and handling failures gracefully.\n\nB. The ability to write pipelines in Python and/or SQL ❌ - Standard Spark pipelines on Databricks can also be written in Python and SQL, so this is not a unique <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span> benefit.\n\nC. The ability to access previous versions of data tables ❌ - This is a Delta Lake feature (time travel) that&#x27;s available in standard Delta Lake pipelines, not specific to <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span>.\n\nD. The ability to automatically scale compute resources ❌ - Databricks provides autoscaling for standard Spark clusters as well, so this is not unique to <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span>.\n\nE. The ability to perform batch and streaming queries ❌ - Standard Spark Structured Streaming supports both batch and streaming processing, so this capability exists outside <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span>.\n\nKey <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span> advantages over standard pipelines:\n\nDeclarative pipeline definition - You declare what you want, not how to compute it\nAutomatic dependency management - <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span> figures out execution order\nData quality monitoring - Built-in expectations and data quality constraints\nSimplified operations - Automatic retries, error handling, and pipeline recovery\nUnified batch and streaming - Single code path for both processing modes\n\nThe dependency management capability (Option A) is particularly valuable as it eliminates the need for manual orchestration and ensures data consistency across the pipeline.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya36000v01k0ktegs670/see?quizType=REAL_EXAM&amp;page=80\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-033\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-036", "n": 8, "label": "LeetQuiz Download Exam 3 · lqd-036 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">\\\n\nA dataset has been defined using <span class=\"rn-new\" title=\"Previously: Delta Live Tables\">Lakeflow Spark Declarative Pipelines</span> and includes an expectations clause:\nCONSTRAINT valid_timestamp EXPECT (timestamp &gt; &#x27;2020-01-01&#x27;) \\\n\nWhat is the expected behavior when a batch of data containing data that violates these constraints is processed?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">Records that violate the expectation are added to the target dataset and recorded as invalid in the event log.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">Records that violate the expectation are dropped from the target dataset and recorded as invalid in the event log.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Records that violate the expectation cause the job to fail.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">Records that violate the expectation are added to the target dataset and flagged as invalid in a field added to the target dataset.</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">Records that violate the expectation are dropped from the target dataset and loaded into a quarantine table.</div>"}], "sec": "T", "answer": ["A"], "explain": "<p class=\"ans\">Answer: A</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">The correct answer is A. Records that violate the expectation are added to the target dataset and recorded as invalid in the event log.\n\nHere&#x27;s the accurate explanation:\n\nIn <span class=\"rn-new\" title=\"Previously: Delta Live Tables\">Lakeflow Spark Declarative Pipelines</span>, when you use a basic CONSTRAINT ... EXPECT clause without any additional violation handling, the default behavior is:\n\nRetention: Records that violate the expectation are still added to the target dataset\nLogging: The violations are recorded as metrics in the event log for monitoring\nPipeline Continuation: The pipeline continues processing without failing or dropping records\n\nThis represents <span class=\"rn-new\" title=\"Previously: DLT\">Lakeflow Spark Declarative Pipelines</span>&#x27;s default &quot;track only&quot; behavior for data quality constraints.\n\nThe other options represent different behaviors that require explicit configuration:\n\nB (dropping records): Would require EXPECT ... ON VIOLATION DROP ROW\nC (failing the job): Would require EXPECT ... ON VIOLATION FAIL UPDATE\nE (quarantine table): Would require custom logic with multiple output targets\n\nThank you for the correction. The basic EXPECT clause without additional violation handling simply monitors data quality without altering the data flow, making option A the correct answer.</div><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya36000y01k0f1jursh0/see?quizType=REAL_EXAM&amp;page=80\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-036\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-042", "n": 9, "label": "LeetQuiz Download Exam 3 · lqd-042 · Platform", "stem": "<div style=\"white-space: pre-wrap\">A data analyst has noticed that their Databricks SQL queries are running too slowly. They claim that this issue is affecting all of their sequentially run queries. They ask the data engineering team for help. The data engineering team notices that each of the queries uses the same <span class=\"rn-new\" title=\"Previously: SQL endpoint\">SQL warehouse</span>, but the <span class=\"rn-new\" title=\"Previously: SQL endpoint\">SQL warehouse</span> is not used by any other user.\n\nWhich of the following approaches can the data engineering team use to improve the latency of the data analyst&#x27;s queries?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">They can turn on the Serverless feature for the <span class=\"rn-new\" title=\"Previously: SQL endpoint\">SQL warehouse</span>.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">They can increase the maximum bound of the <span class=\"rn-new\" title=\"Previously: SQL endpoint\">SQL warehouse</span>&#x27;s scaling range.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">They can increase the cluster size of the <span class=\"rn-new\" title=\"Previously: SQL endpoint\">SQL warehouse</span>.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">They can turn on the Auto Stop feature for the <span class=\"rn-new\" title=\"Previously: SQL endpoint\">SQL warehouse</span>.</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">They can turn on the Serverless feature for the <span class=\"rn-new\" title=\"Previously: SQL endpoint\">SQL warehouse</span> and change the Spot Instance Policy to &quot;Reliability Optimized.&quot;</div>"}], "sec": "P", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Correct Answer: C — Increase the cluster size of the <span class=\"rn-new\" title=\"Previously: SQL endpoint\">SQL warehouse</span>\n\nWhy C is Correct:\n\nSequential queries use one worker at a time\nLarger cluster size = more power per worker (CPU, memory)\nDirectly improves performance for each individual query\n\nWhy B is Incorrect:\n\nScaling range controls number of workers for handling concurrent queries\nSince queries run sequentially (not concurrently), more workers won&#x27;t help\nWould only help if multiple users were querying simultaneously\n\nWhy Others Are Wrong:\n\nA &amp; E (Serverless): Improves startup time/manageability, not query speed\nD (Auto Stop): Cost-saving feature, doesn&#x27;t affect performance</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 1: platform architecture, Delta Lake/Unity Catalog foundations, or compute characteristics and workload selection.</p><p><a href=\"https://www.leetquiz.com/quiz/cmhaiya37001301k0nzz60bba/see?quizType=REAL_EXAM&amp;page=81\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-042\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-130", "n": 10, "label": "LeetQuiz Download Exam 3 · lqd-130 · CI/CD", "stem": "<div style=\"white-space: pre-wrap\">A developer has successfully configured their credentials for <span class=\"rn-new\" title=\"Previously: Databricks Repos\">Databricks Git Folders</span> and cloned a remote Git repository. They do not have privileges to make changes to the main branch, which is the only branch currently visible in their workspace.\n\nWhich approach allows this user to share their code updates without the risk of overwriting the work of their teammates?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">Use <span class=\"rn-new\" title=\"Previously: Repos\">Git Folders</span> to checkout all changes and send the git diff log to the team.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">Use <span class=\"rn-new\" title=\"Previously: Repos\">Git Folders</span> to create a fork of the remote repository, commit all changes, and make a pull request on the source repository.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Use <span class=\"rn-new\" title=\"Previously: Repos\">Git Folders</span> to pull changes from the remote Git repository; commit and push changes to a branch that appeared as changes were pulled.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">Use <span class=\"rn-new\" title=\"Previously: Repos\">Git Folders</span> to merge all differences and make a pull request back to the remote repository.</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">Use <span class=\"rn-new\" title=\"Previously: Repos\">Git Folders</span> to create a new branch, commit all changes, and push changes to the remote Git repository.</div>"}], "sec": "C", "answer": ["E"], "explain": "<p class=\"ans\">Answer: E</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nThe correct answer is E because:\n\nCreating a new branch is the standard Git workflow for developers who don&#x27;t have write access to the main branch. This allows them to work independently without affecting the main codebase.\n\nCommitting all changes to the new branch ensures their work is saved locally.\n\nPushing changes to the remote Git repository makes their branch available to teammates for review and collaboration.\n\nThis approach avoids overwriting teammates&#x27; work because:\n\nThe developer works on an isolated branch\nChanges can be reviewed via pull requests\nThe main branch remains protected\nTeammates can see and review the changes before merging\n\nWhy other options are incorrect:\n\nA: Sending git diff logs is not a proper collaboration method and doesn&#x27;t integrate changes into the repository.\nB: Creating a fork is unnecessary when you already have access to clone the repository; creating a branch within the same repository is more efficient.\nC: This option is unclear about what &quot;branch that appeared as changes were pulled&quot; means and doesn&#x27;t specify creating a new branch for the developer&#x27;s work.\nD: Merging differences directly could overwrite teammates&#x27; work and doesn&#x27;t follow the proper branch-based workflow.\n\nBest Practice: In <span class=\"rn-new\" title=\"Previously: Databricks Repos\">Databricks Git Folders</span>, when you don&#x27;t have privileges to modify the main branch, you should:\n\nCreate a new branch from the main branch\nMake your changes and commit them\nPush the branch to the remote repository\nCreate a pull request for code review\nOnce approved, a maintainer with appropriate privileges can merge your changes.</div><p>May 2026 guide: Section 5: workspace Git development, environment configuration, bundles, or CLI management of automated workspace assets.</p><p><a href=\"https://www.leetquiz.com/quiz/cmkcd7gps002i01jvxcx4iskb/see?quizType=REAL_EXAM&amp;page=115\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-130\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-135", "n": 11, "label": "LeetQuiz Download Exam 3 · lqd-135 · Platform", "stem": "<div style=\"white-space: pre-wrap\">A junior data engineer is migrating a workload from a relational database system to the Databricks Lakehouse. The source system uses a star schema, leveraging foreign key constraints and multi-table inserts to validate records on write. Which consideration will impact the decisions made by the engineer while migrating this workload?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">Databricks only allows foreign key constraints on hashed identifiers, which avoid collisions in highly-parallel writes.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">Databricks supports Spark SQL and JDBC; all logic can be directly migrated from the source system without refactoring.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Committing to multiple tables simultaneously requires taking out multiple table locks and can lead to a state of deadlock.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">All Delta Lake transactions are ACID compliant against a single table, and Databricks does not enforce foreign key constraints.</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">Foreign keys must reference a primary key field; multi-table inserts must leverage Delta Lake&#x27;s upsert functionality.</div>"}], "sec": "P", "answer": ["D"], "explain": "<p class=\"ans\">Answer: D</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nCorrect Answer: D\n\nThis is the correct answer because it accurately describes key architectural differences between traditional relational databases and Databricks Lakehouse:\n\nDelta Lake ACID compliance: Delta Lake provides ACID (Atomicity, Consistency, Isolation, Durability) transactions, but these are guaranteed within a single table, not across multiple tables in a single transaction.\n\nNo foreign key constraint enforcement: Databricks does not enforce foreign key constraints at the database level. While you can define foreign key relationships in your data model for documentation purposes, Databricks will not validate or enforce these constraints during write operations.\n\nWhy other options are incorrect:\n\nA: Incorrect - Databricks does not enforce foreign key constraints at all, regardless of the identifier type.\nB: Incorrect - While Databricks supports Spark SQL and JDBC, the underlying architecture is different from traditional RDBMS. Multi-table inserts with foreign key validation cannot be directly migrated without refactoring.\nC: Incorrect - This describes a traditional RDBMS concern with table locking, but Delta Lake uses optimistic concurrency control rather than table-level locking.\nE: Incorrect - While Delta Lake has upsert functionality (MERGE), this is not specifically related to foreign key constraints, which Databricks doesn&#x27;t enforce.\n\nMigration Implications: When migrating from a traditional RDBMS with foreign key constraints to Databricks Lakehouse, the data engineer must:\n\nImplement data quality checks separately (using tools like <span class=\"rn-new\" title=\"Previously: Delta Live Tables\">Lakeflow Spark Declarative Pipelines</span> expectations or custom validation logic)\nHandle referential integrity at the application level\nConsider using Delta Lake&#x27;s MERGE operations for upserts\nUnderstand that multi-table transactions with rollback across tables are not natively supported</div><p>May 2026 guide: Section 1: platform architecture, Delta Lake/Unity Catalog foundations, or compute characteristics and workload selection.</p><p><a href=\"https://www.leetquiz.com/quiz/cmkcd7gpt002n01jvw77xf5nc/see?quizType=REAL_EXAM&amp;page=116\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-135\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-142", "n": 12, "label": "LeetQuiz Download Exam 3 · lqd-142 · Ingestion", "stem": "<div style=\"white-space: pre-wrap\">An Auto Loader stream is configured for directory listing, without file-notification or managed-file-event discovery. Which statement describes how it ingests new files?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">Cloud vendor-specific queue storage and notification services are configured to track newly arriving files; the target table is materialized by directly querying all valid files in the source directory.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">New files are identified by listing the input directory; the target table is materialized by directly querying all valid files in the source directory.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Webhooks trigger a <span class=\"rn-new\" title=\"Previously: Databricks job\">Lakeflow Job</span> to run anytime new data arrives in a source directory; new data are automatically merged into target tables using rules inferred from the data.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">New files are identified by listing the input directory; new files are incrementally and idempotently loaded into the target Delta Lake table.</div>"}, {"k": "E", "html": "<div style=\"white-space: pre-wrap\">Cloud vendor-specific queue storage and notification services are configured to track newly arriving files; new files are incrementally and idempotently loaded into the target Delta Lake table.</div>"}], "sec": "I", "answer": ["D"], "explain": "<p class=\"ans\">Answer: D</p><h3>Source correction</h3><ul><li>Made the discovery-mode assumption explicit rather than claiming that all Auto Loader configurations have a fixed default.</li></ul><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Explanation\n\nCorrect Answer: D\n\nAuto Loader&#x27;s default execution mode uses directory listing to identify new files, not cloud notification services. Here&#x27;s why:\n\nDefault Mode (Directory Listing): When you don&#x27;t explicitly configure cloud notification services, Auto Loader defaults to listing the input directory to discover new files. This is option D.\n\nIncremental and Idempotent Loading: Auto Loader processes files incrementally (only new files since last run) and idempotently (same files won&#x27;t be processed multiple times).\n\nCloud Notification Mode (Option E): This is the optimized mode that uses cloud-specific services (AWS SQS/SNS, Azure Event Grid, GCP Pub/Sub), but it&#x27;s not the default. You need to explicitly configure this mode.\n\nWhy not other options:\n\nA: Incorrect - describes cloud notification services but with direct querying instead of incremental loading\nB: Incorrect - describes directory listing but with direct querying instead of incremental loading\nC: Incorrect - describes webhooks which is not how Auto Loader works\nE: Incorrect - describes the optimized cloud notification mode, not the default mode\n\nKey Takeaway: Auto Loader defaults to directory listing for file discovery, which is simpler to set up but may have scalability limits with very large directories. The cloud notification mode provides better performance but requires additional configuration.</div><p>May 2026 guide: Section 2: batch/streaming/incremental ingestion, Auto Loader schema/discovery, COPY INTO, connectors, JDBC, and nested input.</p><p><a href=\"https://www.leetquiz.com/quiz/cmkcd7gpv002z01jv0qd579pv/see?quizType=REAL_EXAM&amp;page=118\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-142\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-149", "n": 13, "label": "LeetQuiz Download Exam 3 · lqd-149 · Platform", "stem": "<div style=\"white-space: pre-wrap\">In a medallion architecture, why is it recommended to store the Bronze layer in Delta format even if the data is raw?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">Because only Delta supports JSON string extraction.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">Because Delta format automatically encrypts data.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Because Delta files are significantly smaller than Parquet.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">To take advantage of Schema Enforcement and Time Travel even at the earliest stage.</div>"}], "sec": "P", "answer": ["D"], "explain": "<p class=\"ans\">Answer: D</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Storing the Bronze layer in Delta format brings all the benefits of Delta Lake, such as ACID transactions, Time Travel, Schema Enforcement, and easy streaming integration, right from the raw data ingestion phase.</div><p>May 2026 guide: Section 1: platform architecture, Delta Lake/Unity Catalog foundations, or compute characteristics and workload selection.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pby000301jx3lu4vtk9/see?quizType=REAL_EXAM&amp;page=144\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-149\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-152", "n": 14, "label": "LeetQuiz Download Exam 3 · lqd-152 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">For an append-only streaming source, what is the primary difference between a materialized view and a streaming table in a Lakeflow pipeline?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">MV is only stored in the Silver layer.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">Streaming Tables do not support Unity Catalog governance.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">MV ensures data consistency by re-calculating results; Streaming Tables only append new data.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">Only Streaming Tables can be scheduled.</div>"}], "sec": "T", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Source correction</h3><ul><li>Scoped the append-only claim to an append-only source; it is not a universal statement about every streaming-table flow.</li></ul><h3>Explanation</h3><div style=\"white-space: pre-wrap\">In Databricks <span class=\"rn-new\" title=\"Previously: Delta Live Tables\">Lakeflow Spark Declarative Pipelines</span> (and Lakeflow), a Materialized View (MV) incrementally computes and maintains the exact result of a query, correctly handling updates, deletes, and aggregations. A Streaming Table is designed for append-only streaming data, processing each new input record exactly once.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pby000601jxg1ao9sns/see?quizType=REAL_EXAM&amp;page=145\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-152\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-156", "n": 15, "label": "LeetQuiz Download Exam 3 · lqd-156 · Ingestion", "stem": "<div style=\"white-space: pre-wrap\">In an Auto Loader job, what is the purpose of setting cloudFiles.schemaLocation?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">To define the final Delta table path.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">To persist the inferred schema for restarts and evolution.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">To specify the source bucket.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">To store the streaming checkpoint offsets.</div>"}], "sec": "I", "answer": ["B"], "explain": "<p class=\"ans\">Answer: B</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">In a Databricks Auto Loader job, the cloudFiles.schemaLocation option specifies a directory where Auto Loader stores the inferred schema. By persisting the schema here, Auto Loader can accurately track schema evolution over time, identify new columns, and safely recover the schema state across pipeline restarts. (Note: Checkpoint offsets are stored in a separate checkpoint directory, though often managed closely together).</div><p>May 2026 guide: Section 2: batch/streaming/incremental ingestion, Auto Loader schema/discovery, COPY INTO, connectors, JDBC, and nested input.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pbz000a01jxsro9pyul/see?quizType=REAL_EXAM&amp;page=145\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-156\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-163", "n": 16, "label": "LeetQuiz Download Exam 3 · lqd-163 · Optimization", "stem": "<div style=\"white-space: pre-wrap\">A data engineer is using &#x27;Liquid Clustering&#x27; on a table. How does this improve on traditional Z-Ordering?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">It allows the data to be stored as a single giant file.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">It converts Parquet files into a proprietary binary format.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">It automatically encrypts the data.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">It supports incremental clustering, adapting to query patterns without full rewrites.</div>"}], "sec": "O", "answer": ["D"], "explain": "<p class=\"ans\">Answer: D</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">Liquid Clustering provides more flexibility than traditional Z-Ordering. It incrementally clusters data as it is written or optimized, and allows clustering keys to be changed without needing to rewrite the entire table. It efficiently adapts to changing query patterns.</div><p class=\"syllabus-note\">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p><p>May 2026 guide: Section 6: job run monitoring, Spark bottlenecks/tuning, library/startup diagnosis, or Delta file-layout maintenance supporting optimization.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pc0000h01jxuhqwavs3/see?quizType=REAL_EXAM&amp;page=146\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-163\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-166", "n": 17, "label": "LeetQuiz Download Exam 3 · lqd-166 · Governance", "stem": "<div style=\"white-space: pre-wrap\">In Unity Catalog, what is the difference between a Storage Credential and an External Location?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">Credential is for S3; Location is for ADLS.</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">Credential holds the IAM identity; Location maps a path to that identity.</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Credential is public; Location is private.</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">Credential creates managed tables; Location creates external tables.</div>"}], "sec": "G", "answer": ["B"], "explain": "<p class=\"ans\">Answer: B</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">In Unity Catalog, a Storage Credential encapsulates a cloud IAM identity (like an AWS IAM role or Azure Service Principal) granting access to cloud storage. An External Location references a specific cloud storage path and associates it with a Storage Credential to authorize access to that exact location.</div><p>May 2026 guide: Section 7: Unity Catalog managed/external lifecycle, hierarchy, UI/SQL privileges, ownership, or row filters.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pc0000k01jxt07sx9yu/see?quizType=REAL_EXAM&amp;page=147\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-166\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-172", "n": 18, "label": "LeetQuiz Download Exam 3 · lqd-172 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">An engineer wants to add a new column to a Delta table by simply including it in a write operation. Which Spark option is used?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">.option(&#x27;overwriteSchema&#x27;, &#x27;true&#x27;)</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">.option(&#x27;mergeSchema&#x27;, &#x27;true&#x27;)</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">.option(&#x27;enforceSchema&#x27;, &#x27;false&#x27;)</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">.option(&#x27;autoSchema&#x27;, &#x27;true&#x27;)</div>"}], "sec": "T", "answer": ["B"], "explain": "<p class=\"ans\">Answer: B</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">To automatically evolve the schema of a Delta table when appending or overwriting data, you can use the .option(&quot;mergeSchema&quot;, &quot;true&quot;) option. This will safely add new columns present in the DataFrame to the Delta table schema without breaking existing data.</div><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pc1000q01jxc1io7nli/see?quizType=REAL_EXAM&amp;page=148\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-172\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-179", "n": 19, "label": "LeetQuiz Download Exam 3 · lqd-179 · Transformation", "stem": "<div style=\"white-space: pre-wrap\">A column &#x27;json_payload&#x27; contains JSON strings. Which function converts these strings into a Spark Struct type?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">to_json()</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">get_json_object()</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">from_json()</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">explode()</div>"}], "sec": "T", "answer": ["C"], "explain": "<p class=\"ans\">Answer: C</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">The from_json() function parses a column containing a JSON string and converts it into a Spark Struct type (or Map/Array type) based on a provided schema. to_json() does the reverse (Struct to JSON string), get_json_object() extracts a specific string field from a JSON string, and explode() flattens arrays/maps into rows.</div><p>May 2026 guide: Section 3: reading/cleaning Bronze, DataFrame/SQL joins, column/row manipulation, deduplication, aggregates, Gold objects, or validation.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pc2001201jx0444ls89/see?quizType=REAL_EXAM&amp;page=149\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-179\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}, {"uid": "lqd-188", "n": 20, "label": "LeetQuiz Download Exam 3 · lqd-188 · Governance", "stem": "<div style=\"white-space: pre-wrap\">A data engineer needs to securely map an S3 bucket in Unity Catalog so users can query it without seeing raw access keys. What is used?</div>", "options": [{"k": "A", "html": "<div style=\"white-space: pre-wrap\">Secret Scope</div>"}, {"k": "B", "html": "<div style=\"white-space: pre-wrap\">DBFS Mount Point</div>"}, {"k": "C", "html": "<div style=\"white-space: pre-wrap\">Global Init Script</div>"}, {"k": "D", "html": "<div style=\"white-space: pre-wrap\">External Location and Storage Credential</div>"}], "sec": "G", "answer": ["D"], "explain": "<p class=\"ans\">Answer: D</p><h3>Explanation</h3><div style=\"white-space: pre-wrap\">In Unity Catalog, you secure access to cloud storage (like an S3 bucket) using Storage Credentials (which securely encapsulate the IAM roles or access keys) and External Locations (which map a storage path to a storage credential). This allows users to access the data without ever seeing or handling raw access keys, unlike legacy DBFS mounts.</div><p>May 2026 guide: Section 7: Unity Catalog managed/external lifecycle, hierarchy, UI/SQL privileges, ownership, or row filters.</p><p><a href=\"https://www.leetquiz.com/quiz/cmq247pc4001d01jxkf2frjxr/see?quizType=REAL_EXAM&amp;page=151\" target=\"_blank\" rel=\"noopener noreferrer\">Original question</a> · <a href=\"../../leetquiz/downloads/unique-questions.html#lqd-188\" target=\"_blank\" rel=\"noopener noreferrer\">All source versions</a></p>", "oos": false}];
+const PAGE_ID = "leetquiz-download-exam-3";
+const GKEY = "dbx-de-progress-v2";          // shared with the home page: { answers: {uid: {sel, revealed}}, current: {page: idx} }
+function loadG() {
+  try { const g = JSON.parse(localStorage.getItem(GKEY)); if (g && g.answers) { g.current = g.current || {}; return g; } } catch (e) {}
+  return { answers: {}, current: {} };
+}
+function writeG(g) { try { localStorage.setItem(GKEY, JSON.stringify(g)); } catch (e) {} }
+// one-time move of answers saved by the older single-set pages (keyed by index) into the shared store
+function migrateOld(g, qs) {
+  const olds = {}; let changed = false;
+  qs.forEach((q) => {
+    if (!q.src) return;
+    const [ok, oi] = q.src;
+    if (!(ok in olds)) { try { olds[ok] = JSON.parse(localStorage.getItem(ok)); } catch (e) { olds[ok] = null; } }
+    const o = olds[ok];
+    if (!o || !o.ans || !o.ans[oi]) return;
+    const e = o.ans[oi];
+    const sel = typeof e.sel === "string" ? [e.sel] : (e.sel || []);
+    if (!g.answers[q.uid] && sel.length) g.answers[q.uid] = { sel, revealed: !!e.revealed };
+    delete o.ans[oi]; o.__dirty = true; changed = true;
+  });
+  for (const k in olds) {
+    const o = olds[k];
+    if (o && o.__dirty) {
+      delete o.__dirty;
+      try { if (Object.keys(o.ans).length) localStorage.setItem(k, JSON.stringify(o)); else localStorage.removeItem(k); } catch (e) {}
+    }
+  }
+  return changed;
+}
+let G0 = loadG();
+if (migrateOld(G0, QUESTIONS)) writeG(G0);
+// ans[i] = { sel: ["B"], revealed: true, hide: true }
+//   revealed = graded (counts in stats, palette green/red); hide = graded by leaving the question, answer not shown yet
+let state = { current: G0.current[PAGE_ID] || 0, ans: {} };
+QUESTIONS.forEach((q, i) => { const e = G0.answers[q.uid]; if (e && e.sel && e.sel.length) state.ans[i] = { sel: [...e.sel], revealed: !!e.revealed, hide: !!e.hide }; });
+function save() {
+  const g = loadG();                         // re-read so other tabs' progress is kept
+  QUESTIONS.forEach((q, i) => {
+    const e = state.ans[i];
+    if (e && e.sel && e.sel.length) g.answers[q.uid] = e.hide ? { sel: e.sel, revealed: !!e.revealed, hide: true } : { sel: e.sel, revealed: !!e.revealed };
+    else delete g.answers[q.uid];
+  });
+  g.current[PAGE_ID] = state.current;
+  g.last = PAGE_ID;
+  writeG(g);
+}
+(() => { const g = loadG(); g.last = PAGE_ID; writeG(g); })();   // home page "continue" button
+
+try { const t = localStorage.getItem("dbx-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+document.getElementById("themeBtn").onclick = () => {
+  const root = document.documentElement;
+  const isDark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme = isDark ? "light" : "dark";
+  try { localStorage.setItem("dbx-theme", root.dataset.theme); } catch (e) {}
+};
+
+const $ = (id) => document.getElementById(id);
+const N = QUESTIONS.length;
+$("sTotal").textContent = N;
+
+// Count only time spent on a visible question page; save remaining time on exit.
+const TIMER_KEY = "dbx-set-timer-v1:" + PAGE_ID + ":351deffe4c8b";
+const TIMER_DURATION = N * 70;
+let timer;
+let timerDeadline = null;
+function persistTimer() {
+  timer.remainingMs = remainingTimerMs();
+  try { localStorage.setItem(TIMER_KEY, JSON.stringify(timer)); } catch (e) {}
+}
+function remainingTimerMs() {
+  return timerDeadline === null ? timer.remainingMs : Math.max(0, timerDeadline - Date.now());
+}
+function pauseTimer() {
+  timer.remainingMs = remainingTimerMs();
+  timerDeadline = null;
+  persistTimer();
+  renderTimer();
+}
+function resumeTimer() {
+  if (!document.hidden && !timer.completed && !timer.paused && timerDeadline === null) {
+    timerDeadline = Date.now() + timer.remainingMs;
+  }
+  renderTimer();
+}
+function resetTimer() {
+  timerDeadline = null;
+  timer = { remainingMs: TIMER_DURATION * 1000, completed: false, paused: false };
+  resumeTimer();
+  persistTimer();
+}
+function timerSeconds() {
+  return Math.ceil(remainingTimerMs() / 1000);
+}
+function renderTimer() {
+  const seconds = timerSeconds();
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const clock = (hours ? hours + ":" : "") + String(minutes).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
+  $("sTimer").textContent = clock;
+  $("timerLabel").textContent = seconds === 0 ? "Time’s up" : timer.completed ? "Completed" : timerDeadline === null ? "Paused" : "Time left";
+  $("timerChip").classList.toggle("bad", seconds === 0);
+  $("pauseTimerBtn").textContent = timer.paused ? "Resume" : "Pause";
+  $("pauseTimerBtn").disabled = timer.completed || seconds === 0;
+  $("pauseTimerBtn").setAttribute("aria-pressed", String(!!timer.paused));
+  $("timerChip").title = `${N} questions × 70 seconds. Total: ${TIMER_DURATION} seconds. You can continue practicing after time runs out.`;
+}
+function syncTimer(done) {
+  if (done && !timer.completed) {
+    pauseTimer();
+    timer.completed = true;
+    persistTimer();
+  } else if (!done && timer.completed) {
+    resetTimer();
+  }
+  renderTimer();
+}
+try { timer = JSON.parse(localStorage.getItem(TIMER_KEY)); } catch (e) {}
+// Preserve timers saved by the earlier deadline-based version.
+if (timer && Number.isFinite(timer.deadline) && timer.remainingMs === undefined) {
+  timer = {
+    remainingMs: timer.remaining === null ? Math.max(0, timer.deadline - Date.now()) : timer.remaining * 1000,
+    completed: timer.remaining !== null
+  };
+}
+if (!timer || !Number.isFinite(timer.remainingMs) || timer.remainingMs < 0 || timer.remainingMs > TIMER_DURATION * 1000 || typeof timer.completed !== "boolean") resetTimer();
+else {
+  timer.paused = !!timer.paused;
+  resumeTimer();
+}
+$("pauseTimerBtn").onclick = () => {
+  if (timer.completed || timerSeconds() === 0) return;
+  timer.paused = !timer.paused;
+  if (timer.paused) pauseTimer();
+  else { resumeTimer(); persistTimer(); }
+};
+$("resetTimerBtn").onclick = resetTimer;
+setInterval(() => { persistTimer(); renderTimer(); }, 1000);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) pauseTimer();
+  else resumeTimer();
+});
+window.addEventListener("pagehide", pauseTimer);
+window.addEventListener("pageshow", resumeTimer);
+
+
+// Review marks are independent of answers and survive quiz resets.
+const REVIEW_KEY = "dbx-question-review-v1";
+let reviews = loadReviews();
+function loadReviews() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(REVIEW_KEY));
+    if (saved && typeof saved === "object" && !Array.isArray(saved)) return saved;
+  } catch (e) {}
+  return {};
+}
+function reviewEntry(i) {
+  return reviews[QUESTIONS[i].uid] || { marked: false, note: "" };
+}
+function saveReview(marked, note) {
+  const uid = QUESTIONS[state.current].uid;
+  reviews = loadReviews();
+  if (marked || note) reviews[uid] = { marked, note };
+  else delete reviews[uid];
+  try { localStorage.setItem(REVIEW_KEY, JSON.stringify(reviews)); } catch (e) {}
+}
+function renderReview() {
+  const e = reviewEntry(state.current);
+  $("markReviewBtn").textContent = e.marked ? "★ Marked for Review" : "☆ Mark for Review";
+  $("markReviewBtn").setAttribute("aria-pressed", String(!!e.marked));
+  const marked = QUESTIONS.map((q, i) => i).filter(i => reviewEntry(i).marked);
+  $("reviewMarkedBtn").textContent = `Review Marked Questions (${marked.length})`;
+  $("summaryReviewBtn").textContent = `Review Marked Questions (${marked.length})`;
+  $("reviewList").replaceChildren();
+  $("reviewEmpty").hidden = marked.length > 0;
+  marked.forEach(i => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "btn btn-ghost";
+    b.textContent = `★ Question ${i + 1}`;
+    b.title = QUESTIONS[i].label;
+    b.onclick = () => go(i);
+    $("reviewList").appendChild(b);
+  });
+}
+$("markReviewBtn").onclick = () => {
+  const e = reviewEntry(state.current);
+  saveReview(!e.marked, e.note || "");
+  renderReview(); renderPalette();
+};
+function showReviewList() {
+  $("reviewPanel").hidden = false;
+  $("reviewPanel").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  const first = $("reviewList").querySelector("button");
+  if (first) first.focus({ preventScroll: true });
+}
+$("reviewMarkedBtn").onclick = showReviewList;
+$("summaryReviewBtn").onclick = showReviewList;
+
+function entry(i) { return state.ans[i] || null; }
+function sameSet(a, b) { return a.length === b.length && a.every((x) => b.includes(x)); }
+function isCorrect(i) { const e = entry(i); return !!(e && e.revealed && sameSet(e.sel, QUESTIONS[i].answer)); }
+function hasSel(e) { return !!(e && e.sel && e.sel.length); }
+// a complete selection that has not been graded yet: leaving the question grades it silently
+function pending(i) { const e = entry(i); return !!(hasSel(e) && !e.revealed && e.sel.length === QUESTIONS[i].answer.length); }
+const BN_DIGITS = "০১২৩৪৫৬৭৮৯";
+function bn(n) { return String(n).replace(/\d/g, (d) => BN_DIGITS[d]); }
+
+function render() {
+  const i = state.current, q = QUESTIONS[i], e = entry(i);
+  const revealed = !!(e && e.revealed && !e.hide);   // answer + explanation visible
+  const locked = !!(e && e.revealed && e.hide);       // graded on leaving, answer still hidden
+  $("qnum").innerHTML = `Question ${i + 1} <span>/ ${N}</span> <span class="src-num">· ${q.label}</span>`;
+
+  const tag = $("statusTag");
+  const multi = q.answer.length > 1;
+  if (revealed) { const ok = isCorrect(i); tag.className = "status-tag " + (ok ? "ok" : "bad"); tag.textContent = ok ? "Correct" : "Wrong"; }
+  else if (hasSel(e)) { tag.className = "status-tag pending"; tag.textContent = locked ? "Submitted" : "Selected"; }
+  else { tag.className = "status-tag"; tag.textContent = ""; }
+
+  $("stem").innerHTML = q.stem;
+
+  const note = $("multiNote");
+  note.hidden = !multi;
+  note.textContent = multi ? `একাধিক উত্তর: ${bn(q.answer.length)}টি option বেছে নিন (Choose ${q.answer.length})` : "";
+  const opts = $("opts");
+  opts.className = "opts" + (multi ? " multi" : "");
+  opts.setAttribute("role", multi ? "group" : "radiogroup");
+  opts.innerHTML = "";
+  q.options.forEach((o) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.setAttribute("role", multi ? "checkbox" : "radio");
+    b.dataset.k = o.k;
+    let mark = "";
+    if (revealed) {
+      b.disabled = true;
+      const isAns = q.answer.includes(o.k), isSel = e.sel.includes(o.k);
+      if (isAns && isSel) { b.classList.add("correct"); mark = "✓ আপনার উত্তর"; }
+      else if (isAns) { b.classList.add(multi ? "missed" : "correct"); mark = "✓ সঠিক"; }
+      else if (isSel) { b.classList.add("wrong"); mark = "✗ আপনার উত্তর"; }
+      else b.classList.add("dim");
+    } else if (hasSel(e) && e.sel.includes(o.k)) {
+      b.classList.add("selected");
+    }
+    if (locked) b.disabled = true;
+    b.setAttribute("aria-checked", hasSel(e) && e.sel.includes(o.k) ? "true" : "false");
+    b.innerHTML = `<span class="key">${o.k}</span><span class="txt">${o.html}</span>${mark ? `<span class="mark bn">${mark}</span>` : ""}`;
+    b.onclick = () => select(o.k);
+    opts.appendChild(b);
+  });
+
+  const reveal = $("revealBtn");
+  reveal.style.display = revealed ? "none" : "";
+  const need = q.answer.length, have = hasSel(e) ? e.sel.length : 0;
+  reveal.disabled = have !== need;
+  const hint = $("hint");
+  hint.style.display = revealed || (have === need && !locked) ? "none" : "";
+  hint.textContent = locked ? "উত্তর জমা হয়েছে (ডান পাশের তালিকায় সবুজ/লাল)। ব্যাখ্যা দেখতে Reveal চাপুন" : need > 1 ? `আরও ${bn(need - have)}টি option বেছে নিন` : "আগে একটি option বেছে নিন";
+
+  const res = $("result");
+  if (revealed) {
+    const ok = isCorrect(i);
+    const ans = q.answer.join(", "), mine = [...e.sel].sort().join(", ");
+    res.className = "result bn " + (ok ? "ok" : "bad");
+    res.textContent = ok ? `✅ সঠিক! উত্তর: ${ans}` : `❌ ভুল। আপনি দিয়েছেন ${mine}, সঠিক উত্তর: ${ans}`;
+    $("explain").innerHTML = q.explain;
+    $("explain").classList.add("show");
+  } else {
+    res.className = "result bn";
+    $("explain").innerHTML = "";
+    $("explain").classList.remove("show");
+  }
+
+  $("prevBtn").disabled = i === 0;
+  $("nextBtn").disabled = i === N - 1;
+  renderReview();
+  renderPalette();
+  renderStats();
+}
+
+function renderPalette() {
+  const p = $("palette");
+  if (!p.children.length) {
+    QUESTIONS.forEach((q, i) => {
+      const b = document.createElement("button");
+      b.className = "pbtn"; b.textContent = i + 1; b.title = q.label;
+      b.onclick = () => go(i);
+      p.appendChild(b);
+    });
+  }
+  [...p.children].forEach((b, i) => {
+    const e = entry(i);
+    b.className = "pbtn";
+    if (reviewEntry(i).marked) b.classList.add("review-marked");
+    b.setAttribute("aria-label", `Question ${i + 1}${reviewEntry(i).marked ? ", marked for review" : ""}`);
+    if (e && e.revealed) b.classList.add(isCorrect(i) ? "ok" : "bad");
+    else if (hasSel(e)) b.classList.add("sel");
+    if (i === state.current) b.classList.add("current");
+    if (QUESTIONS[i].oos) { b.classList.add("oos-q"); if (!b.title.includes("syllabus")) b.title += " · out of current syllabus"; }
+  });
+}
+
+const SECTION_NAMES = {
+  P: "Platform", I: "Ingestion", T: "Transformation", J: "Lakeflow Jobs",
+  C: "CI/CD", O: "Optimization", G: "Governance", unclassified: "Other / Unclassified"
+};
+function sectionResults() {
+  const groups = {};
+  QUESTIONS.forEach((q, i) => {
+    const key = q.sec || "unclassified";
+    if (!groups[key]) groups[key] = { name: SECTION_NAMES[key] || key, total: 0, correct: 0, mistakes: [] };
+    const group = groups[key]; group.total++;
+    if (isCorrect(i)) group.correct++;
+    else if (entry(i) && entry(i).revealed) group.mistakes.push(i);
+  });
+  return Object.values(groups).sort((a, b) => b.mistakes.length / b.total - a.mistakes.length / a.total || b.mistakes.length - a.mistakes.length || a.name.localeCompare(b.name));
+}
+function renderMistakeSummary() {
+  const groups = sectionResults();
+  const weak = groups.filter(g => g.mistakes.length);
+  $("mistakeAdvice").textContent = weak.length ? "Focus your revision on: " + weak.map(g => `${g.name} (${g.mistakes.length} wrong)`).join(", ") + ". Sections with the highest mistake rate appear first." : "Perfect score! No mistakes in this set.";
+  const rows = $("sectionResults"); rows.replaceChildren();
+  groups.forEach(group => {
+    const row = document.createElement("tr");
+    [group.name, `${group.correct} / ${group.total}`, String(group.mistakes.length), `${Math.round(group.correct / group.total * 100)}%`].forEach(value => {
+      const cell = document.createElement("td"); cell.textContent = value; row.appendChild(cell);
+    });
+    rows.appendChild(row);
+  });
+  const list = $("mistakeQuestions"); list.replaceChildren();
+  weak.forEach(group => {
+    const section = document.createElement("section");
+    const heading = document.createElement("h3"); heading.textContent = group.name; section.appendChild(heading);
+    group.mistakes.forEach(i => {
+      const button = document.createElement("button"); button.type = "button"; button.className = "btn btn-ghost mistake-link";
+      const stem = document.createElement("div"); stem.innerHTML = QUESTIONS[i].stem;
+      const excerpt = (stem.textContent || "").replace(/\s+/g, " ").trim();
+      button.textContent = `Question ${i + 1} · ${excerpt.slice(0, 150)}${excerpt.length > 150 ? "…" : ""}`;
+      button.title = QUESTIONS[i].label;
+      button.onclick = () => {
+        const e = entry(i); if (e) delete e.hide;
+        go(i);
+      };
+      section.appendChild(button);
+    });
+    list.appendChild(section);
+  });
+}
+
+function renderStats() {
+  let answered = 0, correct = 0;
+  for (let i = 0; i < N; i++) { const e = entry(i); if (e && e.revealed) { answered++; if (isCorrect(i)) correct++; } }
+  const wrong = answered - correct;
+  $("sAnswered").textContent = answered;
+  $("sCorrect").textContent = correct;
+  $("sWrong").textContent = wrong;
+  $("sPct").textContent = answered ? Math.round((correct / answered) * 100) + "%" : "0%";
+  $("progressBar").style.width = (answered / N) * 100 + "%";
+  const done = answered === N;
+  syncTimer(done);
+  $("summary").classList.toggle("show", done);
+  if (done) {
+    renderMistakeSummary();
+    const pct = Math.round((correct / N) * 100);
+    $("sumScore").textContent = `${correct} / ${N}  (${pct}%)`;
+    $("sumText").textContent = (correct / N) * 100 >= 80 ? "দারুণ! পাস করার মতো স্কোর (এই প্র্যাকটিসের পাস মার্ক ৮০%)।" : "ভুল প্রশ্নগুলো আবার দেখুন: \"ভুলগুলো আবার দিন\" button চাপুন।";
+  }
+}
+
+function select(k) {
+  const i = state.current, e = entry(i), q = QUESTIONS[i];
+  if (e && e.revealed) return;
+  if (!q.options.some((o) => o.k === k)) return;
+  let sel = hasSel(e) ? [...e.sel] : [];
+  if (q.answer.length === 1) sel = [k];
+  else if (sel.includes(k)) sel = sel.filter((x) => x !== k);
+  else if (sel.length < q.answer.length) sel.push(k);
+  else return;                                   // limit reached: deselect one first
+  state.ans[i] = { sel, revealed: false };
+  save(); render();
+}
+function reveal() {
+  const i = state.current, e = entry(i);
+  if (!hasSel(e) || (e.revealed && !e.hide) || e.sel.length !== QUESTIONS[i].answer.length) return;
+  e.revealed = true; delete e.hide; save(); render();
+  $("result").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+function go(i) {
+  if (i < 0 || i >= N) return;
+  if (i !== state.current && pending(state.current)) Object.assign(entry(state.current), { revealed: true, hide: true });
+  state.current = i; save(); render();
+  $("qcard").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+$("revealBtn").onclick = reveal;
+$("prevBtn").onclick = () => go(state.current - 1);
+$("nextBtn").onclick = () => go(state.current + 1);
+$("nextUnBtn").onclick = () => {
+  for (let k = 1; k <= N; k++) { const i = (state.current + k) % N; const e = entry(i); if (!e || !e.revealed) return go(i); }
+};
+$("retryWrongBtn").onclick = () => {
+  const wrong = [];
+  for (let i = 0; i < N; i++) { const e = entry(i); if (e && e.revealed && !isCorrect(i)) wrong.push(i); }
+  if (!wrong.length) { alert("কোনো ভুল উত্তর নেই।"); return; }
+  wrong.forEach((i) => delete state.ans[i]);
+  save(); go(wrong[0]);
+};
+$("resetBtn").onclick = () => {
+  if (!confirm("এই পেজের সব উত্তর মুছে নতুন করে শুরু করবেন?")) return;
+  state = { current: 0, ans: {} }; resetTimer(); save(); go(0);
+};
+
+document.addEventListener("keydown", (ev) => {
+  if (ev.metaKey || ev.ctrlKey || ev.altKey || (ev.target.closest && ev.target.closest("textarea, input, select, [contenteditable]"))) return;
+  const k = ev.key.toUpperCase();
+  if ("ABCDE".includes(k) && k.length === 1) { select(k); }
+  else if (ev.key === "Enter" && !(ev.target.closest && ev.target.closest("button:not(.opt)"))) { ev.preventDefault(); reveal(); }
+  else if (ev.key === "ArrowRight") { go(state.current + 1); }
+  else if (ev.key === "ArrowLeft") { go(state.current - 1); }
+});
+
+if (state.current >= N) state.current = 0;
+render();
+</script>
+</body>
+</html>
