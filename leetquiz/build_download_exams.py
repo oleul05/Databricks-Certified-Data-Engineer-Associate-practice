@@ -26,6 +26,7 @@ def replace_constant(page, name, value):
 def build():
     from refine_downloads import build as refine, GUIDE, SECTIONS
     from examtopics_overlap import audit_and_filter
+    from bangla_explanations import original_bangla, downloaded_bangla, DOWNLOAD_BODIES
     refine()
     bank = json.loads((ROOT / 'leetquiz/downloads/syllabus-questions.json').read_text(encoding='utf-8'))
     assert bank and len({q['id'] for q in bank}) == len(bank)
@@ -34,6 +35,8 @@ def build():
     home = home_path.read_text(encoding='utf-8')
     originals = json.loads((ROOT / 'leetquiz/refined-questions.json').read_text(encoding='utf-8'))
     originals, bank, overlap = audit_and_filter(originals, bank, home)
+    assert set(DOWNLOAD_BODIES) == {q['id'] for q in bank}, 'Bangla coverage must match the active download bank'
+    originals = [original_bangla(q) for q in originals]
     # Rebuild the original active page from its preserved source bank. Keeping
     # the source JSON intact makes removal traceable and the build repeatable.
     original_page = replace_constant(template, 'QUESTIONS', originals)
@@ -70,16 +73,7 @@ def build():
             answer = [o['key'] for o in source['options'] if o.get('correct')]
             assert answer and all(a in {o['k'] for o in options} for a in answer)
             collection_link = '../../leetquiz/downloads/unique-questions.html#' + source['id']
-            explanation = '<p class="ans">Answer: ' + ', '.join(answer) + '</p>'
-            if source['corrections']:
-                explanation += '<h3>Source correction</h3><ul>' + ''.join('<li>' + html.escape(note) + '</li>' for note in source['corrections']) + '</ul>'
-            explanation += '<h3>Explanation</h3>' + source['displayExplanation']
-            if source['sourceAnswerVaries']:
-                explanation += '<p class="syllabus-note">Downloaded source versions mark different answer text. Original versions are preserved in the unique collection; disclosed corrections above take precedence.</p>'
-            explanation += '<p>May 2026 guide: ' + html.escape(source['guideObjective']) + '</p>'
-            for documentation in source['documentation']:
-                explanation += '<p><a href="' + html.escape(documentation, quote=True) + '" target="_blank" rel="noopener noreferrer">Databricks documentation</a></p>'
-            explanation += '<p><a href="' + html.escape(source['url'], quote=True) + '" target="_blank" rel="noopener noreferrer">Original question</a> · <a href="' + collection_link + '" target="_blank" rel="noopener noreferrer">All source versions</a></p>'
+            explanation = downloaded_bangla(source, answer, collection_link)
             question = {'uid': source['id'], 'n': index + 1, 'label': title + ' · ' + source['id'] + ' · ' + SECTIONS[source['sec']],
                         'stem': source['displayStem'], 'options': options, 'sec': source['sec'],
                         'answer': answer, 'explain': explanation, 'oos': False}
@@ -90,7 +84,7 @@ def build():
         page = replace_constant(template, 'QUESTIONS', questions)
         page = page.replace('<title>LeetQuiz</title>', '<title>' + title + '</title>')
         page = re.sub(r'<div class="brand">LeetQuiz<small class="bn">.*?</small></div>',
-                      lambda _: '<div class="brand">' + title + '<small>' + subtitle + '</small><small>Source corrections are disclosed in explanations.</small></div>', page, count=1)
+                      lambda _: '<div class="brand">' + title + '<small>' + subtitle + '</small><small class="bn">বাংলা ব্যাখ্যা · মূল প্রশ্নের সংশোধন ব্যাখ্যায় দেওয়া আছে।</small></div>', page, count=1)
         page = page.replace('const PAGE_ID = "leetquiz";', 'const PAGE_ID = "' + page_id + '";')
         signature = hashlib.sha256(json.dumps([[q['uid'], q['answer']] for q in questions]).encode()).hexdigest()[:12]
         page = re.sub(r'^const TIMER_KEY = .*;$',
